@@ -1,6 +1,6 @@
 # IBM watsonx Orchestrate Tech Jam
 
-Hello and welcome to the **April 2025 edition** of the IBM watsonx Orchestrate Tech Jam. 
+Hello and welcome to the **October 2025 edition** of the IBM watsonx Orchestrate Tech Jam. 
 
 The **Agenda** is available **[here](https://github.com/IBM/ba-dl-tech-jam/blob/main/Agenda/%5BBA%26DL%20wxO%20Tech%20Jam%202025.04.09%5D%20Agenda.pdf)**
 
@@ -40,4 +40,4 @@ You can **access** the survey **[here](https://ibm.biz/wxo-tech-jam-survey)** or
 
 ![Survey QR Code](QR_code_wxoTechJamApril2025.png)
 
-**Enjoy our April 2025 watsonx Orchestrate Tech Jam!**
+**Enjoy our October 2025 watsonx Orchestrate Tech Jam!**
