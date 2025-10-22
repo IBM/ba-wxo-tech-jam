@@ -1,6 +1,6 @@
 # IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam
 
-Hello and welcome to the **October 2025 edition** of the IBM watsonx Orchestrate Tech Jam. 
+Hello and welcome to the **October 2025 edition** of the IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam. 
 
 The **Agenda** is available **[here](https://github.com/IBM/ba-dl-tech-jam/blob/main/Agenda/%5BBA%26DL%20wxO%20Tech%20Jam%202025.04.09%5D%20Agenda.pdf)**
 
