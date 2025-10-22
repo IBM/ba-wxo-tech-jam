@@ -6,7 +6,7 @@ The table below lists all **CP4BA and wastsonx Orchestrate capabilities** that w
 
 To **earn a badge** for a specific capability, you must complete all labs for it and answer the **Quiz** linked in the table below.
 
-In case you have **questions or issues related to a speciffic capability lab**, use the **Slack Channel** linked in the table below. For any **general questions, comments and feedback** please go to the **[#ba-dl-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C07K52NV76X)** Slack channel.
+In case you have **questions or issues related to a speciffic capability lab**, use the **Slack Channel** linked in the table below. For any **general questions, comments and feedback** please go to the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C07K52NV76X)** Slack channel.
 
 | Capability                                                    | Track                | Credentials | Approximate Duration |       Badge                             | Slack Channel |  Survey |
 | :-----------------------------------------------------------: | :------------------: | ----------- | :------------------: | :---------------------------------- | :-------------------------------------- | ------------- |
