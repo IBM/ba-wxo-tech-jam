@@ -47,7 +47,7 @@ pull down the line to replace from above, replace with line from below
 
 Most labs require you to **access one or more System URLs** set up specifically for the Jam. You first need get your Login Credentials (see above) and then **access the System URLs using the links below**. 
 
-Issues accessing the System URLs? Use Slack Channel **[#ba-dl-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C07K52NV76X)**.
+Issues accessing the System URLs? Use Slack Channel **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C07K52NV76X)**.
 
 <!--
 These instructions will get updated at the end of the introduction session, you'll then find the System URLs here.
