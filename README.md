@@ -1,4 +1,4 @@
-# IBM watsonx Orchestrate Tech Jam
+# IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam
 
 Hello and welcome to the **October 2025 edition** of the IBM watsonx Orchestrate Tech Jam. 
 
