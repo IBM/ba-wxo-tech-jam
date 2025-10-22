@@ -6,7 +6,7 @@ The **Agenda** is available **[here](https://github.com/IBM/ba-dl-tech-jam/blob/
 
 ## Labs
 
-You can access the **labs** **[here](/Labs_wxo.md)**. On that page you can learn more about the labs and select the ones you are interested in.
+You can access the **CP4BA labs** **[here](/Labs_CP4BA.md)**.**Wxo labs** **[here](/Labs_wxo.md)**. On that page you can learn more about the labs and select the ones you are interested in.
 
 ## Links & Credentials
 
