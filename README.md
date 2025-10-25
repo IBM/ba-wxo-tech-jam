@@ -10,7 +10,7 @@ You can access the **CP4BA & WxO labs** **[here](/Labs-ba-wxo-tech-jam.md)**. On
 
 ## Links & Credentials
 
-**Slack channel**: #ba-wxo-tech-jam-main-lobby (https://ibm.enterprise.slack.com/archives/C08K4TKFHEE)
+**Slack channel**: [#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C09KN3VSW9F)
 
 **Tech Jam GitHub URL**: https://github.com/IBM/ba-wxo-tech-jam/
 
@@ -26,18 +26,18 @@ You can access the **CP4BA & WxO labs** **[here](/Labs-ba-wxo-tech-jam.md)**. On
 
 ## Presentations and Recordings
 
-A link to the **presentations and recordings** as part of the Jam will be shared in the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C08K4TKFHEE)** Slack channel.
+A link to the **presentations and recordings** as part of the Jam will be shared in the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C09KN3VSW9F)** Slack channel.
 
 ## Support
 
-For any **general questions, comments and feedback** please use the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C08K4TKFHEE)** Slack channel or ask us directly.
+For any **general questions, comments and feedback** please use the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C09KN3VSW9F)** Slack channel or ask us directly.
 
 ## Survey
 
 At the end of the Jam, please take 5 minutes to **complete the survey**. This will help us for future Jams as well as get feedback on the different capabilities.
 
-You can **access** the survey **[here](https://ibm.biz/wxo-tech-jam-survey)** or use the **QR code** below:
+You can **access** the survey **[here](https://ibm.biz/ba-wxo-tech-jam-survey)** or use the **QR code** below:
 
-![Survey QR Code](QR_code_wxoTechJamApril2025.png)
+![Survey QR Code](QR_code_ba_wxo_tech_jam.png)
 
 **Enjoy our October 2025 Cloud Pak Business Automation & watsonx Orchestrate Tech Jam!**
