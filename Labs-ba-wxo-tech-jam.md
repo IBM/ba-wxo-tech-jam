@@ -17,7 +17,7 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 | [IBM Automation Decision Services](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/Decisions) | 2 | CP4BA ROKS |      3 hours        | [Badge](https://www.credly.com/org/ibm/badge/ibm-automation-decision-services-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9416) | [#ba-wxo-tech-jam-decisions](https://ibm.enterprise.slack.com/archives/C09NK0YN0QL) | [Decision Survey](https://ibm.biz/ba-wxo-tech-jam-decisions-survey) |
 | [IBM Process Mining](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/Process%20Mining) | 2 | CP4BA ROKS |       1-2 hours per lab        | [Badge](https://www.credly.com/org/ibm/badge/ibm-process-mining-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9355) | [#ba-wxo-tech-jam-process-mining](https://ibm.enterprise.slack.com/archives/C09NDCE2MCN	) | [PM Survey](https://ibm.biz/ba-wxo-tech-jam-pm-survey) |
 | [IBM Robotic Process Automation](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/Robotic%20Process%20Automation) | 2 | TechZone vM |      3-4 hours       | [Badge](https://www.credly.com/org/ibm/badge/ibm-robotic-process-automation-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9356) | [#ba-wxo-tech-jam-rpa](https://ibm.enterprise.slack.com/archives/C09NC0LTP53) | [RPA Survey](https://ibm.biz/ba-wxo-tech-jam-rpa-survey) |
-| [IBM Business Automation Workflow](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/Workflow) | 2 | CP4BA Roks **or** watsonx Orchestrate Environment |      5-6 hours       | [Badge](https://www.credly.com/org/ibm/badge/ibm-business-automation-workflow-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9354) | [#ba-wxo-tech-jam-workflow](https://ibm.enterprise.slack.com/archives/C09NK13FB60) | [BAW Survey](https://ibm.biz/ba-wxo-tech-jam-baw-survey) |
+| [IBM Business Automation Workflow](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/Workflow) | 2 | CP4BA Roks **or** Lab Provided |      5-6 hours       | [Badge](https://www.credly.com/org/ibm/badge/ibm-business-automation-workflow-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9354) | [#ba-wxo-tech-jam-workflow](https://ibm.enterprise.slack.com/archives/C09NK13FB60) | [BAW Survey](https://ibm.biz/ba-wxo-tech-jam-baw-survey) |
 | [IBM Datacap+Watsonx.ai](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/Datacap%2BWatsonx.ai) | 2 | TechZone vM | 4-5 hours | [Badge](https://www.credly.com/org/ibm/badge/document-processing-with-ibm-datacap-and-watsonx-ai) \| [Quiz](https://learn.ibm.com/course/view.php?id=18387) |[#ba-wxo-tech-jam-datacap](https://ibm.enterprise.slack.com/archives/C09N92L6C1Z) |[Datacap Survey]( https://ibm.biz/ba-wxo-tech-jam-datacap-survey) |
 | [IBM watsonx Orchestrate](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/watsonx%20Orchestrate) | 2 | watsonx Orchestrate Environment **and** CP4BA ROKS | 2-3 hours | - |[#ba-wxo-tech-jam-wxo](https://ibm.enterprise.slack.com/archives/C09NC0Q1QP7) |[wxO Survey](https://ibm.biz/ba-wxo-tech-jam-wxo-survey) |
 | [IBM CP4BA - Bring-up Lab 2: Product Deployment Scripts](https://github.com/IBM/cp4ba-labs/blob/main/24.0.0/Bring-Up/Bring-Up-Lab-2/Readme.md) | 3 | TechZone vM | 8 hours | [Badge Lab#2](https://www.credly.com/org/ibm/badge/ibm-cloud-pak-for-business-automation-installation-.1) \| [Quiz Lab#2](https://learn.ibm.com/course/view.php?id=16836) | [#ba-wxo-tech-jam-bring-up](https://ibm.enterprise.slack.com/archives/C09P9NQ20F2) | [Bring-up Survey](https://ibm.biz/ba-wxo-tech-jam-bring-up-survey) |
@@ -31,12 +31,12 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 |Name       |Instructions| 
 | ------- | ------- |
 | CP4BA Credentials| Retrieve your unique credentials from **[here](tbd)**.  Use same email provided during the TechJam registration. |
+| watsonx Orchestrate Environment| Use your IBM ID. |
+| Lab Provided | Lab guide will provide instructions on how to get credentials. |
 <!--
 | CP4BA Credentials| Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-amer-01-464887bc828751e1b00625ca9211fbca-0000.us-south.containers.appdomain.cloud/UserManagement/)**.  Use same email provided during the TechJam registration. |
 
 --> 
-| watsonx Orchestrate Environment| Use your IBM ID. |
-| Lab Provided | Lab guide will provide instructions on how to get credentials. |
 
 <!--
 pull down the line to replace from above, replace with line from below
