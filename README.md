@@ -14,16 +14,6 @@ You can access the **CP4BA & WxO labs** **[here](/Labs-ba-wxo-tech-jam.md)**. On
 
 **Tech Jam GitHub URL**: https://github.com/IBM/ba-wxo-tech-jam/
 
-**watsonx Orchestrate URL**: https://dl.watson-orchestrate.ibm.com (if you have access to multiple tenants, select tenant **TechJam2024**)
-
-**IT Accessory Hub Assistant URL**: https://ibm.biz/ITAccessoryHub
-
-**EMail Client URL**: https://roundcubenginx-mail.swat-dev-roks-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/?_task=mail&_mbox=INBOX
-
-**Back End Credentials** - Get them from the organizers at the desk
-
-**WLAN access** - You should have a mail from noreply-emea-IBMInternet@ibm.com, otherwise reach out to us
-
 ## Presentations and Recordings
 
 A link to the **presentations and recordings** as part of the Jam will be shared in the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C09KN3VSW9F)** Slack channel.
