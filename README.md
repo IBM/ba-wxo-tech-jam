@@ -1,6 +1,6 @@
 # IBM Business Automation & watsonx Orchestrate Tech Jam
 
-Hello and welcome to the **October 2025 edition** of the IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam. 
+Hello and welcome to the **November 2025 edition** of the IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam. 
 
 The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/BA%20%26%20wxO%20Tech%20Jam%20%5BBrazil%5D%20-%202025.11.04%20-%20Agenda.pdf)**
 
@@ -30,4 +30,4 @@ You can **access** the survey **[here](https://ibm.biz/ba-wxo-tech-jam-survey)**
 
 ![Survey QR Code](QR_code_ba_wxo_tech_jam.png)
 
-**Enjoy our October 2025 Business Automation & watsonx Orchestrate Tech Jam!**
+**Enjoy our November 2025 Business Automation & watsonx Orchestrate Tech Jam!**
