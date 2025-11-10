@@ -8,6 +8,10 @@ To **earn a badge** for a specific capability, you must complete all labs for it
 
 In case you have **questions or issues related to a speciffic capability lab**, use the **Slack Channel** linked in the table below. For any **general questions, comments and feedback** please go to the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C09KN3VSW9F)** Slack channel.
 
+
+
+## Lab List
+
 | Capability                                                    | Track                | Environment | Approximate Duration |       Badge                             | Slack Channel |  Survey |
 | :-----------------------------------------------------------: | :------------------: | ----------- | :------------------: | :---------------------------------- | :-------------------------------------- | ------------- |
 | [IBM Cloud Pak for Business Automation](https://github.com/IBM/cp4ba-labs/tree/main/25.0.0/IBM%20Cloud%20Pak%20for%20Business%20Automation%20(End-to-End)) (End-to-End Demo) |  1 | CP4BA ROKS |      2 hours        | [Badge](https://www.credly.com/org/ibm/badge/ibm-cloud-pak-for-business-automation-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9353) | [#ba-wxo-tech-jam-e2e](https://ibm.enterprise.slack.com/archives/C09P9NB9ZMW) |[E2E Survey](https://ibm.biz/ba-wxo-tech-jam-e2e-survey) |
@@ -42,6 +46,8 @@ pull down the line to replace from above, replace with line from below
 | CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/UserManagement)**. Use same email provided during the TechJam registration. |
 
 -->
+
+
 
 ## System URLs
 
