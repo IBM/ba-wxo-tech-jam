@@ -2,7 +2,7 @@
 
 Hello and welcome to the **November 2025 edition** of the IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam. 
 
-The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/BA%20%26%20wxO%20Tech%20Jam%20%5BBrazil%5D%20-%202025.11.04%20-%20Agenda.pdf)**
+The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/BA%20%26%20wxO%20Tech%20Jam%20%5BEMEA%5D%20-%202025.11.11%20-%20Agenda.pdf)**
 
 ## Labs
 
