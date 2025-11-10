@@ -32,7 +32,7 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 | ------- | ------- |
 | CP4BA ROKS | These instructions will get updated at the end of the introduction session. You'll then find the link to get your credentials here. |
 | TechZone vM | Lab guide will provide instructions on how to get credentials. |
-| TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C09N223JMK5)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C09N223JMK5) to get your pre-provisioned environment assigned. |
+| TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C09N223JMK5)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C09N223JMK5) to request your pre-provisioned environment assigned. |
 <!-- IBM Business Automation & watsonx Orchestrate Tech Jam [Americas] - Welcome! --> 
 <!--
 pull down the line to replace from above, replace with line from below
