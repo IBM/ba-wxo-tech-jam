@@ -34,16 +34,16 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 
 |Environment       |Instructions| 
 | ------- | ------- |
-| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/UserManagement)**. Use same email provided during the TechJam registration. |
+| CP4BA ROKS | These instructions will get updated at the end of the introduction session. You'll then find the link to get your credentials here. |
 | TechZone vM | Lab guide will provide instructions on how to get credentials. |
 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C09N223JMK5)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C09N223JMK5) to request access to a pre-provisioned environment. |
-<!-- IBM Business Automation & watsonx Orchestrate Tech Jam [Americas] - Welcome! --> 
+<!-- IBM Business Automation & watsonx Orchestrate Tech Jam [APAC] - Welcome! -->
 <!--
 pull down the line to replace from above, replace with line from below
 
 | CP4BA ROKS | These instructions will get updated at the end of the introduction session. You'll then find the link to get your credentials here. |
 
-| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/UserManagement)**. Use same email provided during the TechJam registration. |
+| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-cp4ba.tech-jam-apac-01-464887bc828751e1b00625ca9211fbca-0000.jp-tok.containers.appdomain.cloud/UserManagement/)**. Use same email provided during the TechJam registration. |
 
 -->
 
@@ -51,7 +51,7 @@ pull down the line to replace from above, replace with line from below
 
 ## System URLs
 
-Most labs require you to **access one or more System URLs** set up specifically for the Jam. You first need get your Login Credentials (see above) and then **access the System URLs using the links below**. 
+Most labs require you to **access one or more System URLs** set up specifically for the Jam. You first need get your Login Credentials (see above) and then **access the System URLs using the links below**.
 
 Issues accessing the System URLs? Use Slack Channel **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C09KN3VSW9F)**.
 
@@ -59,17 +59,17 @@ Issues accessing the System URLs? Use Slack Channel **[#ba-wxo-tech-jam-main-lob
 These instructions will get updated at the end of the introduction session, you'll then find the System URLs here.
 -->
 
-[Client Onboarding Desktop](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/icn/navigator/?desktop=ClientOnboarding)  
-[Local Mail Client](https://roundcubenginx-mail.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud)  
-[IBM Business Automation Studio](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud)  
-[IBM Business Performance Center (BPC)](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/bai-bpc)  
-[IBM Content Platform Engine ACCE](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/cpe/acce)  
-[IBM Content Services GraphQL](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/content-services-graphql/)  
-[ICN Desktop](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/icn/navigator/?desktop=ICN)  
-[IBM Business Automation Workplace](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/icn/navigator?desktop=workplace)  
+[Client Onboarding Desktop](https://cpd-cp4ba.tech-jam-apac-01-464887bc828751e1b00625ca9211fbca-0000.jp-tok.containers.appdomain.cloud/icn/navigator/?desktop=ClientOnboarding)
+[Local Mail Client](https://roundcubenginx-mail.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud)
+[IBM Business Automation Studio](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud)
+[IBM Business Performance Center (BPC)](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/bai-bpc)
+[IBM Content Platform Engine ACCE](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/cpe/acce)
+[IBM Content Services GraphQL](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/content-services-graphql/)
+[ICN Desktop](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/icn/navigator/?desktop=ICN)
+[IBM Business Automation Workplace](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/icn/navigator?desktop=workplace)
 [Case Client](https://cpd-ibm-cp4ba.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/icn/navigator/?desktop=baw)
 <!--
-[IBM watsonx Orchestrate](https://dl.watson-orchestrate.ibm.com/)  
+[IBM watsonx Orchestrate](https://dl.watson-orchestrate.ibm.com/)
 -->
 <!--
 [IBM Process Mining](https://cpd-ibm-processmining.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/processmining/index.html)
