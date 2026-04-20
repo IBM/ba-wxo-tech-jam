@@ -51,7 +51,7 @@ pull down the line to replace from above, replace with line from below
 | CP4BA ROKS | These instructions will get updated at the end of the introduction session. You'll then find the link to get your credentials here. |
 
 | CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-cp4ba.tech-jam-apac-01-464887bc828751e1b00625ca9211fbca-0000.jp-tok.containers.appdomain.cloud/UserManagement/)**. Use same email provided during the TechJam registration. |
-
+| ICA Lab Account | To perform the exercise on the "Ask the repository" feature, a separate account is needed. Find the password for the icademo user pinned to the Slack forums. |
 -->
 
 
