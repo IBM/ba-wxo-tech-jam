@@ -16,7 +16,7 @@ You can access the **CP4BA & WxO labs** **[here](/Labs-ba-wxo-tech-jam.md)**. On
 
 ## Presentations and Recordings
 
-A link to the **presentations and recordings** as part of the Jam will be shared in the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C09KN3VSW9F)** Slack channel.
+A link to the **presentations and recordings** as part of the Jam will be shared in the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C0ATAFT497D)** Slack channel.
 
 ## Support
 
