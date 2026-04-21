@@ -19,7 +19,7 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 | [IBM Business Automation Insights](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Business%20Automation%20Insights) | 2 |CP4BA ROKS |        1 hour        |                              -                               | [#ba-wxo-tech-jam-bai](https://ibm.enterprise.slack.com/archives/C0ATW3J5VH7) | [BAI Survey](https://ibm.biz/ba-wxo-tech-jam-bai-survey) |
 | [IBM FileNet Content Services](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Content) | 2 | CP4BA ROKS |     4-5 hours       | [Badge](https://www.credly.com/org/ibm/badge/ibm-filenet-content-manager-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9358) | [#ba-wxo-tech-jam-content](https://ibm.enterprise.slack.com/archives/C0ATH6QLTBL) |[Content Survey](https://ibm.biz/ba-wxo-tech-jam-content-survey) |
 | [IBM Automation Decision Services](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Decisions) | 2 | CP4BA ROKS |      3 hours        | [Badge](https://www.credly.com/org/ibm/badge/ibm-automation-decision-services-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9416) | [#ba-wxo-tech-jam-decisions](https://ibm.enterprise.slack.com/archives/C0ATAQWBHEF) | [Decision Survey](https://ibm.biz/ba-wxo-tech-jam-decisions-survey) |
-| [IBM Process Mining](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Process%20Mining) | 2 | TechZone vM |       1-2 hours per lab        | [Badge](https://www.credly.com/org/ibm/badge/ibm-process-mining-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9355) | [#ba-wxo-tech-jam-process-mining](https://ibm.enterprise.slack.com/archives/C0AUBESKU00) | [PM Survey](https://ibm.biz/ba-wxo-tech-jam-pm-survey) |
+| [IBM Process Mining](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Process%20Mining) | 2 | CP4BA ROKS |       1-2 hours per lab        | [Badge](https://www.credly.com/org/ibm/badge/ibm-process-mining-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9355) | [#ba-wxo-tech-jam-process-mining](https://ibm.enterprise.slack.com/archives/C0AUBESKU00) | [PM Survey](https://ibm.biz/ba-wxo-tech-jam-pm-survey) |
 | [IBM Robotic Process Automation](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Robotic%20Process%20Automation) | 2 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V)) |      3-4 hours       | [Badge](https://www.credly.com/org/ibm/badge/ibm-robotic-process-automation-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9356) | [#ba-wxo-tech-jam-rpa](https://ibm.enterprise.slack.com/archives/C0ATH6WJX7U) | [RPA Survey](https://ibm.biz/ba-wxo-tech-jam-rpa-survey) |
 | [IBM Business Automation Workflow](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Workflow) | 2 | CP4BA ROKS and TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V)) |      5-6 hours       | [Badge](https://www.credly.com/org/ibm/badge/ibm-business-automation-workflow-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9354) | [#ba-wxo-tech-jam-workflow](https://ibm.enterprise.slack.com/archives/C0AUBED6ERE) | [BAW Survey](https://ibm.biz/ba-wxo-tech-jam-baw-survey) |
 | [IBM Datacap+Watsonx.ai](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Datacap%2BWatsonx.ai) | 2 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V))  | 4-5 hours | [Badge](https://www.credly.com/org/ibm/badge/document-processing-with-ibm-datacap-and-watsonx-ai) \| [Quiz](https://learn.ibm.com/course/view.php?id=18387) |[#ba-wxo-tech-jam-datacap](https://ibm.enterprise.slack.com/archives/C0ATF4VPC94) |[Datacap Survey]( https://ibm.biz/ba-wxo-tech-jam-datacap-survey) |
@@ -34,17 +34,16 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 
 |Environment       |Instructions| 
 | ------- | ------- |
+| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-cp4ba.tech-jam-amer-01-464887bc828751e1b00625ca9211fbca-0000.us-south.containers.appdomain.cloud/UserManagement/)**. Use same email provided during the TechJam registration. |
+| TechZone vM | Lab guide will provide instructions on how to get credentials. |
+| TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V) to request access to a pre-provisioned environment. |
 
 <!--
 | CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-cp4ba.tech-jam-apac-01-464887bc828751e1b00625ca9211fbca-0000.jp-tok.containers.appdomain.cloud/UserManagement/)**. Use same email provided during the TechJam registration. |
 -->
 
-| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-cp4ba.tech-jam-amer-01-464887bc828751e1b00625ca9211fbca-0000.us-south.containers.appdomain.cloud/UserManagement/)**. Use same email provided during the TechJam registration. |
-
-
-| TechZone vM | Lab guide will provide instructions on how to get credentials. |
-| TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V) to request access to a pre-provisioned environment. |
 <!-- IBM Business Automation & watsonx Orchestrate Tech Jam [APAC] - Welcome! -->
+
 <!--
 pull down the line to replace from above, replace with line from below
 
