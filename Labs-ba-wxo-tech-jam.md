@@ -34,7 +34,7 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 
 |Environment       |Instructions| 
 | ------- | ------- |
-| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-cp4ba.tech-jam-amer-01-464887bc828751e1b00625ca9211fbca-0000.us-south.containers.appdomain.cloud/UserManagement/)**. Use same email provided during the TechJam registration. |
+| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-amer-01-464887bc828751e1b00625ca9211fbca-0000.us-south.containers.appdomain.cloud/UserManagement/)**. Use same email provided during the TechJam registration. |
 | TechZone vM | Lab guide will provide instructions on how to get credentials. |
 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C0ATDPQ484V) to request access to a pre-provisioned environment. |
 
