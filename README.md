@@ -4,6 +4,8 @@ Hello and welcome to the **April 2026 edition** of the IBM Cloud Pak Business Au
 
 The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BAPAC%5D%20-%202026.04.28%20-%20Agenda.pdf)**
 
+**Getting started** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BAPAC%5D%20-%202026.04.28%20-%20Agenda.pdf)**
+
 ## Labs
 
 You can access the **CP4BA & WxO labs** **[here](/Labs-ba-wxo-tech-jam.md)**. On that page you can learn more about the labs and select the ones you are interested in.
