@@ -12,17 +12,17 @@ You can access the **CP4BA & WxO labs** **[here](/Labs-ba-wxo-tech-jam.md)**. On
 
 ## Links & Credentials
 
-**Slack channel**: [#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C0AV8DJHNR3)
+**Slack channel**: [#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C0B0Z6476KV)
 
 **Tech Jam GitHub URL**: https://github.com/IBM/ba-wxo-tech-jam/
 
 ## Presentations and Recordings
 
-A link to the **presentations and recordings** as part of the Jam will be shared in the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C0AV8DJHNR3)** Slack channel.
+A link to the **presentations and recordings** as part of the Jam will be shared in the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C0B0Z6476KV)** Slack channel.
 
 ## Support
 
-For any **general questions, comments and feedback** please use the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C0AV8DJHNR3)** Slack channel or ask us directly.
+For any **general questions, comments and feedback** please use the **[#ba-wxo-tech-jam-main-lobby](https://ibm.enterprise.slack.com/archives/C0B0Z6476KV)** Slack channel or ask us directly.
 
 ## Survey
 
