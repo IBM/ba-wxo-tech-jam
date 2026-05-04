@@ -1,6 +1,6 @@
 # IBM Business Automation & watsonx Orchestrate Tech Jam
 
-Hello and welcome to the **April 2026 edition** of the IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam. 
+Hello and welcome to the **April/May 2026 edition** of the IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam.
 
 The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BAPAC%5D%20-%202026.04.28%20-%20Agenda.pdf)**
 
@@ -32,4 +32,4 @@ You can **access** the survey **[here](https://ibm.biz/ba-wxo-tech-jam-survey)**
 
 ![Survey QR Code](QR_code_ba_wxo_tech_jam.png)
 
-**Enjoy our April 2026 Business Automation & watsonx Orchestrate Tech Jam!**
+**Enjoy our April/May 2026 Business Automation & watsonx Orchestrate Tech Jam!**
