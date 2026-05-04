@@ -24,7 +24,7 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 | [IBM Business Automation Workflow](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Workflow) | 2 | CP4BA ROKS and TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0B12500A3F)) |      5-6 hours       | [Badge](https://www.credly.com/org/ibm/badge/ibm-business-automation-workflow-tech-jam) \| [Quiz](https://learn.ibm.com/course/view.php?id=9354) | [#ba-wxo-tech-jam-workflow](https://ibm.enterprise.slack.com/archives/C0B15HKB93L) | [BAW Survey](https://ibm.biz/ba-wxo-tech-jam-baw-survey) |
 | [IBM Datacap+Watsonx.ai](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/Datacap%2BWatsonx.ai) | 2 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0B12500A3F))  | 4-5 hours | [Badge](https://www.credly.com/org/ibm/badge/document-processing-with-ibm-datacap-and-watsonx-ai) \| [Quiz](https://learn.ibm.com/course/view.php?id=18387) |[#ba-wxo-tech-jam-datacap](https://ibm.enterprise.slack.com/archives/C0B15HA8H7C) |[Datacap Survey]( https://ibm.biz/ba-wxo-tech-jam-datacap-survey) |
 | [IBM watsonx Orchestrate](https://github.com/IBM/cp4ba-labs/tree/main/25.0.1/watsonx%20Orchestrate) | 2 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0B12500A3F)  | 2-3 hours | - |[#ba-wxo-tech-jam-wxo](https://ibm.enterprise.slack.com/archives/C0B195LKV44) |[wxO Survey](https://ibm.biz/ba-wxo-tech-jam-wxo-survey) |
-| [IBM CP4BA - Bring-up Lab 2: Product Deployment Scripts](https://github.com/IBM/cp4ba-labs/blob/main/25.0.0/Bring-Up/Readme.md) | 3 | TechZone vM | 8 hours | [Badge Lab#2](https://www.credly.com/org/ibm/badge/ibm-cloud-pak-for-business-automation-installation-.1) \| [Quiz Lab#2](https://learn.ibm.com/course/view.php?id=16836) | [#ba-wxo-tech-jam-bring-up](https://ibm.enterprise.slack.com/archives/C0B0Q694CR5) | [Bring-up Survey](https://ibm.biz/ba-wxo-tech-jam-bring-up-survey) |
+| [IBM CP4BA - Bring-up Lab 2: Product Deployment Scripts](https://github.com/IBM/cp4ba-labs/blob/main/25.0.0/Bring-Up/Readme.md) | 3 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0B12500A3F)  | 8 hours | [Badge Lab#2](https://www.credly.com/org/ibm/badge/ibm-cloud-pak-for-business-automation-installation-.1) \| [Quiz Lab#2](https://learn.ibm.com/course/view.php?id=16836) | [#ba-wxo-tech-jam-bring-up](https://ibm.enterprise.slack.com/archives/C0B0Q694CR5) | [Bring-up Survey](https://ibm.biz/ba-wxo-tech-jam-bring-up-survey) |
 
 <!-- [IBM CP4BA - Bring-up Lab 1: Rapid Deployment Scripts](https://github.com/IBM/cp4ba-labs/blob/main/25.0.0/Bring-up/Bring-Up-Lab-1/Readme.md) | 3 | Lab  | 6 hours | [Badge Lab#1](https://www.credly.com/org/ibm/badge/ibm-cloud-pak-for-business-automation-installation-tech-jam) \| [Quiz Lab#1](https://learn.ibm.com/course/view.php?id=11286) | [#ba-wxo-tech-jam-bring-up](https://ibm.enterprise.slack.com/archives/C09P9NQ20F2) | [Bring-up Survey](https://www.surveymonkey.com/r/ba-dl-tech-jam-bring-up) -->
 
@@ -36,7 +36,6 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 | ------- | ------- |
 | CP4BA ROKS | These instructions will get updated at the end of the introduction session. You'll then find the link to get your credentials here. |
 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0B12500A3F)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C0B12500A3F) to request access to a pre-provisioned environment. |
-| TechZone vM | Lab guide will provide instructions on how to get credentials. |
 
 <!--
 pull down the line to replace from above, replace with line from below
@@ -46,6 +45,8 @@ pull down the line to replace from above, replace with line from below
 | CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/UserManagement)**. Use same email provided during the TechJam registration. |
 
 | ICA Lab Account | To perform the exercise on the "Ask the repository" feature, a separate account is needed. Find the password for the icademo user pinned to the Slack forums. |
+
+| TechZone vM | Lab guide will provide instructions on how to get credentials. |
 -->
 
 
