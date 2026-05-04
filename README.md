@@ -4,7 +4,7 @@ Hello and welcome to the **April/May 2026 edition** of the IBM Cloud Pak Busines
 
 The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BEMEA%5D%20-%202026.05.05%20-%20Agenda.pdf)**
 
-**Getting started** is available **[here]()**
+**Getting started** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BEMEA%5D%20-%202026.05.05%20-%20Getting%20Started.pdf)**
 
 ## Labs
 
