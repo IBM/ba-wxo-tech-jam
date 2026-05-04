@@ -2,9 +2,9 @@
 
 Hello and welcome to the **April/May 2026 edition** of the IBM Cloud Pak Business Automation & watsonx Orchestrate Tech Jam.
 
-The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BAPAC%5D%20-%202026.04.28%20-%20Agenda.pdf)**
+The **Agenda** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/Agenda/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BEMEA%5D%20-%202026.05.05%20-%20Agenda.pdf)**
 
-**Getting started** is available **[here](https://github.com/IBM/ba-wxo-tech-jam/blob/main/IBM%20BA%20%26%20wxO%20Tech%20Jam%20%5BAPAC%5D%20-%202025.04.28%20-%20Getting%20Started.pdf)**
+**Getting started** is available **[here]()**
 
 ## Labs
 
