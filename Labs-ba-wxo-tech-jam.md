@@ -34,7 +34,7 @@ In case you have **questions or issues related to a speciffic capability lab**, 
 
 |Environment       |Instructions| 
 | ------- | ------- |
-| CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/UserManagement)**. Use same email provided during the TechJam registration. |
+| CP4BA ROKS | These instructions will get updated at the end of the introduction session. You'll then find the link to get your credentials here. |
 | TechZone vM | Lab guide will provide instructions on how to get credentials. |
 | TechZone vM ([pre-provisioned](https://ibm.enterprise.slack.com/archives/C0B12500A3F)) | Use Slack channel [#ba-wxo-tech-jam-access](https://ibm.enterprise.slack.com/archives/C0B12500A3F) to request access to a pre-provisioned environment. |
 
@@ -44,6 +44,7 @@ pull down the line to replace from above, replace with line from below
 | CP4BA ROKS | These instructions will get updated at the end of the introduction session. You'll then find the link to get your credentials here. |
 
 | CP4BA ROKS | Retrieve your unique credentials from **[here](https://jam-usermanagement-jam-usermanagement.tech-jam-emea-01-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/UserManagement)**. Use same email provided during the TechJam registration. |
+
 | ICA Lab Account | To perform the exercise on the "Ask the repository" feature, a separate account is needed. Find the password for the icademo user pinned to the Slack forums. |
 -->
 
