@@ -1,0 +1,278 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Billing",
+    "description": "Provides access to billing records and supports billing dispute resolution",
+    "version": "tipSnapshot"
+  },
+  "servers": [
+    {
+      "url": "https://cpd-ibm-cp4ba.swat-dev-roks-vpc-02-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/bas/automationservices/rest/TSOR/Billing"
+    }
+  ],
+  "security": [
+    {
+      "basic_auth": []
+    }
+  ],
+  "paths": {
+    "/get_billing_record_by_id": {
+      "post": {
+        "summary": "TRI_TSOR_Billing_get_billing_record_by_id",
+        "description": "Retrieve a single billing record by its billing record ID. Use when a specific billing record ID (format B-*) is known and the full record details are needed. Do NOT call if only an order ID is available — use get_billing_records_by_order_id_ext instead. Returns: billing_record with billing_record_id, order_id, billing_date, amount, description, status.",
+        "operationId": "TRI_TSOR_Billing_get_billing_record_by_id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_billing_record_by_id_input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get_billing_record_by_id_output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request contains invalid parameters, or they are missing."
+          },
+          "404": {
+            "description": "The requested resource does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/get_billing_records_by_order_id_ext": {
+      "post": {
+        "summary": "TRI_TSOR_Billing_get_billing_records_by_order_id_ext",
+        "description": "Retrieve all billing records linked to a specific order with a structured status envelope. Use when an order ID is known and the agent or workflow needs to review the billing history for that order with explicit domain error signalling (e.g. branching on result.is_error or result.error_code if the order does not exist). Do NOT call if only a customer ID is available — use a billing-by-customer tool instead. Returns: result — is_error (boolean), error_code (string, e.g. \"ORDER_NOT_FOUND\"), error_message (string), and billing_records[] (each with billing_record_id, order_id, billing_date, amount, description, status ordered oldest first / newest last by billing_date).",
+        "operationId": "TRI_TSOR_Billing_get_billing_records_by_order_id_ext",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_billing_records_by_order_id_ext_input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get_billing_records_by_order_id_ext_output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request contains invalid parameters, or they are missing."
+          },
+          "404": {
+            "description": "The requested resource does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/update_billing_record_status_description": {
+      "post": {
+        "summary": "TRI_TSOR_Billing_update_billing_record_status_description",
+        "description": "Update the status and human-readable description of a billing record to record the outcome of a billing dispute. Use when a billing dispute has been resolved or escalated and the record must be annotated with a new status and explanation. Do NOT call before supervisor approval is confirmed — this is a write operation; only the workflow should invoke it after the HITL gate has passed. Returns: billing_record_update_status — on success: billing_record (updated record); on domain failure (HTTP 200): is_error (boolean), error_code and error_message.",
+        "operationId": "TRI_TSOR_Billing_update_billing_record_status_description",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_billing_record_status_description_input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/update_billing_record_status_description_output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request contains invalid parameters, or they are missing."
+          },
+          "404": {
+            "description": "The requested resource does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "get_billing_record_by_id_input": {
+        "type": "object",
+        "properties": {
+          "billing_record_id": {
+            "type": "string",
+            "description": "[Required] Billing record ID in format B-*, e.g. B-QP23SD."
+          }
+        },
+        "description": "Input schema for get_billing_record_by_id",
+        "x-ibm-parameter-wrapper": true
+      },
+      "get_billing_record_by_id_output": {
+        "type": "object",
+        "properties": {
+          "billing_record": {
+            "$ref": "#/components/schemas/billing_record"
+          }
+        },
+        "description": "Response schema for get_billing_record_by_id",
+        "x-ibm-parameter-wrapper": true
+      },
+      "get_billing_records_by_order_id_ext_input": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "[Required] Order ID in format O-*, e.g. O-DF340K."
+          }
+        },
+        "description": "Input schema for get_billing_records_by_order_id_ext",
+        "x-ibm-parameter-wrapper": true
+      },
+      "get_billing_records_by_order_id_ext_output": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/billing_records_result"
+          }
+        },
+        "description": "Response schema for get_billing_records_by_order_id_ext",
+        "x-ibm-parameter-wrapper": true
+      },
+      "billing_records_result": {
+        "type": "object",
+        "properties": {
+          "is_error": {
+            "type": "boolean"
+          },
+          "error_code": {
+            "type": "string"
+          },
+          "error_message": {
+            "type": "string"
+          },
+          "billing_records": {
+            "type": "array",
+            "description": "Billing records ordered by billing_date ascending (oldest first, newest last).",
+            "items": {
+              "$ref": "#/components/schemas/billing_record"
+            }
+          }
+        }
+      },
+      "update_billing_record_status_description_input": {
+        "type": "object",
+        "properties": {
+          "billing_record_id": {
+            "type": "string",
+            "description": "[Required] Billing record ID to update, in format B-*, e.g. B-TDDU12."
+          },
+          "description": {
+            "type": "string",
+            "description": "[Required] Human-readable description of the billing action taken, e.g. \"Dispute opened — duplicate charge for order O-DF340K\"."
+          },
+          "status": {
+            "type": "string",
+            "description": "[Required] New status value. Valid values: \"active\", \"paid\", \"overdue\", \"cancelled\", \"disputed\", \"refunded\", \"resolved-rejected\", \"resolved-cancelled\"."
+          }
+        },
+        "description": "Input schema for update_billing_record_status_description",
+        "x-ibm-parameter-wrapper": true
+      },
+      "update_billing_record_status_description_output": {
+        "type": "object",
+        "properties": {
+          "billing_record_update_status": {
+            "$ref": "#/components/schemas/billing_record_update_result"
+          }
+        },
+        "description": "Response schema for update_billing_record_status_description",
+        "x-ibm-parameter-wrapper": true
+      },
+      "billing_record": {
+        "type": "object",
+        "properties": {
+          "billing_record_id": {
+            "type": "string"
+          },
+          "order_id": {
+            "type": "string"
+          },
+          "billing_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "billing_record_update_result": {
+        "type": "object",
+        "properties": {
+          "is_error": {
+            "type": "boolean"
+          },
+          "billing_record": {
+            "$ref": "#/components/schemas/billing_record"
+          },
+          "error_code": {
+            "type": "string"
+          },
+          "error_message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basic_auth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

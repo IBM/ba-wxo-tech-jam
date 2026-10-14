@@ -1,0 +1,101 @@
+kind: native
+name: TRI_billing_agent_complete
+display_name: Trinity Billing Agent (complete)
+description: |-
+  Call when a specialist needs to initiate a billing dispute for an order.
+
+  Billing dispute workflow: provide order_id [Required], customer_id [Required]
+  (C-* pattern), customer_name [Required], customer_tier [Required],
+  reason_for_dispute [Required] — initiates the billing dispute review process.
+context_access_enabled: true
+context_variables: []
+restrictions: editable
+memory_enabled: false
+supported_apps: []
+llm: groq/openai/gpt-oss-120b
+style: react_core
+hide_reasoning: false
+instructions: |-
+  If billing dispute request start the billing dispute workflow immediately —
+  do not present the order_id, customer_id, customer_name, customer_tier, or
+  reason_for_dispute values back to the specialist for confirmation first;
+  those values have already been validated before being passed to you. Call
+  the workflow tool directly with them.
+
+  Before invoking the billing dispute workflow: if customer_name or customer_tier
+  are not already provided in the delegation, call TSOR_CRM_get_customer_by_id
+  with the customer_id first to retrieve them. Pass customer_id, customer_name
+  (first_name + last_name), customer_tier (status field), order_id, and
+  reason_for_dispute to the workflow.
+guidelines: []
+collaborators: []
+tools:
+- TRI_billing_dispute_workflow
+- TRI_SOR_MCP:TSOR_CRM_get_customer_by_id
+toolkits: []
+skills: []
+plugins:
+  agent_pre_invoke: []
+  agent_post_invoke: []
+sync_tool_flow_interactions: true
+bundled: false
+knowledge_base: []
+chat_with_docs:
+  enabled: false
+  supports_full_document: true
+  vector_index:
+    chunk_size: 400
+    chunk_overlap: 50
+    limit: 10
+    extraction_strategy: express
+  generation:
+    prompt_instruction: ''
+    max_docs_passed_to_llm: 5
+    generated_response_length: Moderate
+    display_text_no_results_found: I searched my knowledge base, but did not find
+      anything related to your query
+    display_text_connectivity_issue: I might have information related to your query
+      to share, but am unable to connect to my knowledge base at the moment
+    idk_message: I'm afraid I don't understand. Please rephrase your question.
+    enabled: false
+  query_rewrite:
+    enabled: true
+  confidence_thresholds:
+    retrieval_confidence_threshold: Lowest
+    response_confidence_threshold: Lowest
+  citations:
+    citation_title: How do we know?
+    citations_shown: -1
+  hap_filtering:
+    output:
+      enabled: false
+      threshold: 0.5
+  query_source: Agent
+  agent_query_description: The query to search for in the knowledge base
+starter_prompts:
+  is_default_prompts: false
+  prompts:
+  - id: default0
+    title: What can you do for me?
+    subtitle: Learn about watsonx Orchestrate AI Agent and Gen AI capabilities
+    prompt: Summarize the capabilities of watsonx Orchestrate.
+    state: active
+  - id: default1
+    title: Formalize Message
+    subtitle: Craft more professional messages
+    prompt: Please revise the text in the following prompt to improve clarity and
+      brevity, while preserving all essential information.
+    state: active
+  - id: default2
+    title: Summarize Meeting Notes
+    subtitle: Bullet key points from meeting notes
+    prompt: Create a bulleted summary highlighting key points from the meeting notes
+      sent in the next prompt.
+    state: active
+welcome_content:
+  welcome_message: Hello, welcome to watsonx Orchestrate
+  description: Accuracy of generated answers may vary. Please double-check responses.
+  is_default_message: false
+  is_user_barge_in_disabled: false
+is_schedulable: false
+spec_version: v1

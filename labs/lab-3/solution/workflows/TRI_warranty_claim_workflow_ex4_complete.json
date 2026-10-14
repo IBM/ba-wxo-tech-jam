@@ -1,0 +1,1651 @@
+{
+  "spec": {
+    "kind": "flow",
+    "name": "TRI_warranty_claim_workflow",
+    "initiators": [],
+    "description": "Initiate the warranty claim document processing workflow for a product not\npurchased through the Focus Corp online shop (reseller or external purchase \u2014\nno internal order record exists). Call when the specialist's prompt indicates\nthe product was bought from a reseller, an external shop, or any source other\nthan Focus Corp, and the customer wants to file a warranty claim.\nRequired inputs: customer_id [Required], customer_name [Required],\ncustomer_tier [Required], customer_email [Required], customer_phone [Required].\nDo NOT call if under_warranty is already present in context for the product \u2014\nthat means a Focus Corp order record exists; use the knowledge base options\nlookup instead.\nReturns: nothing \u2014 the workflow owns all document collection, extraction, HITL\nreview, and outcome steps, and presents the warranty outcome directly to the\nspecialist via its own closing step.",
+    "schedulable": false,
+    "display_name": "TRI_warranty_claim_workflow",
+    "input_schema": {
+      "type": "object",
+      "required": [
+        "customer_id",
+        "customer_name",
+        "customer_email",
+        "customer_phone",
+        "customer_tier"
+      ],
+      "properties": {
+        "customer_id": {
+          "type": "string",
+          "default": "",
+          "description": "Customer ID in format C-*, e.g. C-3DBZFE"
+        },
+        "customer_name": {
+          "type": "string",
+          "default": "",
+          "description": "Full name of the customer, e.g. Marie Smith"
+        },
+        "customer_tier": {
+          "type": "string",
+          "default": "",
+          "description": "Customer loyalty tier (Platinum, Gold, Silver, Bronze, Standard)"
+        },
+        "customer_email": {
+          "type": "string",
+          "default": "",
+          "description": "Customer's email address on file"
+        },
+        "customer_phone": {
+          "type": "string",
+          "default": "",
+          "description": "Customer's phone number on file"
+        }
+      }
+    },
+    "suppress_agent_summarization": true
+  },
+  "edges": [
+    {
+      "id": "45b4bfd1-effc-4056-b4b4-5c12fcdef4bb",
+      "end": "user_flow_851453",
+      "start": "__start__"
+    },
+    {
+      "id": "a1f238db-e709-47f8-81d4-68195f492eb1",
+      "end": "__end__",
+      "start": "user_flow_851453"
+    }
+  ],
+  "nodes": {
+    "__end__": {
+      "spec": {
+        "kind": "end",
+        "name": "__end__",
+        "position": {
+          "x": 740,
+          "y": 2028
+        }
+      }
+    },
+    "__start__": {
+      "spec": {
+        "kind": "start",
+        "name": "__start__",
+        "position": {
+          "x": 740,
+          "y": 20
+        }
+      }
+    },
+    "user_flow_851453": {
+      "spec": {
+        "kind": "user_flow",
+        "name": "user_flow_851453",
+        "label": "Handle Warranty Claim",
+        "metadata": {
+          "ui:generated_name": true
+        },
+        "position": {
+          "x": 20,
+          "y": 210
+        },
+        "dimensions": {
+          "width": 1686,
+          "height": 1758
+        },
+        "initiators": [],
+        "display_name": "Handle Warranty Claim",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "wxo-user"
+              }
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "b6b37bd2-6d3e-465e-8397-2005802ca05b",
+          "end": "user_07bde9",
+          "start": "user_flow_851453__start__"
+        },
+        {
+          "id": "9b329363-1207-460b-811b-c5adfe86a796",
+          "end": "parallel_d0689c",
+          "start": "user_07bde9"
+        },
+        {
+          "id": "33dca069-37d8-4bf7-900e-3442cba073b6",
+          "end": "user_a09997",
+          "start": "parallel_d0689c"
+        },
+        {
+          "id": "432c35d5-aba0-4851-9536-427439884fb0",
+          "end": "user_012822",
+          "start": "user_a09997"
+        },
+        {
+          "id": "fdda33ee-290c-4bc2-88a9-1fa9fcce1ed3",
+          "end": "user_3f7a9a",
+          "start": "user_a09997"
+        },
+        {
+          "id": "605fef7b-8ac4-4a46-b2ac-1d7110723ce6",
+          "end": "user_flow_851453__end__",
+          "start": "user_3f7a9a"
+        },
+        {
+          "id": "39f823ff-b1db-4b3b-9bf8-92f6f42e921e",
+          "end": "tool_f833c0",
+          "start": "user_012822"
+        },
+        {
+          "id": "f058e807-7806-4e74-b11a-1eda53daa523",
+          "end": "user_6f3eef",
+          "start": "user_012822"
+        },
+        {
+          "id": "9703f327-87c2-4669-a9c8-b088222d657e",
+          "end": "user_flow_851453__end__",
+          "start": "user_6f3eef"
+        },
+        {
+          "id": "2e4f9a54-be3c-43da-a32f-6b1d4eea73d6",
+          "end": "docclassifier_a8f975b6-9081-4f70-8f64-5b5c115f5690",
+          "start": "Text extractor 1"
+        },
+        {
+          "id": "a538769c-2222-488e-a112-de87323e21aa",
+          "end": "branch_4cbf96",
+          "start": "docclassifier_a8f975b6-9081-4f70-8f64-5b5c115f5690"
+        },
+        {
+          "id": "e677a13f-e33d-4f7e-8e74-fb2e2fc8f971",
+          "end": "docext_ac9c1ed0-a51b-4106-9e2e-d53272db5ecf",
+          "start": "branch_4cbf96",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Receipt"
+        },
+        {
+          "id": "858c0ef8-96ca-4c62-9200-11aebbc7cf31",
+          "end": "fe8c116e-7105-4534-bfa5-5d21b08262d0",
+          "start": "branch_4cbf96",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Other"
+        },
+        {
+          "id": "5973ec73-8984-454f-8cd6-f1bbaabaee6d",
+          "end": "user_flow_851453__end__",
+          "start": "fe8c116e-7105-4534-bfa5-5d21b08262d0"
+        },
+        {
+          "id": "70b837e8-23f3-4bf2-85c4-081d4ccfd75a",
+          "end": "docext_d6b3bb68-fbd5-4717-a20c-75a21623e1f2",
+          "start": "branch_4cbf96",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Warranty Card"
+        },
+        {
+          "id": "06ece53d-1986-4d75-9ca4-a234fa8e09af",
+          "end": "user_flow_851453__end__",
+          "start": "docext_ac9c1ed0-a51b-4106-9e2e-d53272db5ecf"
+        },
+        {
+          "id": "90b2abf7-7161-4152-9b4a-0536a90c38a3",
+          "end": "user_flow_851453__end__",
+          "start": "docext_d6b3bb68-fbd5-4717-a20c-75a21623e1f2"
+        },
+        {
+          "id": "46e0033c-8e01-44b8-b225-72348184d8c4",
+          "end": "Text extractor 1",
+          "start": "tool_f833c0"
+        }
+      ],
+      "nodes": {
+        "tool_f833c0": {
+          "spec": {
+            "kind": "tool",
+            "name": "tool_f833c0",
+            "tool": "TRI_fetch_baw_pdf:5adfff35-a624-49d4-ad9d-3b3bb874af8a",
+            "position": {
+              "x": 1140,
+              "y": 1008
+            },
+            "description": "Fetch the warranty document PDF for a customer from the BAW SOR and return raw PDF bytes.\n\nCalls the BAW CRM service to retrieve the customer's uploaded warranty proof\ndocument (receipt or warranty card) and decodes the Base64 attachment to raw\nPDF bytes. The wxO platform automatically uploads the bytes to S3 and exposes\nthe result as a file data type in the flow.\n\nUse when: the specialist has confirmed the customer uploaded their warranty\ndocument and the workflow needs to process it through Document AI.\nDo NOT call to display the document to the user \u2014 use this tool's output\nas the document_ref input to Text Extractor, Document Classifier, or\nDocument Extractor nodes.\nReturns: raw PDF bytes.",
+            "display_name": "Fetch PDF from SOR",
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "customer_id"
+              ],
+              "properties": {
+                "customer_id": {
+                  "type": "string",
+                  "title": "Customer Id",
+                  "description": "Customer ID in format C-*, e.g. C-3DBZFE."
+                }
+              }
+            },
+            "output_schema": {
+              "type": "string",
+              "format": "binary"
+            },
+            "error_handler_config": {
+              "max_retries": 0,
+              "error_message": "Something went wrong while running 'Fetch PDF from SOR'",
+              "retry_interval": 1000
+            }
+          },
+          "input_map": {
+            "spec": {
+              "maps": [],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "user_012822": {
+          "spec": {
+            "form": {
+              "name": "form_e70672",
+              "label": "Wait for customer upload confirmation",
+              "fields": [
+                {
+                  "kind": "text",
+                  "name": "field_1",
+                  "text": "Upload instructions have been sent to {flow.input.customer_email}.\n\n**Actions:**\n- **Ask** the customer to check their email and upload the receipt or warranty card now.\n- Once document **upload confirmed**, click **Document Uploaded** to start document processing.\n- In case document **cannot be uploaded**, click **Deferred Document Upload**.",
+                  "uiSchema": {
+                    "ui:title": "Message 1",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 1",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                }
+              ],
+              "buttons": [
+                {
+                  "kind": "submit",
+                  "name": "submit",
+                  "edge_id": "39f823ff-b1db-4b3b-9bf8-92f6f42e921e",
+                  "visible": true,
+                  "display_name": "Document Uploaded"
+                },
+                {
+                  "kind": "cancel",
+                  "name": "cancel",
+                  "edge_id": "f058e807-7806-4e74-b11a-1eda53daa523",
+                  "visible": true,
+                  "display_name": "Deferred Document Upload"
+                }
+              ],
+              "jsonSchema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "field_1": {
+                    "type": "string",
+                    "title": "Message 1"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "display_name": "Wait for customer upload confirmation"
+            },
+            "kind": "user",
+            "name": "user_012822",
+            "fields": [],
+            "owners": [],
+            "metadata": {
+              "ui:generated_name": true
+            },
+            "position": {
+              "x": 860,
+              "y": 828
+            },
+            "display_name": "Wait for customer upload confirmation"
+          }
+        },
+        "user_07bde9": {
+          "spec": {
+            "kind": "user",
+            "name": "user_07bde9",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_0e3472",
+                "text": "Fetching payment info and fraud risk status in progress...",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_0e3472": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 720,
+              "y": 104
+            },
+            "display_name": "Progress - Payment info & fraud risk"
+          }
+        },
+        "user_3f7a9a": {
+          "spec": {
+            "kind": "user",
+            "name": "user_3f7a9a",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_022a9a",
+                "text": "Instructions for uploading the document later have been sent to {flow.input.customer_email}.\n\n**Actions:**    \n1. **Inform** the customer that once they upload their receipt or warranty card, Customer Support will review it and reach out with next steps.    \n2. Thank the customer for calling Focus Corp and ask if there are any other topics they would like to discuss today.",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_022a9a": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 300,
+              "y": 1568
+            },
+            "display_name": "INSTRUCTIONS FOR FUTURE UPLOAD SENT"
+          }
+        },
+        "user_6f3eef": {
+          "spec": {
+            "kind": "user",
+            "name": "user_6f3eef",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_db6488",
+                "text": "**Actions:**    \n1. **Remind** the customer that they can upload their receipt or warranty card at any time using the link that was sent to {flow.input.customer_email}.    \n2. **Let them know** that once the document is received, Customer Support will review it and follow up with the warranty outcome.    \n3. Thank the customer for calling Focus Corp and ask if there are any other topics they would like to discuss today.",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_db6488": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 580,
+              "y": 1568
+            },
+            "display_name": "REMINDER FOR FUTURE UPLOAD"
+          }
+        },
+        "user_a09997": {
+          "spec": {
+            "form": {
+              "name": "form_15e4fe",
+              "label": "CUSTOMER DETAILS & UPLOAD READINESS",
+              "fields": [
+                {
+                  "kind": "text",
+                  "name": "field_1",
+                  "text": "<!--{flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Fetch Payment Info\"].output.payment_info.payment_type}-->",
+                  "uiSchema": {
+                    "ui:title": "Message 1",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 1",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "text",
+                  "name": "field_2",
+                  "text": "| Customer Information |   |\n| ---- | ---- |\n| **Name:** |{flow.input.customer_name}|\n| **Tier/Status:** | {flow.input.customer_tier}|\n| **Email:** |{flow.input.customer_email}|\n| **Phone:** |{flow.input.customer_phone}|",
+                  "uiSchema": {
+                    "ui:title": "Message 2",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 2",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "behaviour",
+                  "name": "field_3",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "behaviours": [
+                    {
+                      "condition": {
+                        "if": {
+                          "properties": {
+                            "field_1": {
+                              "const": "<!--Credit Card-->"
+                            }
+                          }
+                        },
+                        "else": {
+                          "properties": {
+                            "field_5": {
+                              "x-is-visible": false
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "field_5": {
+                              "x-is-visible": true
+                            }
+                          }
+                        }
+                      },
+                      "impacted_field": "field_5"
+                    }
+                  ],
+                  "display_name": "Show Credit Card",
+                  "behaviour_kind": "visibility",
+                  "on_change_to_field": "field_1"
+                },
+                {
+                  "kind": "behaviour",
+                  "name": "field_4",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "behaviours": [
+                    {
+                      "condition": {
+                        "if": {
+                          "properties": {
+                            "field_1": {
+                              "const": "<!--Paypal-->"
+                            }
+                          }
+                        },
+                        "else": {
+                          "properties": {
+                            "field_6": {
+                              "x-is-visible": false
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "field_6": {
+                              "x-is-visible": true
+                            }
+                          }
+                        }
+                      },
+                      "impacted_field": "field_6"
+                    }
+                  ],
+                  "display_name": "Show Paypal",
+                  "behaviour_kind": "visibility",
+                  "on_change_to_field": "field_1"
+                },
+                {
+                  "kind": "text",
+                  "name": "field_5",
+                  "text": "| Customer Financial Information |   |\n| ---- | ---- |\n| **Payment type:** |{flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Fetch Payment Info\"].output.payment_info.payment_type} ({flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Fetch Payment Info\"].output.payment_info.card_number})|\n| **Fraud risk info:** |{flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.risk_level} (Score: {flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.risk_score}/100, {flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.prior_disputes_count} prior claims)|\n| **Fraud risk summary:** |{flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.risk_summary}|",
+                  "uiSchema": {
+                    "ui:title": "Message 3",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 3",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "text",
+                  "name": "field_6",
+                  "text": "| Customer Financial Information |   |\n| ---- | ---- |\n| **Payment type:** |{flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Fetch Payment Info\"].output.payment_info.payment_type} ({flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Fetch Payment Info\"].output.payment_info.paypal_username})|\n| **Fraud risk info:** |{flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.risk_level} (Score: {flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.risk_score}/100, {flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.prior_disputes_count} prior claims)|\n| **Fraud risk summary:** |{flow[\"Handle Warranty Claim\"][\"Parallel Pre-Check - Payment + Fraud\"][\"Assess Fraud Risk\"].output.fraud_risk_assessment.risk_summary}|",
+                  "uiSchema": {
+                    "ui:title": "Message 4",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 4",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "text",
+                  "name": "field_7",
+                  "text": "**Actions:**\n1. Please **confirm** the customer's email address, phone number, and payment information on file.\n2. **Check** the fraud risk assessment.\n3. **Ask** the customer if they have their receipt or warranty card ready to upload now, or if they prefer to receive instructions to upload it later.",
+                  "uiSchema": {
+                    "ui:title": "Message 5",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 5",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                }
+              ],
+              "buttons": [
+                {
+                  "kind": "submit",
+                  "name": "submit",
+                  "edge_id": "432c35d5-aba0-4851-9536-427439884fb0",
+                  "visible": true,
+                  "display_name": "Upload Now"
+                },
+                {
+                  "kind": "cancel",
+                  "name": "cancel",
+                  "edge_id": "fdda33ee-290c-4bc2-88a9-1fa9fcce1ed3",
+                  "visible": true,
+                  "display_name": "Upload Later"
+                }
+              ],
+              "jsonSchema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "field_1": {
+                    "type": "string",
+                    "title": "Message 1"
+                  },
+                  "field_2": {
+                    "type": "string",
+                    "title": "Message 2"
+                  },
+                  "field_5": {
+                    "type": "string",
+                    "title": "Message 3"
+                  },
+                  "field_6": {
+                    "type": "string",
+                    "title": "Message 4"
+                  },
+                  "field_7": {
+                    "type": "string",
+                    "title": "Message 5"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "display_name": "CUSTOMER DETAILS & UPLOAD READINESS"
+            },
+            "kind": "user",
+            "name": "user_a09997",
+            "fields": [],
+            "owners": [],
+            "metadata": {
+              "ui:generated_name": true
+            },
+            "position": {
+              "x": 720,
+              "y": 648
+            },
+            "display_name": "CUSTOMER DETAILS & UPLOAD READINESS"
+          }
+        },
+        "branch_4cbf96": {
+          "spec": {
+            "kind": "branch",
+            "name": "branch_4cbf96",
+            "position": {
+              "x": 1140,
+              "y": 1428
+            },
+            "evaluator": {
+              "conditions": [
+                {
+                  "default": false,
+                  "edge_id": "e677a13f-e33d-4f7e-8e74-fb2e2fc8f971",
+                  "metadata": {
+                    "conditions": [
+                      {
+                        "value": "receipt",
+                        "dataType": "string",
+                        "operator": "==",
+                        "variableName": "flow[\"Handle Warranty Claim\"][\"Classify document\"].output.class_name"
+                      }
+                    ]
+                  },
+                  "expression": "flow[\"Handle Warranty Claim\"][\"Classify document\"].output.class_name == \"receipt\""
+                },
+                {
+                  "default": false,
+                  "edge_id": "70b837e8-23f3-4bf2-85c4-081d4ccfd75a",
+                  "metadata": {
+                    "conditions": [
+                      {
+                        "value": "warranty_card",
+                        "dataType": "string",
+                        "operator": "==",
+                        "variableName": "flow[\"Handle Warranty Claim\"][\"Classify document\"].output.class_name"
+                      }
+                    ]
+                  },
+                  "expression": "flow[\"Handle Warranty Claim\"][\"Classify document\"].output.class_name == \"warranty_card\""
+                },
+                {
+                  "default": true,
+                  "edge_id": "858c0ef8-96ca-4c62-9200-11aebbc7cf31",
+                  "metadata": {}
+                }
+              ]
+            },
+            "display_name": "Doc Type?",
+            "match_policy": "FIRST_MATCH"
+          }
+        },
+        "parallel_d0689c": {
+          "spec": {
+            "kind": "parallel",
+            "name": "parallel_d0689c",
+            "position": {
+              "x": 560,
+              "y": 294
+            },
+            "dimensions": {
+              "width": 566,
+              "height": 294
+            },
+            "initiators": [],
+            "display_name": "Parallel Pre-Check - Payment + Fraud",
+            "input_schema": {
+              "type": "object",
+              "properties": {}
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "edges": [
+            {
+              "id": "fb56ecd8-793e-4c86-9b4f-0c664f222a6d",
+              "end": "tool_7a4ac3",
+              "start": "parallel_d0689c__start__",
+              "metadata": {
+                "user_renamed": false
+              },
+              "display_name": "Path 1"
+            },
+            {
+              "id": "7adda71b-b016-4fe2-8a7e-a146c6f7be0c",
+              "end": "parallel_d0689c__end__",
+              "start": "tool_7a4ac3"
+            },
+            {
+              "id": "e9f1bdeb-c6ec-4c68-b6bb-3d1f02aa3dfa",
+              "end": "tool_bdcb53",
+              "start": "parallel_d0689c__start__",
+              "metadata": {
+                "user_renamed": false
+              },
+              "display_name": "Path 2"
+            },
+            {
+              "id": "db850ce8-7f13-4d02-975b-890bd89ee93f",
+              "end": "parallel_d0689c__end__",
+              "start": "tool_bdcb53"
+            }
+          ],
+          "nodes": {
+            "tool_7a4ac3": {
+              "spec": {
+                "kind": "tool",
+                "name": "tool_7a4ac3",
+                "tool": "TRI_SOR_MCP:TSOR_CRM_get_customer_payment_info_by_customer_id:0554b808-c675-496b-a15d-c0bac87fa066",
+                "position": {
+                  "x": 20,
+                  "y": 104
+                },
+                "description": "Retrieve the payment instrument on file for a customer. Use when processing a refund or displaying payment details on a resolution form and a customer ID is available. Do NOT expose raw card numbers or paypal_username \u2014 mask before surfacing to any UI or agent. Returns: payment_type, card_number, card_holder_name, card_expiry, paypal_username.\n\n\n**Responses:**\n\n- **200** (Success): OK\n  - Content-Type: `application/json`\n\n  - **Response Properties:**\n\n  - **Example:**\n```json\n{\n  \"payment_info\": \"unknown_type\"\n}\n```",
+                "display_name": "Fetch Payment Info",
+                "input_schema": {
+                  "type": "object",
+                  "properties": {
+                    "customer_id": {
+                      "type": "string",
+                      "description": "[Required] Customer ID in format C-*, e.g. C-3DBZFE."
+                    }
+                  }
+                },
+                "output_schema": {
+                  "type": "object",
+                  "properties": {
+                    "payment_info": {
+                      "type": "object",
+                      "properties": {
+                        "card_expiry": {
+                          "type": "string"
+                        },
+                        "card_number": {
+                          "type": "string",
+                          "x-ibm-is-sensitive": true,
+                          "x-ibm-masking-policy": "mask-via-regex",
+                          "x-ibm-masking-regex-config": {
+                            "text-pattern": "(\\d{4})-(\\d{4})-(\\d{4})-(\\d{4})",
+                            "masking-pattern": "XXXX-XXXX-XXXX-$4"
+                          }
+                        },
+                        "customer_id": {
+                          "type": "string"
+                        },
+                        "payment_type": {
+                          "type": "string"
+                        },
+                        "paypal_username": {
+                          "type": "string",
+                          "x-ibm-is-sensitive": true,
+                          "x-ibm-masking-policy": "mask-via-regex",
+                          "x-ibm-masking-regex-config": {
+                            "text-pattern": "^(.*)(.{4})(@.*)$",
+                            "masking-pattern": "$1xxxx$3"
+                          }
+                        },
+                        "card_holder_name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "error_handler_config": {
+                  "max_retries": 0,
+                  "error_message": "Something went wrong while running 'Fetch Payment Info'",
+                  "retry_interval": 1000
+                }
+              },
+              "input_map": {
+                "spec": {
+                  "maps": [
+                    {
+                      "metadata": {
+                        "assignmentType": "variable"
+                      },
+                      "has_no_value": false,
+                      "target_variable": "self.input.customer_id",
+                      "value_expression": "flow.input.customer_id"
+                    }
+                  ],
+                  "name": "",
+                  "fallback_strategy": "ask_the_user"
+                }
+              }
+            },
+            "tool_bdcb53": {
+              "spec": {
+                "kind": "tool",
+                "name": "tool_bdcb53",
+                "tool": "TRI_SOR_MCP:TSOR_CRM_evaluate_fraud_risk:617535ca-4414-4409-a683-86017d95e8f0",
+                "position": {
+                  "x": 300,
+                  "y": 104
+                },
+                "description": "Evaluate the fraud risk level and risk score for a customer and claim/transaction amount. Returns risk level (LOW, MEDIUM, HIGH), numerical score (0-100), prior dispute count, and risk evaluation flags. Use to evaluate risk when processing claims, refunds, or high-value resolutions.\n\n\n**Responses:**\n\n- **200** (Success): OK\n  - Content-Type: `application/json`\n\n  - **Response Properties:**\n\n  - **Example:**\n```json\n{\n  \"fraud_risk_assessment\": \"unknown_type\"\n}\n```",
+                "display_name": "Assess Fraud Risk",
+                "input_schema": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number",
+                      "format": "double",
+                      "description": "[Required] Transaction or claim amount to assess, e.g. 250.00. Set to -1 if no specific amount is available \u2014 the tool will evaluate general account risk without a transaction-level signal."
+                    },
+                    "customer_id": {
+                      "type": "string",
+                      "description": "[Required] Customer ID in format C-*, e.g. C-3DBZFE."
+                    }
+                  }
+                },
+                "output_schema": {
+                  "type": "object",
+                  "properties": {
+                    "fraud_risk_assessment": {
+                      "type": "object",
+                      "properties": {
+                        "risk_flags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "risk_level": {
+                          "type": "string"
+                        },
+                        "risk_score": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "customer_id": {
+                          "type": "string"
+                        },
+                        "risk_summary": {
+                          "type": "string"
+                        },
+                        "prior_disputes_count": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "account_tenure_months": {
+                          "type": "integer",
+                          "format": "int32"
+                        }
+                      }
+                    }
+                  }
+                },
+                "error_handler_config": {
+                  "max_retries": 0,
+                  "error_message": "Something went wrong while running 'Assess Fraud Risk'",
+                  "retry_interval": 1000
+                }
+              },
+              "input_map": {
+                "spec": {
+                  "maps": [
+                    {
+                      "metadata": {
+                        "assignmentType": "variable"
+                      },
+                      "has_no_value": false,
+                      "target_variable": "self.input.customer_id",
+                      "value_expression": "flow.input.customer_id"
+                    },
+                    {
+                      "metadata": {
+                        "assignmentType": "pyExpression"
+                      },
+                      "has_no_value": false,
+                      "target_variable": "self.input.amount",
+                      "value_expression": "float(-1)"
+                    }
+                  ],
+                  "name": "",
+                  "fallback_strategy": "ask_the_user"
+                }
+              }
+            },
+            "parallel_d0689c__end__": {
+              "spec": {
+                "kind": "end",
+                "name": "parallel_d0689c__end__",
+                "position": {
+                  "x": 160,
+                  "y": 244
+                }
+              }
+            },
+            "parallel_d0689c__start__": {
+              "spec": {
+                "kind": "start",
+                "name": "parallel_d0689c__start__",
+                "position": {
+                  "x": 160,
+                  "y": -16
+                }
+              }
+            }
+          },
+          "schemas": {}
+        },
+        "Text extractor 1": {
+          "spec": {
+            "kind": "docproc",
+            "name": "Text extractor 1",
+            "task": "text_extraction",
+            "language": "en",
+            "position": {
+              "x": 1140,
+              "y": 1148
+            },
+            "enable_hw": false,
+            "display_name": "Extract Warranty Doc Text",
+            "input_schema": {
+              "type": "object",
+              "title": "Text extractor input",
+              "required": [
+                "document_ref"
+              ],
+              "properties": {
+                "document_ref": {
+                  "type": "string",
+                  "title": "File reference",
+                  "format": "wxo-file",
+                  "description": "A URL identifying the File to be used."
+                },
+                "kvp_model_name": {
+                  "type": "string",
+                  "title": "KVP model name",
+                  "description": "The LLM model used for key-value pair extraction."
+                }
+              }
+            },
+            "output_format": "object",
+            "output_schema": {
+              "type": "object",
+              "title": "Text extractor response",
+              "required": [
+                "text"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "title": "text",
+                  "description": "The raw text extracted from the input document."
+                }
+              },
+              "description": "The text extraction operation response when output_format is set to \"object\".\n\nThis class represents the structured response from a document text extraction operation,\ncontaining both the extracted plain text and the complete document structure metadata\ninherited from AssemblyJsonOutput.\n\nAttributes:\n    text (str): The extracted plain text content from the document. This is the \n               concatenated text from all pages and structures in reading order.\n               Empty string if no text could be extracted.\n\nNote:\n    - This response type is used when DocProcSpec.output_format is set to \n      DocProcOutputFormat.object\n    - For file reference responses, use TextExtractionResponse instead\n    - The text field contains only plain text; structured data is in inherited fields"
+            },
+            "document_structure": true,
+            "output_content_types": [
+              "text"
+            ],
+            "kvp_enable_text_hints": false
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.document_ref",
+                  "value_expression": "flow[\"Handle Warranty Claim\"][\"Fetch PDF from SOR\"].output"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "blank"
+                  },
+                  "has_no_value": true,
+                  "target_variable": "self.input.kvp_model_name",
+                  "value_expression": ""
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "user_flow_851453__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "user_flow_851453__end__",
+            "position": {
+              "x": 860,
+              "y": 1708
+            }
+          }
+        },
+        "user_flow_851453__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "user_flow_851453__start__",
+            "position": {
+              "x": 720,
+              "y": -16
+            }
+          }
+        },
+        "fe8c116e-7105-4534-bfa5-5d21b08262d0": {
+          "spec": {
+            "kind": "placeholder",
+            "name": "fe8c116e-7105-4534-bfa5-5d21b08262d0",
+            "position": {
+              "x": 860,
+              "y": 1568
+            },
+            "display_name": "",
+            "placeholder_kind": "ghost"
+          }
+        },
+        "docext_ac9c1ed0-a51b-4106-9e2e-d53272db5ecf": {
+          "spec": {
+            "kind": "docext",
+            "name": "docext_ac9c1ed0-a51b-4106-9e2e-d53272db5ecf",
+            "task": "custom_field_extraction",
+            "config": {
+              "llm": "watsonx/meta-llama/llama-4-maverick-17b-128e-instruct-fp8",
+              "type": "agreement",
+              "domain": "other",
+              "fields": [
+                {
+                  "name": "Product Name",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "product_name",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Price",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "price",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Serial No",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "serial_no",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Reseller",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "reseller",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Receipt No",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "receipt_no",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Product Category",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "product_category",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Purchase Date",
+                  "type": "date",
+                  "examples": [
+                    {
+                      "input": "Purchase Date: 2024/05/15",
+                      "output": "2024/05/15"
+                    },
+                    {
+                      "input": "Purchase Date 2024/05/15",
+                      "output": "2024/05/15"
+                    }
+                  ],
+                  "field_name": "purchase_date",
+                  "description": "",
+                  "example_value": "",
+                  "available_options": [],
+                  "multiple_mentions": false
+                }
+              ],
+              "lastModelUpdateTs": 1791788734162,
+              "field_extraction_method": "classic"
+            },
+            "version": "TIP",
+            "position": {
+              "x": 1140,
+              "y": 1568
+            },
+            "display_name": "Extract Receipt Fields",
+            "input_schema": {
+              "type": "object",
+              "title": "Document extractor input",
+              "required": [
+                "document_ref"
+              ],
+              "properties": {
+                "document_ref": {
+                  "type": "string",
+                  "title": "File reference",
+                  "format": "wxo-file",
+                  "description": "A URL identifying the File to be used."
+                }
+              }
+            },
+            "enable_review": true,
+            "is_configured": true,
+            "output_schema": {
+              "type": "object",
+              "title": "Field values",
+              "required": [
+                "product_name",
+                "price",
+                "serial_no",
+                "reseller",
+                "receipt_no",
+                "product_category",
+                "purchase_date"
+              ],
+              "properties": {
+                "price": {
+                  "type": "string",
+                  "title": "Price",
+                  "description": "Extracted value for Price"
+                },
+                "reseller": {
+                  "type": "string",
+                  "title": "Reseller",
+                  "description": "Extracted value for Reseller"
+                },
+                "serial_no": {
+                  "type": "string",
+                  "title": "Serial No",
+                  "description": "Extracted value for Serial No"
+                },
+                "receipt_no": {
+                  "type": "string",
+                  "title": "Receipt No",
+                  "description": "Extracted value for Receipt No"
+                },
+                "product_name": {
+                  "type": "string",
+                  "title": "Product Name",
+                  "description": "Extracted value for Product Name"
+                },
+                "purchase_date": {
+                  "type": "string",
+                  "title": "Purchase Date",
+                  "format": "date",
+                  "description": "Extracted value for Purchase Date"
+                },
+                "product_category": {
+                  "type": "string",
+                  "title": "Product Category",
+                  "description": "Extracted value for Product Category"
+                }
+              }
+            },
+            "review_fields": [
+              "product_name",
+              "purchase_date"
+            ],
+            "min_confidence": 0.1,
+            "review_assignee_option": "flow_initiator"
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.document_ref",
+                  "value_expression": "flow[\"Handle Warranty Claim\"][\"Fetch PDF from SOR\"].output"
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "docext_d6b3bb68-fbd5-4717-a20c-75a21623e1f2": {
+          "spec": {
+            "kind": "docext",
+            "name": "docext_d6b3bb68-fbd5-4717-a20c-75a21623e1f2",
+            "task": "custom_field_extraction",
+            "config": {
+              "llm": "watsonx/mistralai/mistral-small-3-1-24b-instruct-2503",
+              "type": "agreement",
+              "domain": "other",
+              "fields": [
+                {
+                  "name": "Reseller",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "reseller",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Model No",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "model_no",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Serial No",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "serial_no",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Purchase Date",
+                  "type": "date",
+                  "examples": [],
+                  "field_name": "purchase_date",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                },
+                {
+                  "name": "Product Name",
+                  "type": "string",
+                  "examples": [],
+                  "field_name": "product_name",
+                  "description": "",
+                  "example_value": "",
+                  "multiple_mentions": false
+                }
+              ],
+              "lastModelUpdateTs": 1791789263831,
+              "field_extraction_method": "layout"
+            },
+            "version": "TIP",
+            "position": {
+              "x": 1420,
+              "y": 1568
+            },
+            "display_name": "Extract Warranty Card Fields",
+            "input_schema": {
+              "type": "object",
+              "title": "Document extractor input",
+              "required": [
+                "document_ref"
+              ],
+              "properties": {
+                "document_ref": {
+                  "type": "string",
+                  "title": "File reference",
+                  "format": "wxo-file",
+                  "description": "A URL identifying the File to be used."
+                }
+              }
+            },
+            "enable_review": true,
+            "is_configured": true,
+            "output_schema": {
+              "type": "object",
+              "title": "Field values",
+              "required": [
+                "reseller",
+                "model_no",
+                "serial_no",
+                "purchase_date",
+                "product_name"
+              ],
+              "properties": {
+                "model_no": {
+                  "type": "string",
+                  "title": "Model No",
+                  "description": "Extracted value for Model No"
+                },
+                "reseller": {
+                  "type": "string",
+                  "title": "Reseller",
+                  "description": "Extracted value for Reseller"
+                },
+                "serial_no": {
+                  "type": "string",
+                  "title": "Serial No",
+                  "description": "Extracted value for Serial No"
+                },
+                "product_name": {
+                  "type": "string",
+                  "title": "Product Name",
+                  "description": "Extracted value for Product Name"
+                },
+                "purchase_date": {
+                  "type": "string",
+                  "title": "Purchase Date",
+                  "format": "date",
+                  "description": "Extracted value for Purchase Date"
+                }
+              }
+            },
+            "review_fields": [
+              "reseller",
+              "model_no",
+              "serial_no",
+              "purchase_date",
+              "product_name"
+            ],
+            "min_confidence": 0.95,
+            "review_assignee_option": "flow_initiator"
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.document_ref",
+                  "value_expression": "flow[\"Handle Warranty Claim\"][\"Fetch PDF from SOR\"].output"
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "docclassifier_a8f975b6-9081-4f70-8f64-5b5c115f5690": {
+          "spec": {
+            "kind": "docclassifier",
+            "name": "docclassifier_a8f975b6-9081-4f70-8f64-5b5c115f5690",
+            "task": "custom_document_classification",
+            "config": {
+              "llm": "watsonx/meta-llama/llama-4-maverick-17b-128e-instruct-fp8",
+              "classes": [
+                {
+                  "type": "custom_class",
+                  "class_id": "f984d0f6-5e51-47c7-b8fa-2c22858846c4",
+                  "class_name": "receipt"
+                },
+                {
+                  "type": "custom_class",
+                  "class_id": "ee5e3a34-4627-4cef-8960-be98f0a8e7ff",
+                  "class_name": "warranty_card"
+                }
+              ]
+            },
+            "version": "TIP",
+            "position": {
+              "x": 1140,
+              "y": 1288
+            },
+            "display_name": "Classify document",
+            "input_schema": {
+              "type": "object",
+              "title": "Document classifier input",
+              "required": [
+                "document_ref"
+              ],
+              "properties": {
+                "document_ref": {
+                  "type": "string",
+                  "title": "File reference",
+                  "format": "wxo-file",
+                  "description": "A URL identifying the File to be used."
+                }
+              }
+            },
+            "enable_review": false,
+            "output_schema": {
+              "type": "object",
+              "title": "DocumentClassificationResponse",
+              "required": [
+                "class_name"
+              ],
+              "properties": {
+                "class_name": {
+                  "type": "string",
+                  "title": "Class name",
+                  "default": [],
+                  "description": "Class name of the document"
+                }
+              }
+            },
+            "assigned_users": [],
+            "review_assignee_option": "flow_initiator"
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.document_ref",
+                  "value_expression": "flow[\"Handle Warranty Claim\"][\"Fetch PDF from SOR\"].output"
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        }
+      },
+      "schemas": {}
+    }
+  },
+  "schemas": {},
+  "metadata": {
+    "llm_model": "groq/openai/gpt-oss-120b",
+    "source_kind": "ui",
+    "is_under_specified": false,
+    "is_system_generated_description": false
+  },
+  "output_map": {
+    "spec": {
+      "maps": [],
+      "name": "",
+      "fallback_strategy": "ask_the_user"
+    }
+  }
+}

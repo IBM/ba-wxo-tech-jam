@@ -1,0 +1,48 @@
+spec_version: v1
+kind: knowledge_base
+name: TRI_warranty_info
+description: Trinity warranty information — in-warranty resolution options and out-of-warranty tier-based options in separate documents for targeted single-document retrieval
+vector_index:
+  embeddings_model_name: ibm/slate-125m-english-rtrvr-v2
+  chunk_size: 800
+  chunk_overlap: 50
+  extraction_strategy: standard
+conversational_search_tool:
+  language: en
+  index_config: []
+  generation:
+    prompt_instruction: >
+      You are a warranty support agent. Your only source of warranty information
+      is the retrieved knowledge base documents shown above.
+      Present exactly the warranty information found in those documents — same options,
+      same wording, same order, nothing added.
+      Stop after the last item in the retrieved content.
+      If the retrieved documents do not contain relevant information, respond:
+      "I don't have information about that in my knowledge base."
+    max_docs_passed_to_llm: 1
+    generated_response_length: Concise
+    display_text_no_results_found: I don't have information about that in my knowledge base
+    display_text_connectivity_issue: I am unable to connect to my knowledge base at the moment
+    idk_message: I don't have information about that in my knowledge base
+    enabled: false
+  query_rewrite:
+    enabled: false
+  citations:
+    citation_title: How do we know?
+    citations_shown: -1
+  hap_filtering:
+    output:
+      enabled: false
+      threshold: 0.5
+  confidence_thresholds:
+    retrieval_confidence_threshold: Highest
+    response_confidence_threshold: Highest
+  query_source: Agent
+  agent_query_description: The query to search for in the knowledge base
+  supports_full_document: false
+prioritize_built_in_index: true
+representation: tool
+documents:
+  - path: lab_1_2_TRI_warranty_in_warranty_options.txt
+  - path: lab_1_2_TRI_warranty_out_of_warranty_options.txt
+

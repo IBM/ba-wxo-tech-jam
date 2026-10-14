@@ -1,0 +1,498 @@
+{
+  "spec": {
+    "kind": "flow",
+    "name": "TRI_warranty_claim_workflow_batch",
+    "initiators": [],
+    "description": "No description",
+    "schedulable": true,
+    "display_name": "TRI_warranty_claim_workflow_batch",
+    "suppress_agent_summarization": true
+  },
+  "edges": [
+    {
+      "id": "820138d5-c51d-4f4e-a6de-7ecbbd28c6c2",
+      "end": "script_dd6048",
+      "start": "__start__"
+    },
+    {
+      "id": "2bbb697a-babb-4925-9569-acabd4ef11ed",
+      "end": "tool_5617ca",
+      "start": "script_dd6048"
+    },
+    {
+      "id": "433f8c51-0c63-4bbc-b9a3-1f49aa5f639e",
+      "end": "__end__",
+      "start": "foreach_7c055d"
+    },
+    {
+      "id": "b1b7e4d5-b6af-4f62-a382-f74499b9717e",
+      "end": "foreach_7c055d",
+      "start": "tool_5617ca"
+    }
+  ],
+  "nodes": {
+    "__end__": {
+      "spec": {
+        "kind": "end",
+        "name": "__end__",
+        "position": {
+          "x": 0,
+          "y": 1179
+        }
+      }
+    },
+    "__start__": {
+      "spec": {
+        "kind": "start",
+        "name": "__start__",
+        "position": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    "tool_5617ca": {
+      "spec": {
+        "kind": "tool",
+        "name": "tool_5617ca",
+        "tool": "TRI_get_pending_warranty_requests:cfde8adb-d419-4078-8d96-e5f833d76125",
+        "position": {
+          "x": 0,
+          "y": 301
+        },
+        "description": "Retrieve all pending warranty claim requests queued for batch processing.\n\nUse as the entry point for a batch warranty claim workflow when a list of\nunprocessed requests is needed. Do NOT call during a single-customer warranty\nlookup \u2014 use customer-scoped CRM tools instead. Does not return the warranty\ndocument itself \u2014 fetch it separately per record via TRI_fetch_baw_pdf(customer_id).\nReturns: outstanding_warranty_requests[] \u2014 each with customer_id, customer_name,\ncustomer_status, customer_email, customer_phone.\n\nUses OH2_TRI_cp4ba_keyvalue_team connection credentials (Key-Value / Team).",
+        "display_name": "Get Pending Warranty Documents",
+        "input_schema": {
+          "type": "object",
+          "properties": {}
+        },
+        "output_schema": {
+          "type": "object",
+          "required": [
+            "outstanding_warranty_requests"
+          ],
+          "properties": {
+            "outstanding_warranty_requests": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "title": "WarrantyRequestItem",
+                "required": [
+                  "customer_id",
+                  "customer_name",
+                  "customer_status",
+                  "customer_email",
+                  "customer_phone"
+                ],
+                "properties": {
+                  "customer_id": {
+                    "type": "string",
+                    "title": "Customer Id"
+                  },
+                  "customer_name": {
+                    "type": "string",
+                    "title": "Customer Name"
+                  },
+                  "customer_email": {
+                    "type": "string",
+                    "title": "Customer Email"
+                  },
+                  "customer_phone": {
+                    "type": "string",
+                    "title": "Customer Phone"
+                  },
+                  "customer_status": {
+                    "type": "string",
+                    "title": "Customer Status"
+                  }
+                }
+              },
+              "title": "Outstanding Warranty Requests"
+            }
+          }
+        },
+        "error_handler_config": {
+          "max_retries": 0,
+          "error_message": "Something went wrong while running 'Get Pending Warranty Documents'",
+          "retry_interval": 1000
+        }
+      },
+      "input_map": {
+        "spec": {
+          "maps": [],
+          "name": "",
+          "fallback_strategy": "ask_the_user"
+        }
+      }
+    },
+    "script_dd6048": {
+      "spec": {
+        "fn": "# Interactive test: passes the current user's email to the sub-workflow.\n# For scheduled runs, replace with a hard-coded email address instead.\nself.output.user_email_id = system.context.get_variable('wxo_email_id', )",
+        "kind": "script",
+        "name": "script_dd6048",
+        "position": {
+          "x": 0,
+          "y": 155
+        },
+        "display_name": "Set HITL user email id",
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "user_email_id": {
+              "type": "string",
+              "description": ""
+            }
+          }
+        }
+      }
+    },
+    "foreach_7c055d": {
+      "spec": {
+        "kind": "foreach",
+        "name": "foreach_7c055d",
+        "position": {
+          "x": -20,
+          "y": 493
+        },
+        "dimensions": {
+          "width": 286,
+          "height": 617
+        },
+        "initiators": [],
+        "display_name": "Iterate over all documents",
+        "input_schema": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "additionalProperties": false
+        },
+        "foreach_policy": "SEQUENTIAL",
+        "private_schema": {
+          "type": "object",
+          "properties": {
+            "index": {
+              "type": "integer",
+              "description": "Current index for the iteration"
+            },
+            "current_item": {
+              "description": "Current item for the iteration"
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "d75fca58-4c0c-4e9c-8283-731f5ca4f5bf",
+          "end": "tool_cf4c96",
+          "start": "foreach_7c055d__start__"
+        },
+        {
+          "id": "4cfeee13-c754-4052-bd70-2ccafc340f09",
+          "end": "tool_49a1f4",
+          "start": "tool_cf4c96"
+        },
+        {
+          "id": "894614a7-506a-4801-8c71-2f23cf6ff15e",
+          "end": "script_3f9054",
+          "start": "tool_49a1f4"
+        },
+        {
+          "id": "aec92a83-ada0-4fce-8f32-056e71ce590f",
+          "end": "foreach_7c055d__end__",
+          "start": "script_3f9054"
+        }
+      ],
+      "nodes": {
+        "tool_49a1f4": {
+          "spec": {
+            "kind": "tool",
+            "name": "tool_49a1f4",
+            "tool": "TRI_warranty_review_workflow:ceac1724-9abb-4a72-b591-92854bd6131b",
+            "position": {
+              "x": 20,
+              "y": 277
+            },
+            "description": "Initiate the warranty claim document processing workflow for a product not\npurchased through the Focus Corp online shop (reseller or external purchase \u2014\nno internal order record exists). Call when the specialist's prompt indicates\nthe product was bought from a reseller, an external shop, or any source other\nthan Focus Corp, and the customer wants to file a warranty claim.\nRequired inputs: customer_id [Required], customer_name [Required],\ncustomer_tier [Required], customer_email [Required], customer_phone [Required].\nDo NOT call if under_warranty is already present in context for the product \u2014\nthat means a Focus Corp order record exists; use the knowledge base options\nlookup instead.\nReturns: nothing \u2014 the workflow owns all document collection, extraction, HITL\nreview, and outcome steps, and presents the warranty outcome directly to the\nspecialist via its own closing step.",
+            "display_name": "OH2_TRI_warranty_review_workflow",
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "customer_id",
+                "customer_name",
+                "customer_tier",
+                "customer_email",
+                "customer_phone",
+                "document_ref",
+                "user_email_id",
+                "is_online_mode"
+              ],
+              "properties": {
+                "customer_id": {
+                  "in": "body",
+                  "type": "string",
+                  "default": "",
+                  "description": "Customer ID in format C-*, e.g. C-3DBZFE"
+                },
+                "document_ref": {
+                  "in": "body",
+                  "type": "string",
+                  "format": "wxo-file",
+                  "default": "",
+                  "description": ""
+                },
+                "customer_name": {
+                  "in": "body",
+                  "type": "string",
+                  "default": "",
+                  "description": "Full name of the customer, e.g. Marie Smith"
+                },
+                "customer_tier": {
+                  "in": "body",
+                  "type": "string",
+                  "default": "",
+                  "description": "Customer loyalty tier (Platinum, Gold, Silver, Bronze, Standard)"
+                },
+                "user_email_id": {
+                  "in": "body",
+                  "type": "string",
+                  "default": "",
+                  "description": ""
+                },
+                "customer_email": {
+                  "in": "body",
+                  "type": "string",
+                  "default": "",
+                  "description": "Customer's email address on file"
+                },
+                "customer_phone": {
+                  "in": "body",
+                  "type": "string",
+                  "default": "",
+                  "description": "Customer's phone number on file"
+                },
+                "is_online_mode": {
+                  "in": "body",
+                  "type": "boolean",
+                  "default": "",
+                  "description": ""
+                }
+              }
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "batch_review_result": {
+                  "type": "object",
+                  "properties": {
+                    "is_in_warranty": {
+                      "type": "boolean",
+                      "description": ""
+                    }
+                  },
+                  "description": ""
+                }
+              }
+            },
+            "error_handler_config": {
+              "max_retries": 0,
+              "error_message": "Something went wrong while running 'OH2_TRI_warranty_review_workflow'",
+              "retry_interval": 1000
+            }
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.customer_email",
+                  "value_expression": "flow[\"Iterate over all documents\"].private.current_item.customer_email"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.customer_id",
+                  "value_expression": "flow[\"Iterate over all documents\"].private.current_item.customer_id"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.customer_name",
+                  "value_expression": "flow[\"Iterate over all documents\"].private.current_item.customer_name"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.customer_phone",
+                  "value_expression": "flow[\"Iterate over all documents\"].private.current_item.customer_phone"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.customer_tier",
+                  "value_expression": "flow[\"Iterate over all documents\"].private.current_item.customer_status"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.document_ref",
+                  "value_expression": "flow[\"Iterate over all documents\"][\"Fetch PDF from SOR\"].output"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "pyExpression"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.is_online_mode",
+                  "value_expression": "False"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.user_email_id",
+                  "value_expression": "flow[\"Set HITL user email id\"].output.user_email_id"
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "tool_cf4c96": {
+          "spec": {
+            "kind": "tool",
+            "name": "tool_cf4c96",
+            "tool": "TRI_fetch_baw_pdf:5adfff35-a624-49d4-ad9d-3b3bb874af8a",
+            "position": {
+              "x": 20,
+              "y": 131
+            },
+            "description": "Fetch the customer's proof-of-warranty PDF from the BAW CRM REST endpoint.\nReturns raw PDF bytes; the wxO platform automatically uploads them to S3\nand makes the result available as a file data type in the flow.\n\nUses OH2_TRI_cp4ba_keyvalue_team connection credentials (Key-Value / Team).",
+            "display_name": "Fetch PDF from SOR",
+            "input_schema": {
+              "type": "object",
+              "required": [
+                "customer_id"
+              ],
+              "properties": {
+                "customer_id": {
+                  "type": "string",
+                  "title": "Customer Id",
+                  "description": "Customer ID (e.g. C-3DBZFE)"
+                }
+              }
+            },
+            "output_schema": {
+              "type": "string",
+              "format": "binary"
+            },
+            "error_handler_config": {
+              "max_retries": 0,
+              "error_message": "Something went wrong while running 'Fetch PDF from SOR'",
+              "retry_interval": 1000
+            }
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.customer_id",
+                  "value_expression": "flow[\"Iterate over all documents\"].private.current_item.customer_id"
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "script_3f9054": {
+          "spec": {
+            "fn": "",
+            "kind": "script",
+            "name": "script_3f9054",
+            "position": {
+              "x": 20,
+              "y": 423
+            },
+            "display_name": "Outcome specific handling"
+          }
+        },
+        "foreach_7c055d__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "foreach_7c055d__end__",
+            "position": {
+              "x": 20,
+              "y": 569
+            }
+          }
+        },
+        "foreach_7c055d__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "foreach_7c055d__start__",
+            "position": {
+              "x": 20,
+              "y": 20
+            }
+          }
+        }
+      },
+      "schemas": {},
+      "input_map": {
+        "spec": {
+          "maps": [
+            {
+              "metadata": {
+                "assignmentType": "variable"
+              },
+              "has_no_value": false,
+              "target_variable": "self.input.value",
+              "value_expression": "flow[\"Get Pending Warranty Documents\"].output.outstanding_warranty_requests"
+            }
+          ],
+          "name": ""
+        }
+      }
+    }
+  },
+  "schemas": {},
+  "metadata": {
+    "llm_model": "groq/openai/gpt-oss-120b",
+    "source_kind": "ui",
+    "is_under_specified": true,
+    "is_system_generated_description": true
+  },
+  "output_map": {
+    "spec": {
+      "maps": [],
+      "name": "",
+      "fallback_strategy": "ask_the_user"
+    }
+  }
+}

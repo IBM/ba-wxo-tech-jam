@@ -1,0 +1,43 @@
+Technical Troubleshooting Guide
+
+Product Category: Smart Watch
+
+Smart Watch Not Syncing
+
+Product: Smart Watch Ultra
+
+Symptoms:
+- Data not updating
+- Watch not connecting to phone
+- App shows disconnected
+- Notifications not received
+
+Troubleshooting Steps:
+
+Step 1: Check App Permissions
+- Ensure app has Bluetooth permission
+- Enable background app refresh
+- Allow notifications
+- Expected outcome: Permissions granted
+
+Step 2: Verify Connection
+- Open companion app
+- Check connection status
+- Ensure watch is within range (30 feet)
+- Expected outcome: Connected status shown
+
+Step 3: Force Sync
+- Pull down to refresh in app
+- Restart watch
+- Restart phone
+- Re-pair devices if needed
+- Expected outcome: Data syncs
+
+Step 4: Data Not Updating
+- Check internet connection
+- Verify account login
+- Clear app cache
+- Update app to latest version
+
+- Expected outcome: Data updates
+
