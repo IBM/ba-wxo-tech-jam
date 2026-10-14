@@ -97,7 +97,7 @@ You are now ready to start with the Labs! But, before you can start one of the L
 | [Lab 1.1 — Worker Agent: Building Tools and Choosing Tool Types](lab-guides/Lab%20Guide%20-%20Lab%201.1%20-%20agents-tools.md) | Tenant 2 - TechJamXXX | ~2–3 hours | [#wxo-tech-jam-agents-tools](https://ibm.enterprise.slack.com/archives/C0C6VU0K474) |
 | [Lab 1.2 — Worker Agent: RAG / Knowledge Base](lab-guides/Lab%20Guide%20-%20Lab%201.2%20-%20agents-knowledge-base.md) | Tenant 2 - TechJamXXX | ~2.5–3 hours | [#wxo-tech-jam-agents-knowledge-base](https://ibm.enterprise.slack.com/archives/C0C6U4JE8AJ) |
 | [Lab 1.3 — Multi-Agent Systems: Supervisor + Collaborator Patterns](lab-guides/Lab%20Guide%20-%20Lab%201.3%20-%20multi-agent.md) | Tenant 2 - TechJamXXX | ~2-3 hours | [#wxo-tech-jam-multi-agent](https://ibm.enterprise.slack.com/archives/C0C6ZPJUFFE) |
-| [Lab 2 — Agentic Workflow: Billing Dispute](lab-guides/Lab%20Guide%20-%20Lab%202%20-%20workflow-billing.md) | Tenant 2 - TechJamXXX | ~3-4 hours | [#wxo-tech-jam-workflow-billing](https://ibm.enterprise.slack.com/archives/C0C85ME3JDV) |
+| [Lab 2 — Agentic Workflow: Billing Dispute](lab-guides/Lab%20Guide%20-%20Lab%202%20-%20workflow-billing.md) | Tenant 2 - TechJamXXX | ~4.5-5.5 hours | [#wxo-tech-jam-workflow-billing](https://ibm.enterprise.slack.com/archives/C0C85ME3JDV) |
 | [Lab 3 — Agentic Workflow: External Warranty Claim](lab-guides/Lab%20Guide%20-%20Lab%203%20-%20workflow-warranty.md) | Tenant 2 - TechJamXXX | ~ 4-5 hours | [#wxo-tech-jam-workflow-warranty](https://ibm.enterprise.slack.com/archives/C0C8ERZ5YP5) |
 
 **Enjoy our October 2026 watsonx Orchestrate Tech Jam!**
