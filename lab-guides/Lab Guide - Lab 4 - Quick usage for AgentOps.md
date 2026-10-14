@@ -1,33 +1,4 @@
 
-**Table of Contents**
-
-[1 Introduction [4](#introduction)](#introduction)
-
-[1.1 Observability: understand what your agents are doing
-[4](#observability-understand-what-your-agents-are-doing)](#observability-understand-what-your-agents-are-doing)
-
-[1.2 Optimization: evaluate and improve your agents with AI
-[4](#optimization-evaluate-and-improve-your-agents-with-ai)](#optimization-evaluate-and-improve-your-agents-with-ai)
-
-[2 Lab Setup Instructions
-[6](#lab-setup-instructions)](#lab-setup-instructions)
-
-[2.1 Objective [6](#objective)](#objective)
-
-[2.2 Access the environment
-[6](#access-the-environment)](#access-the-environment)
-
-[3 Exercises [7](#exercises)](#exercises)
-
-[3.1 Exercise 1: Create your Agent
-[7](#exercise-1-create-your-agent)](#exercise-1-create-your-agent)
-
-[3.2 Exercise 2: Observability
-[16](#exercise-2-observability)](#exercise-2-observability)
-
-[3.3 Exercise 3: Optimization
-[24](#exercise-3-optimization)](#exercise-3-optimization)
-
 # Introduction
 
 These hands-on lab exercises give you a quick tour of the AgentOps
