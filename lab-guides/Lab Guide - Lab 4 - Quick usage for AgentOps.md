@@ -1,3 +1,133 @@
+> 
+>
+> **IBM watsonx Orchestrate**
+>
+> **Demos and Labs 2026**
+>
+> Quick usage for AgentOps
+>
+> V 3.4
+>
+> Vinicius Dutra
+>
+> <v.dutra@ibm.com>
+
+NOTICES
+
+This information was developed for products and services offered in the
+USA.
+
+IBM may not offer the products, services, or features discussed in this
+document in other countries. Consult your local IBM representative for
+information on the products and services currently available in your
+area. Any reference to an IBM product, program, or service is not
+intended to state or imply that only that IBM product, program, or
+service may be used. Any functionally equivalent product, program, or
+service that does not infringe any IBM intellectual property right may
+be used instead. However, it is the user's responsibility to evaluate
+and verify the operation of any non-IBM product, program, or service.
+
+IBM may have patents or pending patent applications covering subject
+matter described in this document. The furnishing of this document does
+not grant you any license to these patents. You can send license
+inquiries, in writing, to:
+
+> IBM Director of Licensing
+>
+> IBM Corporation
+>
+> North Castle Drive, MD-NC119
+>
+> Armonk, NY 10504-1785
+>
+> United States of America
+
+The following paragraph does not apply to the United Kingdom or any
+other country where such provisions are inconsistent with local law:
+INTERNATIONAL BUSINESS MACHINES CORPORATION PROVIDES THIS PUBLICATION
+"AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+Some states do not allow disclaimer of express or implied warranties in
+certain transactions, therefore, this statement may not apply to you.
+
+This information could include technical inaccuracies or typographical
+errors. Changes are periodically made to the information herein; these
+changes will be incorporated in new editions of the publication. IBM may
+make improvements and/or changes in the product(s) and/or the program(s)
+described in this publication at any time without notice.
+
+Any references in this information to non-IBM websites are provided for
+convenience only and do not in any manner serve as an endorsement of
+those websites. The materials at those websites are not part of the
+materials for this IBM product and use of those websites is at your own
+risk.
+
+IBM may use or distribute any of the information you supply in any way
+it believes appropriate without incurring any obligation to you.
+
+Information concerning non-IBM products was obtained from the suppliers
+of those products, their published announcements or other publicly
+available sources. IBM has not tested those products and cannot confirm
+the accuracy of performance, compatibility or any other claims related
+to non-IBM products. Questions on the capabilities of non-IBM products
+should be addressed to the suppliers of those products.
+
+This information contains examples of data and reports used in daily
+business operations. To illustrate them as completely as possible, the
+examples include the names of individuals, companies, brands, and
+products. All of these names are fictitious and any similarity to the
+names and addresses used by an actual business enterprise is entirely
+coincidental.
+
+**TRADEMARKS**
+
+IBM, the IBM logo, and ibm.com are trademarks or registered trademarks
+of International Business Machines Corp., registered in many
+jurisdictions worldwide. Other product and service names might be
+trademarks of IBM or other companies. A current list of IBM trademarks
+is available on the web at “Copyright and trademark information” at
+www.ibm.com/legal/copytrade.shtml.
+
+Adobe, the Adobe logo, PostScript, and the PostScript logo are either
+registered trademarks or trademarks of Adobe Systems Incorporated in the
+United States, and/or other countries.
+
+Cell Broadband Engine is a trademark of Sony Computer Entertainment,
+Inc. in the United States, other countries, or both and is used under
+license therefrom.
+
+Intel, Intel logo, Intel Inside, Intel Inside logo, Intel Centrino,
+Intel Centrino logo, Celeron, Intel Xeon, Intel SpeedStep, Itanium, and
+Pentium are trademarks or registered trademarks of Intel Corporation or
+its subsidiaries in the United States and other countries.
+
+IT Infrastructure Library is a Registered Trade Mark of AXELOS Limited.
+
+ITIL is a Registered Trade Mark of AXELOS Limited.
+
+Java and all Java-based trademarks and logos are trademarks or
+registered trademarks of Oracle and/or its affiliates.
+
+Linear Tape-Open, LTO, the LTO Logo, Ultrium, and the Ultrium logo are
+trademarks of HP, IBM Corp. and Quantum in the U.S. and other countries.
+
+Linux is a registered trademark of Linus Torvalds in the United States,
+other countries, or both.
+
+Microsoft, Windows, Windows NT, and the Windows logo are trademarks of
+Microsoft Corporation in the United States, other countries, or both.
+
+UNIX is a registered trademark of The Open Group in the United States
+and other countries.
+
+© Copyright International Business Machines Corporation 2024.
+
+This document may not be reproduced in whole or in part without the
+prior written permission of IBM.
+
+US Government Users Restricted Rights - Use, duplication or disclosure
+restricted by GSA ADP Schedule Contract with IBM Corp.
 
 **Table of Contents**
 
