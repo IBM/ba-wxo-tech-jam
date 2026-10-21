@@ -1,0 +1,16 @@
+app_id: TRI_cp4ba_basic_member
+spec_version: v1
+kind: connection
+description: 'Basic auth / member credentials connection to the IBM BAW / CP4BA instance
+  hosting the Trinity System of Record. Used by OpenAPI tools (TRI_SOR_openapi —
+  Orders, Billing, Admin service groups) to call BAW Automation Services REST API
+  with per-user credentials, ensuring data isolation in a shared environment.'
+environments:
+  draft:
+    kind: basic
+    type: member
+    server_url: https://cpd-ibm-cp4ba.swat-dev-roks-vpc-02-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/bas
+  live:
+    kind: basic
+    type: member
+    server_url: https://cpd-ibm-cp4ba.swat-dev-roks-vpc-02-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/bas

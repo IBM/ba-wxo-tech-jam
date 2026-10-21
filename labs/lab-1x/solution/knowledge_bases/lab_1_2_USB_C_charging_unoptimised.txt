@@ -1,0 +1,79 @@
+Focus Corp — Internal Support Knowledge Base
+Last updated: Q3 2026 | Category: Laptops | Author: Focus Corp Technical Support Team
+
+USB-C Charging — Overview and Troubleshooting
+
+This article covers common charging questions for Focus Corp laptop products. It is intended
+for internal support staff and should be read in conjunction with the product-specific warranty
+and hardware repair guidelines. For escalation procedures, see the Hardware Escalation Policy
+document. For cable and adapter procurement, refer to the Accessories Catalogue.
+
+Background
+
+USB-C has become the standard charging interface for modern laptops due to its versatility.
+Unlike proprietary barrel connectors, USB-C supports both data transfer and power delivery over
+the same cable. However, not all USB-C cables and adapters are equal — power delivery capability
+depends on the cable standard, the adapter wattage rating, and the laptop's firmware negotiation
+protocol. Incompatible combinations can result in the laptop refusing to charge, charging slowly,
+or appearing to charge without the battery level actually increasing.
+
+For Focus Corp's current laptop lineup, charging behaviour and port specifications are documented
+in the individual product data sheets. Support agents should verify the model number before
+advising on compatible accessories.
+
+Common Issues Reported
+
+Customers frequently contact support about the following charging-related symptoms: the laptop
+does not appear to charge when plugged in, the charging LED does not illuminate, the battery
+percentage stays the same or decreases while connected, intermittent charging behaviour where
+the connection drops in and out, and the laptop powers off unexpectedly even when the charger
+is plugged in.
+
+In most cases these symptoms point to one of three root causes: an incompatible or underpowered
+adapter, a damaged cable or port, or a power source issue. A small proportion of cases involve
+firmware or battery hardware faults that require escalation.
+
+Troubleshooting
+
+When a customer reports a charging issue, agents should work through the following checks in
+order. Do not skip steps or reorder them — the sequence is designed to rule out the most common
+causes first before escalating.
+
+First, check the adapter. Confirm that the customer is using a USB-C adapter that supports
+laptop-level power delivery. Many phone and tablet chargers use the same USB-C connector but
+deliver far less wattage than a laptop requires. The Focus Gamer Z2, for example, needs at
+least 150 W — a 65 W phone charger plugged into this model will typically result in the laptop
+drawing from the battery even while connected. Ask the customer to check the wattage printed
+on their adapter or to locate the model name and look it up. If they are unsure, recommend
+testing with the adapter that came in the box.
+
+Second, inspect the cable and port. USB-C cables that support power delivery are marked with
+the USB PD symbol or the Thunderbolt logo. Standard data-only cables will not carry enough
+current. Ask the customer to try a different cable if they have one available. Also ask them
+to inspect the USB-C port on the laptop for visible debris, bent pins, or signs of physical
+damage. A compressed-air canister can be used to clear dust.
+
+Third, eliminate the power source as a variable. Have the customer try a different wall outlet
+and plug the charger directly into the wall rather than through a power strip, extension lead,
+or docking station. Surge-protected strips and older extension leads can introduce resistance
+that reduces available power.
+
+Fourth, check the charging state after a few minutes. Some laptops do not show a charging
+indicator immediately if the battery is fully depleted. Ask the customer to leave the laptop
+connected for 15 minutes with the lid closed before checking again. A restart while connected
+can also trigger the firmware to re-negotiate the power delivery session.
+
+Fifth, reduce the power load. High-performance tasks running in the background can consume
+power faster than a marginal charger can supply it, causing the battery to drain even while
+plugged in. Ask the customer to close unnecessary applications and disconnect any USB peripherals,
+then observe whether the charging indicator appears.
+
+If none of these steps resolve the issue, the case should be escalated to the hardware repair
+team. Document the steps attempted and the customer's responses before escalating.
+
+Related Articles
+
+- Hardware Escalation Policy
+- Focus Corp Accessories Catalogue
+- Warranty and Repair Guidelines
+- USB-C Port Replacement Procedure

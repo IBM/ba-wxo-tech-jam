@@ -1,0 +1,8 @@
+app_id: TRI_cp4ba_keyvalue_team
+spec_version: v1
+kind: connection
+description: 'Key-Value / team credentials connection to the IBM BAW / CP4BA instance hosting the Trinity System of Record. Provides endpoint, USERID, and PASSWORD as environment variables to the ibm-baw-mcp-server (TRI_SOR_MCP). Key-Value + team credentials are the only option supported by Local MCP toolkits in wxO. Also used by Python tools that call the BAW SOAP endpoint directly.'
+environments:
+  draft:
+    kind: key_value
+    type: team

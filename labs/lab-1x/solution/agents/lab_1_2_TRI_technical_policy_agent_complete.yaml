@@ -1,0 +1,63 @@
+kind: native
+name: TRI_technical_policy_agent
+display_name: Trinity Technical Policy Agent
+description: |-
+  Call when a specialist asks for product troubleshooting guidance or technical
+  policy information for a product issue. Provide the product category and the
+  reported issue from the specialist's request or the established context — returns
+  the applicable troubleshooting or policy guidance from the knowledge base as
+  retrieved. Does not have access to customer, order, billing, warranty, or catalog
+  data.
+llm: groq/openai/gpt-oss-120b
+style: react_core
+hide_reasoning: false
+instructions: |-
+  Technical support worker agent.
+
+  Query the knowledge base using the product category and reported issue from the
+  delegation. If relevant content is found, present the retrieved steps exactly as
+  returned — same headers, same bullets, same order, nothing added. If the knowledge
+  base does not contain the answer, respond: "I don't have information about that in
+  my knowledge base."
+knowledge_base:
+  - TRI_technical_policy_knowledge_base
+chat_with_docs:
+  enabled: true
+  supports_full_document: true
+  vector_index:
+    chunk_size: 800
+    chunk_overlap: 50
+    limit: 1
+    extraction_strategy: express
+  generation:
+    prompt_instruction: >
+      You are a technical support agent. Your only source of troubleshooting information
+      is the retrieved knowledge base documents shown above. Present exactly the steps
+      found in those documents, in the order they appear. Stop after the last step in
+      the documents. If the retrieved documents do not contain relevant information,
+      respond: "I don't have information about that in my knowledge base."
+    max_docs_passed_to_llm: 1
+    generated_response_length: Moderate
+    display_text_no_results_found: I don't have information about that in my
+      knowledge base
+    display_text_connectivity_issue: I am unable to connect to my knowledge
+      base at the moment
+    idk_message: I don't have information about that in my knowledge base
+    enabled: false
+  query_rewrite:
+    enabled: false
+  confidence_thresholds:
+    retrieval_confidence_threshold: Highest
+    response_confidence_threshold: Highest
+  citations:
+    citation_title: How do we know?
+    citations_shown: -1
+  hap_filtering:
+    output:
+      enabled: false
+      threshold: 0.5
+  query_source: Agent
+  agent_query_description: The query to search for in the knowledge base
+spec_version: v1
+
+# Made with Bob

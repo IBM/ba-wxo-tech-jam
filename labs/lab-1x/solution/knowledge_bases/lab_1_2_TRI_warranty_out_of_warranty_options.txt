@@ -1,0 +1,9 @@
+Focus Corp — Out-of-Warranty Resolution Options
+
+When a product is confirmed to be outside the warranty period, the specialist presents an offer based on the customer's loyalty tier:
+
+- Standard customers: no automatic entitlement; specialist may escalate to supervisor.
+- Gold customers: 10% discount code for a replacement purchase in the Focus Corp online shop.
+- Platinum customers: goodwill replacement offer or 20% discount code for a replacement purchase in the Focus Corp online shop.
+
+The appropriate offer is presented based on the customer's loyalty tier, which is available in the customer profile.
