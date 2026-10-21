@@ -41,34 +41,32 @@ Trademarks: IBM, the IBM logo, and ibm.com are trademarks or registered trademar
 
 ### 1.1 Before the Event — Prepare Your Local Environment
 
-Start now by ensuring your local environment is ready. These steps are self-contained and do not require access to wxO.
-
-You need **Python 3.12 or later** and the **ADK CLI (version 2.15+)** installed locally — you will use the CLI throughout Labs 1.0–1.3, Lab 2, and Lab 3 (including importing pre-built artifacts, Python tools, and agentic workflows). Follow the steps below to setup the ADK environment.
-
-**You will need to download the pre-event setup script for your platform before installation:**
-- **Windows** - Download **setup-adk-pre-event.ps1** from path labs\adk-setup.
-- **Mac** - Download **setup-adk-pre-event.sh** from path labs/adk-setup.
-
-  
 > **⚠️ Disclaimer — convenience scripts modify your local system**
 > The setup script provided below installs Python and the ADK CLI on your machine. You run it at your own risk. IBM provides it as a convenience and accepts no liability for changes it makes to your local environment. If you prefer full control over what gets installed and how, or if you run into issues with the script due to your system configuration, use the manual approach instead: see [Appendix A.1–A.4](#a1-prerequisites--python-setup) for the step-by-step walkthrough, or the official [ADK Installation Guide](https://developer.watson-orchestrate.ibm.com/getting_started/installing).
 
-1. **Run the pre-event setup script for your platform** (installs Python and the ADK CLI — no wxO connection needed yet):
+Start now by ensuring your local environment is ready. These steps are self-contained and do not require access to wxO.
 
-   > **Note:** This script installs and verifies the ADK CLI only. On event day you will run a separate script to connect to the **TechJam** tenant (see "On Event Day" below).
+Please make sure you have cloned the Tech Jam GitHub repository and extracted it into a local folder.
+
+Next, open a terminal (macOS/Linux) or PowerShell (Windows) and navigate to the directory where the repository was extracted.
+
+Then, run the appropriate command for your platform from the options below to install or update the required dependencies and ADK.
 
    - **Windows:** Open a **PowerShell** console (not Command Prompt — the script is a `.ps1` file), then run:
      ```powershell
      .\labs\adk-setup\setup-adk-pre-event.ps1
      ```
-     > If PowerShell blocks the script from running, allow it for this session first: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+     > *** If PowerShell blocks the script from running, allow it for this session first: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` ***
 
    - **macOS/Linux:** Open a terminal, then run:
      ```bash
      ./labs/adk-setup/setup-adk-pre-event.sh
      ```
-
+   ![pre-event-adk-setup](Setup-Event-Credentials-screenshots/adk-setup-pre-event.png)
+   
    The script is safe to re-run at any time, including if you already have the ADK CLI from a prior event — it won't change anything that's already in place and meets the version requirements.
+
+
 
 2. *(Optional)* **IBM Bob account** — Only needed if you want to try the optional "Build with Bob" exercises in Lab 1.0. You can set this up anytime before or during the event. If you don't have a Bob license, you can get a 30 days free trial license here: **https://bob.ibm.com/trial**.
 
