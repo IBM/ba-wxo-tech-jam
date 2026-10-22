@@ -1,3 +1,133 @@
+> 
+>
+> **IBM watsonx Orchestrate**
+>
+> **Demos and Labs 2026**
+>
+> Quick usage for AgentOps
+>
+> V 3.5
+>
+> Vinicius Dutra
+>
+> <v.dutra@ibm.com>
+
+NOTICES
+
+This information was developed for products and services offered in the
+USA.
+
+IBM may not offer the products, services, or features discussed in this
+document in other countries. Consult your local IBM representative for
+information on the products and services currently available in your
+area. Any reference to an IBM product, program, or service is not
+intended to state or imply that only that IBM product, program, or
+service may be used. Any functionally equivalent product, program, or
+service that does not infringe any IBM intellectual property right may
+be used instead. However, it is the user's responsibility to evaluate
+and verify the operation of any non-IBM product, program, or service.
+
+IBM may have patents or pending patent applications covering subject
+matter described in this document. The furnishing of this document does
+not grant you any license to these patents. You can send license
+inquiries, in writing, to:
+
+> IBM Director of Licensing
+>
+> IBM Corporation
+>
+> North Castle Drive, MD-NC119
+>
+> Armonk, NY 10504-1785
+>
+> United States of America
+
+The following paragraph does not apply to the United Kingdom or any
+other country where such provisions are inconsistent with local law:
+INTERNATIONAL BUSINESS MACHINES CORPORATION PROVIDES THIS PUBLICATION
+"AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+Some states do not allow disclaimer of express or implied warranties in
+certain transactions, therefore, this statement may not apply to you.
+
+This information could include technical inaccuracies or typographical
+errors. Changes are periodically made to the information herein; these
+changes will be incorporated in new editions of the publication. IBM may
+make improvements and/or changes in the product(s) and/or the program(s)
+described in this publication at any time without notice.
+
+Any references in this information to non-IBM websites are provided for
+convenience only and do not in any manner serve as an endorsement of
+those websites. The materials at those websites are not part of the
+materials for this IBM product and use of those websites is at your own
+risk.
+
+IBM may use or distribute any of the information you supply in any way
+it believes appropriate without incurring any obligation to you.
+
+Information concerning non-IBM products was obtained from the suppliers
+of those products, their published announcements or other publicly
+available sources. IBM has not tested those products and cannot confirm
+the accuracy of performance, compatibility or any other claims related
+to non-IBM products. Questions on the capabilities of non-IBM products
+should be addressed to the suppliers of those products.
+
+This information contains examples of data and reports used in daily
+business operations. To illustrate them as completely as possible, the
+examples include the names of individuals, companies, brands, and
+products. All of these names are fictitious and any similarity to the
+names and addresses used by an actual business enterprise is entirely
+coincidental.
+
+**TRADEMARKS**
+
+IBM, the IBM logo, and ibm.com are trademarks or registered trademarks
+of International Business Machines Corp., registered in many
+jurisdictions worldwide. Other product and service names might be
+trademarks of IBM or other companies. A current list of IBM trademarks
+is available on the web at “Copyright and trademark information” at
+www.ibm.com/legal/copytrade.shtml.
+
+Adobe, the Adobe logo, PostScript, and the PostScript logo are either
+registered trademarks or trademarks of Adobe Systems Incorporated in the
+United States, and/or other countries.
+
+Cell Broadband Engine is a trademark of Sony Computer Entertainment,
+Inc. in the United States, other countries, or both and is used under
+license therefrom.
+
+Intel, Intel logo, Intel Inside, Intel Inside logo, Intel Centrino,
+Intel Centrino logo, Celeron, Intel Xeon, Intel SpeedStep, Itanium, and
+Pentium are trademarks or registered trademarks of Intel Corporation or
+its subsidiaries in the United States and other countries.
+
+IT Infrastructure Library is a Registered Trade Mark of AXELOS Limited.
+
+ITIL is a Registered Trade Mark of AXELOS Limited.
+
+Java and all Java-based trademarks and logos are trademarks or
+registered trademarks of Oracle and/or its affiliates.
+
+Linear Tape-Open, LTO, the LTO Logo, Ultrium, and the Ultrium logo are
+trademarks of HP, IBM Corp. and Quantum in the U.S. and other countries.
+
+Linux is a registered trademark of Linus Torvalds in the United States,
+other countries, or both.
+
+Microsoft, Windows, Windows NT, and the Windows logo are trademarks of
+Microsoft Corporation in the United States, other countries, or both.
+
+UNIX is a registered trademark of The Open Group in the United States
+and other countries.
+
+© Copyright International Business Machines Corporation 2024.
+
+This document may not be reproduced in whole or in part without the
+prior written permission of IBM.
+
+US Government Users Restricted Rights - Use, duplication or disclosure
+restricted by GSA ADP Schedule Contract with IBM Corp.
 
 **Table of Contents**
 
@@ -272,11 +402,11 @@ style="width:4.53194in;height:1.35549in" />
 
 <img src="./Lab 4 screenshots/image9.png" style="width:3.70439in;height:4.0082in" />
 
-- Ok, the agent is performing well. It's time to create test cases.
-  Click the “*Save as test*” button.
+- Ok, the agent is performing well. It's time to create test cases. In
+  the top-right corner, click the “*Save as test*” button.
 
 <img src="./Lab 4 screenshots/image10.png"
-style="width:1.17213in;height:0.46201in" />
+style="width:1.21735in;height:0.33953in" />
 
 - Click the “Save” button.
 
@@ -289,7 +419,7 @@ style="width:3.41803in;height:3.61513in" />
 <img src="./Lab 4 screenshots/image12.png"
 style="width:0.39344in;height:0.42921in" />
 
-- Repeat the steps to create more 4 use cases:
+- Repeat the steps to create more 4 test cases:
 
 1.  “*20 York Rd, London SE1 7ND, United Kingdom, from yesterday to
     tomorrow*” this one will not return a valid result, but it is
@@ -476,14 +606,14 @@ style="width:4.65556in;height:3.20492in" />
   capabilities
 
 <img src="./Lab 4 screenshots/image38.png"
-style="width:5.01639in;height:5.74366in" />
+style="width:5.04049in;height:5.30543in" />
 
 - You can filter the agents by name or view the entire list.
 
 - Now let's ask “*Show me all agents with test cases*”
 
 <img src="./Lab 4 screenshots/image39.png"
-style="width:5.35246in;height:3.4425in" />
+style="width:4.05738in;height:4.18861in" />
 
 - Let's type *“Use (NAMESPACE)\_weather_agent”*.
 
@@ -504,10 +634,10 @@ the test case. See the two possible scenarios below:
 
 1.  The AgentOps accepts your input and creates the test case:
 
-    - Click the “*Save*” button.
+    - Type “*Yes, save it*” to save the test case.
 
 > <img src="./Lab 4 screenshots/image41.png"
-> style="width:4.89429in;height:2.92623in" />
+> style="width:4.97117in;height:2.26449in" />
 
 2.  The AgentOps analyses your request and the agent instructions, and
     with both pieces of information, it has identified a potential
@@ -519,10 +649,9 @@ the test case. See the two possible scenarios below:
 The AgentOps identified a potential issue in our test case, but this is
 intentional.
 
-- So, type: “*Keep it as is*” and then click the “*Save*” button
+- So, type: “*Keep it as is*” and then after type “*Yes, save it*” to
+  save the test case.
 
-> <img src="./Lab 4 screenshots/image43.png"
-> style="width:5.85331in;height:3.15438in" />
 
 - Create at least two more test cases:
 
@@ -533,95 +662,42 @@ intentional.
 2.  “*Create a new test case, full-address forecast:* *Markham, Ontario,
     Canada, for the period from 2026-01-01 to 2026-01-10*”
 
-<img src="./Lab 4 screenshots/image44.png"
-style="width:2.8569in;height:3.68852in" />
+- Now type “run evaluations” and click the “Start evaluation” button to
+  run all the test cases you have. This operation can take a while to
+  complete.
 
-- Now type *“run evaluations”* to start running all the test cases you
-  have. This operation can take a while to complete.
-
-<img src="./Lab 4 screenshots/image45.png"
-style="width:4.80328in;height:2.90688in" />
+<img src="./Lab 4 screenshots/image43.png"
+style="width:4.83245in;height:2.6051in" />
 
 - When done, you can check individual conversations that have failed.
 
 - Now, it's possible to identify the error by clicking the “*Analyze*”
   button.
 
-<img src="./Lab 4 screenshots/image46.png"
-style="width:4.25347in;height:2.84426in" />
+<img src="./Lab 4 screenshots/image44.png"
+style="width:4.25385in;height:2.84451in" />
 
-- As you can see here, the agent couldn't get the correct address, so
-  they couldn't provide the answer.
+- As you can see, some tests are returning as Success, but they may be
+  false positives. Explore your results.
 
-<img src="./Lab 4 screenshots/image47.png"
-style="width:4.60862in;height:5.44262in" />
-
-- Using another test case as an example, it's possible to identify a
-  false positive error by clicking the “*Analyze*” button.
-
-<img src="./Lab 4 screenshots/image46.png"
-style="width:4.25249in;height:0.64686in" />
-
-- Looking at the conversation history, we can identify part of this
-  scenario error: the agent doesn't understand yesterday and tomorrow as
-  dates.
-
-Sometimes errors are due to incorrect test cases, and sometimes to
-issues with the agent or tools. That’s way analyze all conversations
-one-by-on it’s important to grant the best results.
+<img src="./Lab 4 screenshots/image45.png"
+style="width:4.6142in;height:5.02741in" />
 
 **If you selected a different conversation, you would see a different
 message history and a different problem. Don't worry about it.**
 
-<img src="./Lab 4 screenshots/image48.png"
-style="width:4.17819in;height:4.93443in" />
-
-- To try to fix this, you will need to create a new test case with the
-  correct date range or other necessary modifications related to the
-  error.
-
-- Type “*Modify test case*”
-
-- Find and copy the “*Test case ID*” related to the test case you would
-  like to modify. Paste the ID in the conversation.
-
-<img src="./Lab 4 screenshots/image49.png"
-style="width:2.88524in;height:3.54662in" />
-
-- Now, type “*Change the date range* *20 York Rd, London SE1 7ND, United
-  Kingdom, from 2026-10-01 to 2026-10-15*”.
-
-<img src="./Lab 4 screenshots/image50.png"
-style="width:4.65574in;height:1.98583in" />
-
-- Click the “*Save*” button.
-
-<img src="./Lab 4 screenshots/image51.png"
-style="width:5.22131in;height:2.82131in" />
-
-- Now, you can see on the list both use cases at the top of your list.
-  Select them to perform the evaluation.
-
-- Click the “*Evaluate*” button.
-
-<img src="./Lab 4 screenshots/image52.png"
-style="width:3.93053in;height:3.16594in" />
-
-- Both tests will fail again, but why? Let's ask AgentOps why our tests
-  are failing again.
-
 - So, type “*analyse the overall results*” and see the detailed review
   of our Agent and test case created.
 
-<img src="./Lab 4 screenshots/image53.png"
-style="width:4.9013in;height:3.81648in" />
+<img src="./Lab 4 screenshots/image46.png"
+style="width:4.53558in;height:5.54918in" />
 
 - In this scenario, I can assume that my agent needs an optimization or
   a rebuild something to make it clear. Time to run *“Optimize my
   agent”*
 
-<img src="./Lab 4 screenshots/image54.png"
-style="width:4.53944in;height:3.27049in" />
+<img src="./Lab 4 screenshots/image47.png"
+style="width:4.64165in;height:4.20492in" />
 
 - In the optimization method, there are two options:
 
@@ -636,40 +712,46 @@ style="width:4.53944in;height:3.27049in" />
 
 - Choose “*GEPA*” to proceed.
 
-<img src="./Lab 4 screenshots/image55.png"
+<img src="./Lab 4 screenshots/image48.png"
 style="width:3.02087in;height:1.07377in" />
 
 - For the optimization metric, we will follow the recommendation and use
   "*Tool Call Recall*". This assesses whether the agent called the right
   tools in the right order, detecting any missed calls.
 
-<img src="./Lab 4 screenshots/image56.png"
+<img src="./Lab 4 screenshots/image49.png"
 style="width:2.92623in;height:1.73355in" />
 
 - Remember to adjust both properties to your needs in the future.
 
 - Click the “*Start Optimization*” button.
 
-<img src="./Lab 4 screenshots/image57.png"
-style="width:3.37211in;height:1.59016in" />
+<img src="./Lab 4 screenshots/image47.png"
+style="width:3.20095in;height:2.0082in" />
 
 - This process can take a while to complete.
 
-<img src="./Lab 4 screenshots/image58.png"
-style="width:4.78978in;height:6.14251in" />
-
-<img src="./Lab 4 screenshots/image59.png"
-style="width:4.42408in;height:5.24991in" />
+<img src="./Lab 4 screenshots/image50.png"
+style="width:4.45902in;height:4.51296in" />
 
 - After running the evaluation with 5 different iterations, they
   identified the best results. If you are seen a different result, you
   can apply to use the best result.
+
 
 - To try to get a best result, you can run again the optimization
   selecting different parameters.
 
 - You can try to run *“Use ACE as a user simulation”* to see different
   parameters in action
+
+<img src="./Lab 4 screenshots/image51.png"
+style="width:4.30328in;height:3.82332in" />
+
+Run this second optimization.
+
+<img src="./Lab 4 screenshots/image52.png"
+style="width:4.37705in;height:4.46507in" />
 
 Congratulations, you have completed this lab.
 
