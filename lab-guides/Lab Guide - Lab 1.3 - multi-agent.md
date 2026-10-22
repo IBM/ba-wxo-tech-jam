@@ -78,8 +78,8 @@ Before starting, ensure you have:
 **If you have not completed Lab 1.1, or want to reset its artifacts** — you'll need to import the two pre-built collaborator agents and everything they depend on, including their connections and tools (see 1.2.2 below), which requires:
 
 1. The ADK CLI (version 2.15 or later) installed, connected to the event tenant, and authenticated.
-2. Your SOR user ID, SOR password, and SOR base URL. Your SOR user ID is your assigned namespace. To get these values, see the labs page of the event GitHub repository, section **2. Grab your system of record credentials**.
-3. The Trinity-Event repository (the event GitHub repository) cloned or downloaded to your machine. To get it, see the labs page of the event GitHub repository, section **4. Clone this GitHub**.
+2. Your event credentials filled in `labs/event.env` (configured during **Setup & Event Credentials**, section **1.2 On Event Day**). Your SOR user ID (`sorUsername`) serves as your assigned namespace.
+3. The Trinity-Event repository (the event GitHub repository) cloned or downloaded to your machine.
 
 > 💡 **Tip:** To install, update, or connect the ADK CLI, see **Setup & Event Credentials**, sections **1.1 Before the Event** and **1.2 On Event Day**. If a command fails with an authentication or token error, see the note on Authentication Expiry in section 1.2.
 
@@ -109,23 +109,19 @@ This lab does not build any new tools or connections. Starting in Exercise 2, it
 
 **If you completed Lab 1.1:** all of the above are already active in your draft workspace. Skip ahead to Exercise 1 — no import needed.
 
-**If you are starting directly here, or need to reset your work:** run the prep script below to import both collaborator agents and everything they depend on, then complete the two manual verification checks that follow it. This is also safe to re-run if you completed Lab 1.1 through the UI — re-importing the same namespaced artifacts simply confirms your Draft configuration.
+**If you are starting directly here, or need to reset your work:** run the prep script below to import both collaborator agents and everything they depend on. This is also safe to re-run if you completed Lab 1.1 through the UI — re-importing the same namespaced artifacts simply confirms your Draft configuration.
 
-1. Run `prepare_lab_1_3.py`. It prepares the Lab 1.1 artifacts first if `labs/lab-1x/solution/lab-1-prepared` does not already exist yet (equivalent to running `prepare_lab_1_1.py` yourself), then imports, in order: the Key-Value Team and Basic Auth Member connections (with your Draft credentials), the MCP toolkit, the Order agent's OpenAPI tools, the Order agent itself, both CRM Python tools, and the CRM agent itself.
+1. Run `prepare_lab_1_3.py`. It reads your SOR credentials and namespace automatically from `labs/event.env`. It prepares the Lab 1.1 artifacts first if `labs/lab-1x/solution/lab-1-prepared` does not already exist yet (equivalent to running `prepare_lab_1_1.py` yourself), then imports, in order: the Key-Value Team and Basic Auth Member connections (with your Draft credentials), the MCP toolkit, the Order agent's OpenAPI tools, the Order agent itself, both CRM Python tools, and the CRM agent itself.
 
    ```bash
-   python3 labs/lab-1x/solution/scripts/prepare_lab_1_3.py --sor-base-url "(YOUR-SOR-BASE-URL)" --sor-user-id (YOUR-SOR-USER-ID) --sor-password (YOUR-SOR-PASSWORD)
+   python3 labs/lab-1x/solution/scripts/prepare_lab_1_3.py
    ```
 
    > **Note:** On Windows, use `python` if `python3` is not available. The script prints a numbered `[INFO]`/`[OK]` line for each of its 11 internal steps as it runs — if any step fails, re-run the same command once the underlying issue (credentials, connectivity, an existing namespaced artifact) is resolved; every step is safe to repeat.
 
-   > **Note:** If the script's first `orchestrate` call fails with an authentication/token error, your CLI session has expired — this is expected if some time has passed since you last ran an `orchestrate` command. Re-activate your environment as described in **Introduction to watsonx Orchestrate**, **Appendix: ADK CLI Setup Guide**, section **A.5 Connecting to the AWS wxO Environment** (Step 1 explains where to get your API key, Step 3 how to activate the environment), then re-run the script. For your SOR user ID, SOR password, and SOR base URL, see the labs page of the event GitHub repository, section **2. Grab your system of record credentials**.
+   > **Note:** If the script's first `orchestrate` call fails with an authentication/token error, your CLI session has expired — this is expected if some time has passed since you last ran an `orchestrate` command. Re-activate your environment as described in **Setup & Event Credentials**, section **1.2 On Event Day** (using `orchestrate env activate trinity-lab -a <your-api-key>` with the `wxoAPIKey` saved in `labs/event.env`), then re-run the script.
 
    > **Note:** Step 10 may print a warning that the Key-Value Team connection (`(NAMESPACE)_TRI_cp4ba_keyvalue_team`) is not configured in the `live` environment. This is expected and safe to ignore — this lab only runs agents in the Draft Preview chat, which this connection's Draft credentials already cover. The warning would only matter if you later deployed the CRM agent to Live.
-
-2. Open `(NAMESPACE)_TRI_order_agent` in the UI and confirm it responds to a sample order lookup, for example: `For customer C-3DBZFE, find the most recent laptop order from the last four weeks.`
-
-3. Open `(NAMESPACE)_TRI_crm_agent_lab` in the UI and confirm it responds to a sample customer lookup, for example: `Look up customer C-3DBZFE.`, before continuing with this lab.
 
 [↑ Back to Table of Contents](#table-of-contents)
 
@@ -164,7 +160,7 @@ In this exercise, you will watch a single agent hit a hard reliability limit, na
 
 ### Watch the Agent Hit Its Limit
 
-1. In the wxO UI, expand the hamburger menu (☰) in the top left, click **Active inventory** under the **BUILD & RUN** category, then click **Agents**. Search for `(NAMESPACE)_TRI_order_agent` in the search field (**1**), then click the Order agent's card (**2**) to open it.
+1. In the wxO UI, expand the hamburger menu (☰) in the top left, click **Active inventory** under the **BUILD & RUN** category, then click **Agents**. Search for `(NAMESPACE)` in the search field (**1**), then click the Order agent's card (**2**) to open it.
 
    ![Active inventory > Agents list with the search field and the Order agent's card marked by two numbered callouts](Lab%201.3%20screenshots/exercise-1/ex1-step0-search-order-agent-annotated.png)
 

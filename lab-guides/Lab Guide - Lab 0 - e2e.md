@@ -153,13 +153,11 @@ Lab 0 uses a pre-deployed Trinity solution on the **TechJam(EMEA|APAC|Americas)*
 Before starting this lab, confirm the following:
 
 - You have received an invitation to the **TechJam(EMEA|APAC|Americas)** tenant, which you log in to with your IBMid.
-- You have retrieved your **username** (format `usrXXX`) and **password** for the SOR from [Setup & Event Credentials — Step 1: Trinity System of Record (SOR) credentials](Setup%20%26%20Event%20Credentials.md#step-1-trinity-system-of-record-sor-credentials) (if you completed the event preparation, you will find these values in `labs/event.env`) — you will enter these once, in 1.2.2 below, to configure your member-scoped credential.
+- You have retrieved your **username** (format `usrXXX`) and **password** for the SOR from [Setup & Event Credentials — Step 1: Trinity System of Record (SOR) credentials](Setup%20%26%20Event%20Credentials.md#step-1-trinity-system-of-record-sor-credentials) (if you completed the event preparation, you will find these values in `labs/event.env`) — you will enter these once, after your first prompt in Exercise 1, to configure your member-scoped credential.
 
 > **Note:** You are not building anything in this lab — all agents, tools, workflows, and knowledge bases are already in place. On this tenant you have the **Builder** role: you have full access to build and test, but for this lab you will only use the chat interface.
 
-#### 1.2.2 Log in to TechJam(EMEA|APAC|Americas) and configure your member credential
-
-Trinity's connection to the System of Record is member-scoped — before Trinity can call the CRM, Order, Billing, or other backend tools on your behalf, you must connect your own SOR credential. This is a one-time setup, done once before Exercise 1.
+#### 1.2.2 Access the Trinity chat
 
 1. Navigate to the watsonx Orchestrate base URL (for a TechJam event: [https://dl.watson-orchestrate.ibm.com](https://dl.watson-orchestrate.ibm.com)).
 2. Log in with your **IBMid** (not your SOR credentials).
@@ -169,55 +167,19 @@ Trinity's connection to the System of Record is member-scoped — before Trinity
 
 `Figure 2. Account selection page — select TechJam(EMEA|APAC|Americas) if prompted`
 
-4. Click your user icon in the top right corner, then select **Settings**. The menu also shows your role (**BUILDER**) next to your login name.
-
-![User menu with Settings highlighted](Lab%200%20screenshots/setup/setup-step4-settings-menu.png)
-
-`Figure 3. Open Settings from the user menu`
-
-5. Click the **Member credentials** tab.
-
-![Settings page with the Member credentials tab selected](Lab%200%20screenshots/setup/setup-step5-member-credentials-tab.png)
-
-`Figure 4. The Member credentials tab`
-
-6. Click **Add member credential +**.
-
-![Member credentials tab with the Add member credential button highlighted](Lab%200%20screenshots/setup/setup-step6-add-member-credential.png)
-
-`Figure 5. Adding a new member credential`
-
-7. In the **Search a connection** field, enter `TRI_cp4ba_basic_member`, select it from the results, and click **Next**.
-
-![Add a credential dialog with TRI_cp4ba_basic_member selected and Next highlighted](Lab%200%20screenshots/setup/setup-step7-select-connection.png)
-
-`Figure 6. Selecting the TRI_cp4ba_basic_member connection`
-
-8. Enter your **Username** (`usrXXX`) and **Password**, then click **Connect and save**.
-
-![Add a credential dialog — Set credential step with Username, Password, and Connect and save highlighted](Lab%200%20screenshots/setup/setup-step8-credential-entry.png)
-
-`Figure 7. Entering your SOR username and password`
-
-> **Note:** Once connected, Trinity reuses this credential for every relevant System of Record call for the rest of the lab — you will not be asked again. If you mistyped your username or password, return to the **Member credentials** tab to update it.
-
-#### 1.2.3 Access the Trinity chat
-
-Since configuring your member credential took you into Settings, navigate back to the chat. As a Builder you have access to the full wxO interface — to reach the chat, use one of these methods:
-
-1. Click the **hamburger menu** (☰) in the top-left corner and select **Chat**, or click the second icon (**Chat**) in the left-hand toolbar.
+4. As a Builder you have access to the full wxO interface — to reach the chat, use one of these methods: click the **hamburger menu** (☰) in the top-left corner and select **Chat**, or click the second icon (**Chat**) in the left-hand toolbar.
 
 ![The IBM watsonx Orchestrate banner in the top left](Lab%200%20screenshots/setup/setup-step9-watsonx-orchestrate-banner.png)
 
-`Figure 8. Navigating back to the chat interface`
+`Figure 3. Navigating to the chat interface`
 
-2. From the agent selector at the top of the left-hand panel, select **Trinity Orchestrator Agent**.
+5. In the middle of the chat window, click the agent selector (the drop-down below the message box, next to the paperclip icon) and select **Trinity Orchestrator Agent**.
 
 > ⚠️ **Important:** Pay close attention to select exactly **Trinity Orchestrator Agent** from the agent list. Other agents with similar names (such as individual specialist agents: CRM Agent, Order Agent, Billing Agent, etc.) may be available in the selector. The Orchestrator Agent is the single entry point for all prompts in this lab — it automatically routes your messages to the appropriate specialist agent. Selecting a different agent directly will bypass the orchestration and lead to unexpected results.
 
-![Agent selector at the top of the left-hand panel with Trinity Orchestrator Agent highlighted](Lab%200%20screenshots/setup/setup-step3-wxo-chat-landing.png)
+![Agent selector below the message box in the middle of the chat window, with Trinity Orchestrator Agent highlighted in the agent list](Lab%200%20screenshots/setup/setup-step5-select-agent.png)
 
-`Figure 9. Selecting the Trinity Orchestrator Agent`
+`Figure 4. Selecting the Trinity Orchestrator Agent`
 
 > **Note:** You will type every prompt in this lab into this chat panel. Trinity routes your messages to the appropriate specialist agent automatically — you do not need to select a different agent per topic.
 
@@ -257,13 +219,21 @@ The specialist folds the customer ID, the approximate order age, and the laptop 
 List customer details and orders for customer id C-3DBZFE within last four weeks, show details for those containing a laptop
 ```
 
+![Trinity asking the specialist to connect the TRI_cp4ba_basic_member connection with a username and password](Lab%200%20screenshots/exercise-1/ex1-step1-connect-credentials.png)
+
+`Figure 5. Trinity asks you to connect your System of Record credential before it can run the request`
+
+**Step 2.** Trinity's connection to the System of Record is member-scoped, so before it can call the CRM, Order, and other backend tools on your behalf, it asks you to connect your own credential. This is a one-time step. In the **Connect to app** card, enter the **Username** (`usrXXX`) and **Password** you retrieved in the prerequisites, then click **Connect**. Trinity then continues with your request automatically.
+
 ![Trinity response showing customer profile and laptop order table](Lab%200%20screenshots/exercise-1/ex1-step1-customer-order-response.png)
 
-`Figure 10. Trinity returns the customer profile and the matching laptop order`
+`Figure 6. Trinity returns the customer profile and the matching laptop order`
+
+> **Note:** Once connected, Trinity reuses this credential for every System of Record call for the rest of the lab — you will not be asked again. If you mistyped your username or password, you can correct it later under **Settings → Member credentials** (user icon, top right).
 
 > **Note:** It is the nature of LLM-based systems that response wording and formatting vary between runs — for example, a table may come back horizontal (one row, many columns) in one run and vertical (two columns, many rows) in another. The information — customer profile and the correct order — should be present regardless of exact phrasing or layout.
 
-**Step 2.** Verify that the response contains:
+**Step 3.** Verify that the response contains:
 
 - Customer name: **Marie Smith**, status: **Platinum**
 - Order **O-DF340K** with item **Focus Gamer Z2** (laptop, gaming, $2,500) — you may need to scroll the table to the right to see all of this
@@ -332,7 +302,7 @@ Provide troubleshooting tips when laptop cannot be loaded via USB C for item wit
 
 ![Trinity response with five USB-C troubleshooting steps](Lab%200%20screenshots/exercise-2/ex2-step1-usb-c-troubleshooting-response.png)
 
-`Figure 11. Trinity returns the troubleshooting procedure from the knowledge base`
+`Figure 7. Trinity returns the troubleshooting procedure from the knowledge base`
 
 **Step 2.** Verify that the response includes at minimum, matching the `TRI_technical_troubleshooting_laptop.txt` knowledge document shown alongside the response:
 
@@ -364,7 +334,7 @@ The technical issue could not be resolved. What are the options to replace the l
 
 ![Trinity warranty response showing in-warranty status and four options](Lab%200%20screenshots/exercise-2/ex2-step4-warranty-resolution-options.png)
 
-`Figure 12. Trinity confirms in-warranty status and presents the four resolution options`
+`Figure 8. Trinity confirms in-warranty status and presents the four resolution options`
 
 **Step 4.** Verify that the response:
 
@@ -377,7 +347,7 @@ The technical issue could not be resolved. What are the options to replace the l
 >
 > "message": "KB options lookup: **under_warranty true** for **order item OI-TDDU12** (laptop). Customer tier Platinum."
 >
-> The Warranty Agent requires the order item ID in addition to the warranty status. The order item ID (`OI-TDDU12`) was implicitly selected by specifying the catalog item ID (`CI-D412F3`) in Step 1 of this exercise — within the order identified in Exercise 1, that catalog item matches exactly one order item, `OI-TDDU12`. `under_warranty: true` was determined automatically from the order record for that order item ID — go back to the Exercise 1, Step 1 response in your own chat and scroll its table to the far right to see the `in_warranty` column (not visible in Figure 10's cropped screenshot). Neither resolution is explicitly hard-coded: both are inferred from the Warranty Agent's own description of what it can do and what inputs it needs, and from what is in the Orchestrator's context due to prior interactions.
+> The Warranty Agent requires the order item ID in addition to the warranty status. The order item ID (`OI-TDDU12`) was implicitly selected by specifying the catalog item ID (`CI-D412F3`) in Step 1 of this exercise — within the order identified in Exercise 1, that catalog item matches exactly one order item, `OI-TDDU12`. `under_warranty: true` was determined automatically from the order record for that order item ID — go back to the Exercise 1, Step 2 response in your own chat and scroll its table to the far right to see the `in_warranty` column (not visible in Figure 6's cropped screenshot). Neither resolution is explicitly hard-coded: both are inferred from the Warranty Agent's own description of what it can do and what inputs it needs, and from what is in the Orchestrator's context due to prior interactions.
 >
 > Now look at Step 2 within the reasoning trace of either of the last two prompts: for the troubleshooting steps, the Orchestrator routed to the Technical Policy Agent, which searched the knowledge base and identified `TRI_technical_troubleshooting_laptop.txt` as the best-matching source for this item — not a document picked by item ID lookup, but by the agent reasoning over the item's category and the fault description. For the resolution options, the same agent instead grounds its answer in `TRI_warranty_in_warranty_options.txt` — a different question, routed to a different document, within the same knowledge base.
 
@@ -407,7 +377,7 @@ Customer wants a different model within a $200 price range of the original item.
 
 ![Trinity response showing alternative gaming laptops within $200 of the original price](Lab%200%20screenshots/exercise-3/ex3-step1-catalog-search-results.png)
 
-`Figure 13. Trinity returns matching catalog items within the price range`
+`Figure 9. Trinity returns matching catalog items within the price range`
 
 **Step 2.** Verify that the response includes:
 
@@ -428,7 +398,7 @@ Customer wants to replace the laptop in her current order with the Focus Gamer Z
 
 ![Trinity confirms the order has been updated with the Z2+ replacement](Lab%200%20screenshots/exercise-3/ex3-step3-order-updated.png)
 
-`Figure 14. Trinity confirms the order update — Focus Gamer Z2+ will be shipped on return of the original`
+`Figure 10. Trinity confirms the order update — Focus Gamer Z2+ will be shipped on return of the original`
 
 **Step 4.** Verify that the response confirms the order has been updated with the Focus Gamer Z2+ replacement.
 
@@ -498,7 +468,7 @@ Customer is disputing second charge for the order. The reason is "Duplicate char
 
 ![Trinity displays the billing record selection form with two records to choose from](Lab%200%20screenshots/exercise-4/ex4-step2-billing-records-selection.png)
 
-`Figure 15. Trinity returns both billing records for order O-DF340K`
+`Figure 11. Trinity returns both billing records for order O-DF340K`
 
 **Step 2.** Verify that the response shows two billing records:
 
@@ -540,7 +510,7 @@ Based on Marie's confirmation, the specialist identifies and selects the second 
 
 ![Trinity shows the workflow confirmation that supervisor review is required](Lab%200%20screenshots/exercise-4/ex4-step3-workflow-supervisor-required.png)
 
-`Figure 16. The billing dispute workflow informs the specialist that supervisor review is required`
+`Figure 12. The billing dispute workflow informs the specialist that supervisor review is required`
 
 **Step 4.** Verify that the workflow presents a message stating that the disputed amount ($2,500) exceeds the direct approval limit for a Platinum customer and that supervisor review is required within approximately 5 business days.
 
@@ -562,7 +532,7 @@ The workflow now switches to the supervisor role.
 
 ![The supervisor view opens with customer and dispute details in the header](Lab%200%20screenshots/exercise-4/ex4-step5-supervisor-view-header.png)
 
-`Figure 17. The supervisor view opens, showing customer and dispute details`
+`Figure 13. The supervisor view opens, showing customer and dispute details`
 
 **Step 5.** Verify that the supervisor view shows:
 - Header banner: **"You are now acting in the supervisor role."**
@@ -593,7 +563,7 @@ Provide fraud risk info and show shipping records
 
 ![The supervisor receives fraud risk assessment and shipping records](Lab%200%20screenshots/exercise-4/ex4-step6-fraud-and-shipping-info.png)
 
-`Figure 18. The sub-agent returns fraud risk assessment and shipping records`
+`Figure 14. The sub-agent returns fraud risk assessment and shipping records`
 
 **Step 7.** Verify that the response includes:
 
@@ -636,7 +606,7 @@ The supervisor could ask additional questions using the same **Request informati
 
 ![The supervisor decision form with billing records table and reason field](Lab%200%20screenshots/exercise-4/ex4-step8-supervisor-decision-form.png)
 
-`Figure 19. The decision form — select the billing record to action and enter a reason`
+`Figure 15. The decision form — select the billing record to action and enter a reason`
 
 **Step 9.** In the **Billing Dispute Decision** form:
 - Select the billing record with **$2,500** and description **"Shipping before laptop return"** from the table.
@@ -645,7 +615,7 @@ The supervisor could ask additional questions using the same **Request informati
 
 ![The supervisor completes the billing dispute decision form with all selections](Lab%200%20screenshots/exercise-4/ex4-step9-billing-dispute-decision-form.png)
 
-`Figure 20. The supervisor completes the decision form`
+`Figure 16. The supervisor completes the decision form`
 
 > **Under the hood — Forms enforce deterministic user interaction:**
 >
@@ -669,7 +639,7 @@ The supervisor could ask additional questions using the same **Request informati
 
 ![The billing dispute resolution confirmation](Lab%200%20screenshots/exercise-4/ex4-step10-billing-dispute-resolved.png)
 
-`Figure 21. The billing dispute is resolved — B-TDDU12 has been cancelled`
+`Figure 17. The billing dispute is resolved — B-TDDU12 has been cancelled`
 
 **Step 11.** Verify that the confirmation shows:
 - Header: **"Billing dispute for order O-DF340K completed"**
@@ -695,7 +665,7 @@ You return to continue the conversation from where it paused:
 
 ![The specialist role return banner](Lab%200%20screenshots/exercise-4/ex4-specialist-role-return-banner.png)
 
-`Figure 22. The specialist role return banner`
+`Figure 18. The specialist role return banner`
 
 > **Note:** The billing record has been updated in the Focus Corp System of Record. Running this exercise a second time on the same session will trigger a guardrail — Trinity will detect that B-TDDU12 is already cancelled and decline to start a new dispute.
 
@@ -733,7 +703,7 @@ Trinity routes to the Warranty Agent, which starts the warranty claim workflow.
 
 ![The specialist confirms masked credit card and email address on file](Lab%200%20screenshots/exercise-5/ex5-step2-customer-details-form.png)
 
-`Figure 21. The workflow displays the customer's masked credit card information and email address on file for confirmation`
+`Figure 19. The workflow displays the customer's masked credit card information and email address on file for confirmation`
 
 **Step 2.** Verify that the form displays:
 - **Credit card on file:** Masked card ending in 9012 (confirmed with customer)
@@ -763,7 +733,7 @@ These details give the specialist a general understanding of Marie's background 
 
 ![Trinity waits for the customer to confirm upload](Lab%200%20screenshots/exercise-5/ex5-step3-awaiting-upload-confirmation.png)
 
-`Figure 22. Trinity confirms upload instructions have been sent and waits for the customer to confirm`
+`Figure 20. Trinity confirms upload instructions have been sent and waits for the customer to confirm`
 
 *Specialist: "The email with the upload instructions has been sent. Please check your inbox."*
 
@@ -787,7 +757,7 @@ Trinity fetches the document, classifies it as a receipt, and extracts the purch
 
 ![The extraction review form with low confidence flag on purchase date](Lab%200%20screenshots/exercise-5/ex5-step4-extraction-review-form.png)
 
-`Figure 23. The extraction review form — one field is flagged for low confidence`
+`Figure 21. The extraction review form — one field is flagged for low confidence`
 
 **Step 5.** Click on the **View** link to open the Review document extraction form.
 
@@ -815,7 +785,7 @@ These messages show the deterministic workflow executing in sequence — each st
 
 ![Warranty resolution showing out-of-warranty status and Platinum loyalty discount code](Lab%200%20screenshots/exercise-5/ex5-step9-warranty-resolution-discount-code.png)
 
-`Figure 24. The warranty check result — Out of Warranty, Platinum loyalty discount code generated`
+`Figure 22. The warranty check result — Out of Warranty, Platinum loyalty discount code generated`
 
 **Step 10.** Verify that the response shows:
 
