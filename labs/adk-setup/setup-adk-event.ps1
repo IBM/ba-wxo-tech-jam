@@ -43,7 +43,7 @@
     supplied, then from the WXO_URL environment variable, then prompted if still missing.
 
 .PARAMETER ApiKey
-    wxO API key as a SecureString. Read from labs/event.env (wxoAPIKey) when not supplied,
+    wxO API key as a plain string. Read from labs/event.env (wxoAPIKey) when not supplied,
     then from the WXO_API_KEY environment variable, then prompted (hidden) if still missing.
     Saved to wxoAPIKey in labs/event.env (only when it differs) so -Activate can reuse it.
 
@@ -87,7 +87,7 @@ param(
     [Alias("u")]
     [string]$Url,
     [Alias("k")]
-    [SecureString]$ApiKey,
+    [string]$ApiKey,
     [Alias("a")]
     [switch]$Activate,
     [Alias("r")]
@@ -125,7 +125,7 @@ if (Test-Path $_EventEnvPath) {
         if ($k -eq 'sorURL'                -and -not $SorUrl) { $SorUrl = $v; $_SorUrlFromFile = $v }
         if ($k -eq 'wxoServiceInstanceURL' -and -not $Url)   { $Url    = $v; $_UrlFromFile = $v }
         if ($k -eq 'wxoAPIKey'             -and -not $ApiKey) {
-            $ApiKey = ConvertTo-SecureString $v -AsPlainText -Force
+            $ApiKey = $v
             $_ApiKeyFromFile = $v
         }
     }
@@ -200,6 +200,7 @@ function Update-SessionPath {
     $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" +
                 [Environment]::GetEnvironmentVariable("Path", "User")
 }
+
 
 function ConvertTo-PlainText([SecureString]$s) {
     $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($s)
@@ -315,10 +316,10 @@ function Resolve-ApiKey {
         if ($script:_ApiKeyFromCli)      { Info "Will use the wxO API key from the command line" }
         elseif ($script:_ApiKeyFromFile) { Info "Will use the wxO API key (wxoAPIKey) from $_EventEnvPath" }
     } elseif ($env:WXO_API_KEY) {
-        $script:ApiKey = ConvertTo-SecureString $env:WXO_API_KEY -AsPlainText -Force
+        $script:ApiKey = $env:WXO_API_KEY
         Info "Will use the wxO API key from the WXO_API_KEY environment variable"
     } else {
-        $script:ApiKey = Read-Host "wxO API key (wxoAPIKey; input hidden)" -AsSecureString
+        $script:ApiKey = ConvertTo-PlainText (Read-Host "wxO API key (wxoAPIKey; input hidden)" -AsSecureString)
     }
 }
 
@@ -346,7 +347,7 @@ if ($Activate) {
     }
     if (-not (Test-EnvRegistered)) { Fail "Environment '$EnvName' is not registered. Run this script without -Activate first." }
     Resolve-ApiKey
-    $plainKey = if ($ApiKey) { ConvertTo-PlainText $ApiKey } else { "" }
+    $plainKey = if ($ApiKey) { $ApiKey } else { "" }
     if (-not $plainKey) { Fail "An API key is required. Pass -ApiKey or enter it when asked." }
     Invoke-Native $Orch @("env", "activate", $EnvName, "-a", $plainKey)
     Ok "Environment '$EnvName' activated"
@@ -415,7 +416,7 @@ if ($Email) {
 }
 if (-not $SorUrl) { $SorUrl = Read-Host "SOR base URL (sorURL; Enter to skip)" }
 Resolve-ApiKey
-if (-not $ApiKey -or ((ConvertTo-PlainText $ApiKey) -eq "")) { Fail "A wxO API key is required: wxoAPIKey is not set in $_EventEnvPath. Pass -ApiKey or enter it when asked." }
+if (-not $ApiKey) { Fail "A wxO API key is required: wxoAPIKey is not set in $_EventEnvPath. Pass -ApiKey or enter it when asked." }
 if (-not $Url) {
     $Url = Read-Host "wxO service instance URL (wxoServiceInstanceURL; Enter to skip if the environment is already registered)"
 }
@@ -558,7 +559,7 @@ Ok "orchestrate CLI runs"
     }
 
     if ($ApiKey) {
-        $plainKey = ConvertTo-PlainText $ApiKey
+        $plainKey = $ApiKey
     } elseif ($env:WXO_API_KEY) {
         $plainKey = $env:WXO_API_KEY
     } else {
