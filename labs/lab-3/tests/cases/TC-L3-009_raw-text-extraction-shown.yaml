@@ -1,0 +1,72 @@
+# TC-L3-009 — Lab 3 Extension D: raw text extraction shown before classify_document
+# Lab: Lab 3 — Agentic Workflow: Document Processing (Warranty Claim)
+# Customer: C-3DBZFE (Marie Smith, Platinum) — receipt_realistic_clean.pdf (CM-367ASU).
+# Covers: AC-L3-8, AC-L3-9, AC-L3-10
+#
+# Expected workflow path:
+#   ua_show_customer [HITL] → ua_wait_callback [HITL] → fetch_baw_pdf
+#   → extract_raw_text (docproc) → ua_show_raw_text [auto-advance, no button]
+#   → classify_document → extract_document_fields → ua_extracted_review [HITL]
+#   → ... → ua_close_oow [HITL] → __end__
+#
+# Status: STUB — pending Extension D implementation.
+
+id: TC-L3-009_raw-text-extraction-shown
+description: "Lab 3 Extension D: extract_raw_text runs after fetch_baw_pdf; ua_show_raw_text auto-advances; full OOW path completes (AC-L3-8, AC-L3-9, AC-L3-10)"
+type: future
+agent: TRI_orchestrator
+precondition_case: TC-UC-00-001-uc04_customer-lookup-for-uc04
+
+known_issues:
+  - "Extension D must be implemented before this case can run."
+  - "ua_show_raw_text is a present-to-user auto-advance node — confirm whether test runner requires a hitl_steps entry."
+  - "Raw text content depends on docproc engine output — confirm expected keywords when first run manually."
+
+input: "Customer has a headset they bought from a reseller — it stopped working and they want warranty."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      "Customer Details": "C-3DBZFE"
+    form_data:
+      "Upload Timing": "immediate"
+
+  - node: ua_wait_callback
+    poll_timeout_s: 60
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      "Customer Upload Status": "confirmed"
+
+  # ua_show_raw_text: auto-advance present-to-user — no button required
+  # Remove this entry if the runner auto-skips present-to-user nodes
+  - node: ua_show_raw_text
+    poll_timeout_s: 120
+    form_data: {}
+
+  - node: ua_extracted_review
+    poll_timeout_s: 60
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data_contains:
+      "Extracted Fields": "Headset"
+    form_data: {}
+
+  - node: ua_close_oow
+    poll_timeout_s: 180
+    expected_form_title: "Close: out of warranty"
+    expected_submit_label: "Close"
+    form_data_contains:
+      "Warranty Claim Result": "PLATINUM"
+    form_data: {}

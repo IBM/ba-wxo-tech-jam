@@ -1,0 +1,40 @@
+# TC-UC-00-001-lab3 — Customer lookup precondition for Lab 3 TC-L3-* tests
+# Use case: UC-00 — Customer identification by customer ID
+#
+# Establishes customer_id=C-48239 (Alex Rivera, Standard) in thread context
+# for Lab 3 Extension C (in-warranty path) test cases.
+#
+# C-48239 data (SOR v.0.32a):
+#   customer_id : C-48239
+#   name        : Alex Rivera
+#   sex         : m (male)
+#   email       : Alex.Rivera@example.com
+#   phone       : 123-456-7890
+#   tier        : Standard
+#   mail        : CM-48239X (warranty card PDF — in-warranty fixture for Lab 3)
+#
+# Note: C-48239 has one SOR order (O-48239X, power supply, 10 days ago).
+# No laptop order → the order agent will return no laptop orders.
+# This is fine — UC-04 only needs customer_id and profile fields in context.
+
+id: TC-UC-00-001-lab3_customer-lookup-for-lab3
+description: "UC-00 context setup for Lab 3: establishes customer_id=C-48239 (Alex Rivera, Standard) in thread context"
+type: dev
+agent: TRI_orchestrator
+
+input: "Look up customer details for customer ID C-48239"
+
+assertions:
+  - contains: "Alex"
+  - contains: "Rivera"
+  - contains: "Standard"
+  - contains: "C-48239"
+
+step_assertions:
+  - agent_called: "Trinity CRM Agent"
+  - tool_called: "TSOR_CRM_get_customer_by_id"
+  - tool_response_contains: "C-48239"
+  - tool_response_contains: "Alex"
+
+known_issues:
+  - "C-48239 has a power supply order only (O-48239X) — no laptop orders. The orchestrator may note this; it does not affect UC-04 routing since the headset is an external purchase."

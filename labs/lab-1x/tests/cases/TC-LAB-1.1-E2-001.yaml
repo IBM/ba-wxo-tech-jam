@@ -1,0 +1,16 @@
+test_id: TC-LAB-1.1-E2-001
+exercise: 2
+phase: checkpoint_after_mcp_connection
+description: Verify MCP catalog tool returns grounded product data
+artifact_to_import: lab-1-1_TRI_order_agent_mcp_complete.yaml
+test_prompt: "Find replacement gaming laptops in the price range $1000–$2000."
+validation:
+  must_contain:
+    - laptop
+    - "$"
+    - price
+  must_not_contain:
+    - "I don't have access"
+    - "I cannot retrieve"
+    - "I'm not sure"
+  response_type: grounded_data

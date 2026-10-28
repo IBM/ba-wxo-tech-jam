@@ -1,0 +1,66 @@
+# TC-L3-007 — Lab 3 Extension B: catalog auto-select (first result confidence = 100)
+# Lab: Lab 3 — Agentic Workflow: Document Processing (Warranty Claim)
+# Customer: C-3DBZFE (Marie Smith, Platinum) — receipt_realistic_clean.pdf (CM-367ASU).
+# Covers: AC-L3-5
+#
+# Expected workflow path:
+#   ua_show_customer [HITL] → upload_timing=immediate → ua_wait_callback [HITL]
+#   → upload_callback=confirmed → fetch_baw_pdf → classify_document (receipt)
+#   → extract_document_fields → ua_extracted_review [HITL]
+#   → lookup_catalog_item (confidence=100 → auto-select, ua_select_catalog_item skipped)
+#   → check_warranty → ... → ua_close_oow [HITL] → __end__
+#
+# Status: STUB — pending Extension B implementation.
+
+id: TC-L3-007_catalog-auto-select
+description: "Lab 3 Extension B: catalog first result confidence=100; ua_select_catalog_item skipped; catalog_item_id passed directly to check_warranty (AC-L3-5)"
+type: future
+agent: TRI_orchestrator
+precondition_case: TC-UC-00-001-uc04_customer-lookup-for-uc04
+
+known_issues:
+  - "Extension B (code block + ua_select_catalog_item branch) must be implemented before this case can run."
+
+input: "Customer has a headset they bought from a reseller — it stopped working and they want warranty."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      "Customer Details": "C-3DBZFE"
+    form_data:
+      "Upload Timing": "immediate"
+
+  - node: ua_wait_callback
+    poll_timeout_s: 60
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      "Customer Upload Status": "confirmed"
+
+  - node: ua_extracted_review
+    poll_timeout_s: 120
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data_contains:
+      "Extracted Fields": "Headset"
+    form_data: {}
+    # NOTE: ua_select_catalog_item must NOT appear — if it does, AC-L3-5 fails.
+
+  - node: ua_close_oow
+    poll_timeout_s: 180
+    expected_form_title: "Close: out of warranty"
+    expected_submit_label: "Close"
+    form_data_contains:
+      "Warranty Claim Result": "PLATINUM"
+    form_data: {}

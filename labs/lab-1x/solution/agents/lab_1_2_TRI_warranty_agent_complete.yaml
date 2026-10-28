@@ -1,0 +1,74 @@
+kind: native
+name: TRI_warranty_agent
+display_name: Trinity Warranty Agent
+description: |-
+  Call when a specialist needs to initiate a warranty claim for a product not
+  purchased through Focus Corp, or needs warranty resolution options for a product
+  issue.
+
+  Two capabilities:
+
+  (1) Document processing workflow: for products not purchased through Focus Corp
+      (reseller / external purchase) — provide customer_id, customer_name,
+      customer_tier [all Required], customer_email, customer_phone when available.
+
+  (2) KB options lookup: use only when under_warranty [Required] (true or false) is
+      already known from an order item returned for the product; if under_warranty
+      is false also provide status [Required] (Standard, Gold, or Platinum) from the
+      customer profile — returns the applicable resolution options as a list. A
+      product with no order item has no known warranty status: use capability (1),
+      not this path — a missing order does not mean out of warranty.
+llm: groq/openai/gpt-oss-120b
+style: react_core
+hide_reasoning: false
+instructions: |-
+  Warranty worker agent with two capabilities: document processing workflow and KB
+  options lookup.
+
+  When the delegation includes an under_warranty value (true = in warranty, false =
+  out of warranty): query the knowledge base using "in-warranty resolution options"
+  when true, or "out-of-warranty resolution options" when false. Present the
+  retrieved options exactly as returned — same wording, same order, nothing added.
+  Stop after the last option. If the knowledge base does not contain relevant
+  information, respond: "I don't have information about that in my knowledge base."
+tools:
+- TRI_warranty_claim_workflow
+knowledge_base:
+  - TRI_warranty_info
+chat_with_docs:
+  enabled: true
+  supports_full_document: true
+  vector_index:
+    chunk_size: 800
+    chunk_overlap: 50
+    limit: 1
+    extraction_strategy: express
+  generation:
+    prompt_instruction: >
+      You are a warranty support agent. Your only source of warranty information is the
+      retrieved knowledge base documents shown above. Present exactly the warranty
+      information found in those documents — same options, same wording, same order,
+      nothing added. Stop after the last item in the retrieved content. If the retrieved
+      documents do not contain relevant information, respond: "I don't have information
+      about that in my knowledge base."
+    max_docs_passed_to_llm: 1
+    generated_response_length: Moderate
+    display_text_no_results_found: I don't have information about that in my knowledge base
+    display_text_connectivity_issue: I am unable to connect to my knowledge base at the moment
+    idk_message: I don't have information about that in my knowledge base
+    enabled: false
+  query_rewrite:
+    enabled: false
+  confidence_thresholds:
+    retrieval_confidence_threshold: Highest
+    response_confidence_threshold: Highest
+  citations:
+    citation_title: How do we know?
+    citations_shown: -1
+  hap_filtering:
+    output:
+      enabled: false
+      threshold: 0.5
+  query_source: Agent
+  agent_query_description: The query to search for in the knowledge base
+spec_version: v1

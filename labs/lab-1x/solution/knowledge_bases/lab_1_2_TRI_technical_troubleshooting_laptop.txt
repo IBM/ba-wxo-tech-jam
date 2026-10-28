@@ -1,0 +1,50 @@
+Technical Troubleshooting Guide
+
+Product Category: Laptop
+
+USB-C Charging Issues
+
+Applies To: Laptops
+
+Symptoms:
+- Laptop does not charge through USB-C
+- Charging indicator does not appear
+- Battery percentage does not increase while connected
+- Laptop only charges intermittently through USB-C
+- USB-C charger is connected but power is not detected
+
+Troubleshooting Steps:
+
+Step 1: Verify Power Adapter Compatibility
+- Confirm the charger supports laptop charging over USB-C
+- The Focus Gamer Z2 requires a USB-C power adapter rated at 150 W (see Focus Power supply 150W, catalog item CI-P23SDW)
+- If available, test with the manufacturer-approved 150 W USB-C power adapter
+- Expected outcome: Compatible charger provides stable power
+
+Step 2: Inspect USB-C Cable and Port
+- Check the USB-C cable for visible damage or loose connectors
+- Try a different USB-C cable that supports power delivery
+- Inspect the laptop USB-C port for dust or debris
+- Clean the port gently with dry compressed air or a soft dry tool
+- Expected outcome: Proper power connection is established
+
+Step 3: Check Power Source
+- Try a different wall outlet
+- Verify the outlet works with another device
+- Remove any intermediate dock or adapter and connect the charger directly
+- Expected outcome: Charger receives stable input power
+
+Step 4: Confirm Charging State
+- Leave the laptop connected for at least 15 minutes
+- Check whether the charging LED or battery icon changes
+- Restart the laptop while connected to power
+- Expected outcome: Charging state is detected after reconnect or restart
+
+Step 5: Reduce Power Demand
+- Disconnect non-essential USB peripherals
+- Close high-power applications
+- If the battery is critically low, leave the laptop closed and charging for 30 minutes
+- Expected outcome: Laptop begins charging when power demand is reduced
+
+End of Troubleshooting Steps.
+These five steps are the complete troubleshooting procedure for USB-C charging issues. No additional steps are needed. If the issue persists after all five steps, escalate to a warranty or hardware repair request.

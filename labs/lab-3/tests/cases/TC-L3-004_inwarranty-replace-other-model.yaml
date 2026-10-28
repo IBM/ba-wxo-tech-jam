@@ -1,0 +1,76 @@
+# TC-L3-004 — Lab 3 Extension C: in-warranty path, select Replace with another model
+# Use case: UC-04 — Warranty claim: headset purchased from a reseller
+# Lab spec: labs/lab-3/specs/LAB-03_warranty-claim-workflow.md § Extension C
+# Covers: AC-L3-4
+#
+# Same HITL chain as TC-L3-001 up to ua_inwarranty_options, then specialist
+# selects "Replace with another model"; workflow takes the default branch
+# (replace_other_model) through process_replace_other_model and converges
+# at iw_deliver_form → __end__.
+#
+# Note: replace_other_model is the iw_branch_3 default condition — it fires
+# whenever the resolution_choice value is not "replace", "gift_certificate",
+# or "refund". The value "replace_other_model" explicitly selects it.
+#
+# ⚠️ SOR dependency: same as TC-L3-001 — C-48239 must have an in-warranty PDF.
+
+id: TC-L3-004_inwarranty-replace-other-model
+description: "Lab 3 Ext B: in-warranty path — specialist selects Replace with another model; routes through process_replace_other_model to iw_deliver_form"
+type: dev
+agent: TRI_orchestrator
+precondition_case: TC-UC-00-001-lab3_customer-lookup-for-lab3
+
+known_issues:
+  - "C-48239 warranty card PDF (CM-48239X) must contain an in-warranty purchase date. If not set up, case routes to ua_close_oow instead of ua_inwarranty_options."
+  - "tool_called: TRI_warranty_claim_workflow not assertable — workflow invocation is inside Warranty Agent turn."
+
+input: "Customer Alex Rivera has a headset they bought from a reseller — it stopped working and they want warranty. Customer ID is C-48239."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      customer_summary: "C-48239"
+    form_data:
+      upload_timing: "immediate"
+    expected_next_form_title: "Wait for customer callback"
+
+  - node: ua_wait_callback
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      upload_callback: "confirmed"
+    poll_timeout_s: 180
+    expected_next_form_title: "Review extracted document fields"
+
+  - node: ua_extracted_review
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data: {}
+    poll_timeout_s: 120
+    expected_next_form_title: "Present in-warranty options"
+
+  - node: ua_inwarranty_options
+    expected_form_title: "Present in-warranty options"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      warranty_status_msg: "PRODUCT IS IN WARRANTY"
+    # Select Replace with another model (default branch in iw_branch_3).
+    form_data:
+      resolution_choice: "replace_other_model"
+    expected_next_form_title: "Deliver final message"
+
+  - node: iw_deliver_form
+    expected_form_title: "Deliver final message"
+    expected_submit_label: "Close Case"
+    form_data: {}

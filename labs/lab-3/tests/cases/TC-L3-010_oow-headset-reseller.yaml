@@ -1,0 +1,91 @@
+# TC-L3-010 — Out-of-warranty path: headset, reseller purchase, OOW
+# Lab: Lab 3 — Agentic Workflow: Document Processing (Warranty Claim)
+# Customer: C-3DBZFE (Marie Smith, Platinum) — Focus Headset Pro 500 (CI-A4WER4),
+#   reseller purchase (no SOR order). Receipt PDF attached in BAW CRM (CM-367ASU).
+#   Purchase date on receipt is > 12 months ago → days_expired > 0 → OOW path.
+# Covers: AC-3, AC-4, AC-L3-OOW (full OOW happy path end-to-end)
+#
+# Expected workflow path:
+#   ua_show_customer [HITL] → upload_timing=immediate → script_set_upload_timing
+#   → branch_upload_timing (Immediate) → script_send_email → ua_wait_callback [HITL]
+#   → upload_callback=confirmed → script_set_callback_outcome
+#   → branch_upload_outcome (Confirmed) → fetch_baw_pdf → classify_document
+#   → extract_document_fields → ua_extracted_review [HITL]
+#   → script_extract_product_name → lookup_catalog_item → script_prepare_warranty_inputs
+#   → check_warranty (days_expired > 0) → parallel_pre_checks (payment + fraud)
+#   → script_capture_results → decisions_warranty_offer → generate_discount_code
+#   → branch_warranty (OOW / default) → script_set_result_oow
+#   → ua_close_oow [HITL] → __end__
+#
+# SOR facts:
+#   Customer C-3DBZFE: Marie Smith, Platinum, credit card ****9012, email Marie.Smith@example.com
+#   Catalog CI-A4WER4: Focus Headset Pro 500, Advanced Noise Cancellation Headset, $150, warranty_period=12 months
+#   Payment: credit card, last 4 = 9012
+#   Fraud risk: runtime-computed — assert tool was called, not specific values
+
+id: TC-L3-010_oow-headset-reseller
+description: "OOW path (C-3DBZFE, Focus Headset Pro 500): full flow — upload confirmed, doc extracted, check_warranty returns OOW, loyalty discount generated, ua_close_oow shown"
+type: dev
+agent: TRI_orchestrator
+precondition_case: TC-UC-00-001-uc04_customer-lookup-for-uc04
+
+known_issues:
+  - "Payment info and fraud risk parallel calls may abort on slow BAW instances — error edges now present; flow continues with N/A values."
+  - "Receipt PDF purchase date must be > 12 months ago to trigger OOW — confirm receipt_realistic_clean.pdf or receipt_expired_warranty.pdf is used for C-3DBZFE."
+
+input: "Customer has a headset they bought from a reseller — it stopped working and they want warranty."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+      - "upload"
+      - "warranty"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+  - tool_called: "TSOR_CRM_get_customer_payment_info_by_customer_id"
+  - tool_called: "TSOR_CRM_evaluate_fraud_risk"
+  - tool_called: "TSOR_Catalog_check_warranty_for_catalog_item_by_purchase_date"
+  - tool_called: "TSOR_Orders_generate_discount_code"
+
+hitl_steps:
+  # Step 1 — Review customer & choose upload timing
+  # C-3DBZFE: Marie Smith, Platinum — verify customer details shown
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      customer_summary: "C-3DBZFE"
+    form_data:
+      upload_timing: "immediate"
+
+  # Step 2 — Wait for customer callback (customer confirms upload)
+  - node: ua_wait_callback
+    poll_timeout_s: 60
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      upload_callback: "confirmed"
+
+  # Step 3 — Review extracted document fields
+  # Specialist confirms extraction of headset product name + purchase date from receipt
+  - node: ua_extracted_review
+    poll_timeout_s: 120
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data_contains:
+      extracted_summary: "Headset"
+    form_data: {}
+
+  # Step 4 — Close out-of-warranty (OOW result with loyalty discount code)
+  # ua_close_oow shows: product name, warranty dates, days expired, discount %, discount code,
+  # payment method (Credit Card ****9012), fraud risk summary
+  - node: ua_close_oow
+    poll_timeout_s: 180
+    expected_form_title: "Close: out of warranty"
+    expected_submit_label: "Close"
+    form_data_contains:
+      msg: "PLATINUM"
+    form_data: {}

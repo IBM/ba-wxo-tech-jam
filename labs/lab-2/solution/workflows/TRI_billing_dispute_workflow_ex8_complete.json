@@ -1,0 +1,3418 @@
+{
+  "spec": {
+    "kind": "flow",
+    "name": "TRI_billing_dispute_workflow",
+    "initiators": [],
+    "description": "No description",
+    "schedulable": true,
+    "display_name": "Trinity Billing Dispute Workflow",
+    "input_schema": {
+      "type": "object",
+      "required": [
+        "order_id",
+        "customer_id",
+        "customer_name",
+        "customer_tier",
+        "reason_for_dispute"
+      ],
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "default": "",
+          "description": "Order ID in format O-*, e.g. O-DF340K"
+        },
+        "customer_id": {
+          "type": "string",
+          "default": "",
+          "description": "Customer ID in format C-*, e.g. C-3DBZFE"
+        },
+        "customer_name": {
+          "type": "string",
+          "default": "",
+          "description": "Full name of the customer, e.g. Marie Smith"
+        },
+        "customer_tier": {
+          "type": "string",
+          "default": "",
+          "description": "Customer loyalty tier (Platinum, Gold, Silver, Bronze, Standard)"
+        },
+        "reason_for_dispute": {
+          "type": "string",
+          "default": "",
+          "description": "Reason for the dispute as stated by the specialist or customer, e.g. \"Duplicate charge for single order\"."
+        }
+      }
+    },
+    "private_schema": {
+      "type": "object",
+      "properties": {
+        "prompts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": ""
+        },
+        "approver": {
+          "type": "string",
+          "format": "wxo-user",
+          "description": ""
+        },
+        "role_label": {
+          "type": "string",
+          "description": ""
+        },
+        "billing_date": {
+          "type": "string",
+          "format": "date",
+          "description": ""
+        },
+        "is_cancelled": {
+          "type": "boolean",
+          "description": ""
+        },
+        "update_status": {
+          "type": "string",
+          "description": ""
+        },
+        "billing_amount": {
+          "type": "number",
+          "description": ""
+        },
+        "billing_status": {
+          "type": "string",
+          "description": ""
+        },
+        "handling_choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "Approve Cancellation",
+            "Reject Cancellation"
+          ],
+          "description": ""
+        },
+        "billing_record_id": {
+          "type": "string",
+          "description": ""
+        },
+        "billing_description": {
+          "type": "string",
+          "description": ""
+        },
+        "is_supervisor_required": {
+          "type": "boolean",
+          "description": ""
+        },
+        "default_handling_choice": {
+          "type": "string",
+          "default": "Reject Cancellation",
+          "description": ""
+        }
+      }
+    },
+    "suppress_agent_summarization": true
+  },
+  "edges": [
+    {
+      "id": "3f92fe97-b0ee-47db-ac9e-4b54e7b5b7d3",
+      "end": "tool_7f7693",
+      "start": "__start__"
+    },
+    {
+      "id": "0552610c-f599-40da-aa08-f25a5d5d11ff",
+      "end": "branch_31494b",
+      "start": "script_f3df4c"
+    },
+    {
+      "id": "92fc61a9-bef4-4d96-be3f-d673f31e7125",
+      "end": "user_flow_622925",
+      "start": "branch_31494b",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "Dispute possible"
+    },
+    {
+      "id": "51f0292e-85e1-4757-875e-8f3006ca1814",
+      "end": "user_flow_e2b98b",
+      "start": "branch_31494b",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "Dispute not possible"
+    },
+    {
+      "id": "c38ce429-7ab9-4e92-bd06-b26488500554",
+      "end": "__end__",
+      "start": "user_flow_e2b98b"
+    },
+    {
+      "id": "ea96a7d0-70a9-4098-84ca-ed0ce9ecc199",
+      "end": "branch_7a884a",
+      "start": "user_flow_622925"
+    },
+    {
+      "id": "c4f93175-c69a-4498-bc12-b60e42eacfa5",
+      "end": "decisions_0c1535",
+      "start": "branch_7a884a",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "Not cancelled"
+    },
+    {
+      "id": "fe0cdd95-147c-4df6-8eda-a4d58b538abe",
+      "end": "8359770b-959c-4c7d-9e0f-f2e7c5365657",
+      "start": "branch_7a884a",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "Cancelled"
+    },
+    {
+      "id": "a632d433-ff9f-4c7e-90af-8178dc79d59e",
+      "end": "__end__",
+      "start": "8359770b-959c-4c7d-9e0f-f2e7c5365657"
+    },
+    {
+      "id": "19abfd6a-70b7-4da4-857e-eb776637dad6",
+      "end": "branch_c2e085",
+      "start": "decisions_0c1535"
+    },
+    {
+      "id": "199845d1-1863-406b-b43c-f0f0e46b0ef2",
+      "end": "script_7b64ca",
+      "start": "branch_c2e085",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "Yes"
+    },
+    {
+      "id": "86989ffa-4bf6-4b83-9e33-cbe1329f5a11",
+      "end": "script_81ade1",
+      "start": "branch_c2e085",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "No"
+    },
+    {
+      "id": "f7b75e0a-fbea-4176-8ea9-631920f550f6",
+      "end": "user_flow_1dbfe3",
+      "start": "script_7b64ca"
+    },
+    {
+      "id": "cea6e4a5-b148-4be8-9d1b-d4ae1dff70dc",
+      "end": "user_flow_f23318",
+      "start": "user_flow_1dbfe3"
+    },
+    {
+      "id": "20ed88cc-f448-4373-a66b-2dbb23bcdeee",
+      "end": "__end__",
+      "start": "user_flow_f23318"
+    },
+    {
+      "id": "9be8e11b-f5fb-4d89-a0f2-c289906d17fc",
+      "end": "user_flow_f23318",
+      "start": "script_81ade1"
+    },
+    {
+      "id": "a3fa9478-d8fd-4125-99ab-ad2ca07746af",
+      "end": "branch_828f3c",
+      "start": "tool_7f7693"
+    },
+    {
+      "id": "20e43910-f972-47d8-bb3d-59b07d58a618",
+      "end": "tool_476c79",
+      "start": "tool_7f7693"
+    },
+    {
+      "id": "ebbfb6a0-45ee-4db9-a327-527637e2563f",
+      "end": "user_flow_9cabde",
+      "start": "tool_476c79"
+    },
+    {
+      "id": "a9827982-1110-4745-b940-96ca30573333",
+      "end": "user_flow_255291",
+      "start": "branch_828f3c",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "Yes"
+    },
+    {
+      "id": "ef991042-6516-4ae7-8d13-797da23fffd8",
+      "end": "b3c58062-f5a3-4cc0-b6b7-844f5d27e0e1",
+      "start": "branch_828f3c",
+      "metadata": {
+        "user_renamed": true
+      },
+      "display_name": "No"
+    },
+    {
+      "id": "be96149d-36ca-4817-b14b-41a83bc64d1e",
+      "end": "script_f3df4c",
+      "start": "b3c58062-f5a3-4cc0-b6b7-844f5d27e0e1"
+    }
+  ],
+  "nodes": {
+    "__end__": {
+      "spec": {
+        "kind": "end",
+        "name": "__end__",
+        "position": {
+          "x": 1130,
+          "y": 4976
+        }
+      }
+    },
+    "__start__": {
+      "spec": {
+        "kind": "start",
+        "name": "__start__",
+        "position": {
+          "x": 1060,
+          "y": 20
+        }
+      }
+    },
+    "tool_476c79": {
+      "spec": {
+        "kind": "tool",
+        "name": "tool_476c79",
+        "tool": "TRI_sor_error_detail",
+        "position": {
+          "x": 1430,
+          "y": 300
+        },
+        "description": "Extract structured error information from a failed SOR tool call.\n\nReceives the implicit error outputs that the platform places on the failure\nbranch of a tool node, relays both inputs directly, parses any SOR-level error\ncode out of the raw detail string, and extracts a specific, human-readable\nsor_error_detail by extracting the first element of message_parameters\nfrom the SOR JSON response body when present.",
+        "display_name": "Extract Tool Error Information",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "error_detail": {
+              "type": "string",
+              "title": "Error Detail",
+              "default": "",
+              "description": "Raw failure detail string including the SOR response body (optional; defaults to empty string if auto-map cannot bind it)."
+            },
+            "error_message": {
+              "type": "string",
+              "title": "Error Message",
+              "default": "",
+              "description": "Generic platform message describing the failure (optional; defaults to empty string if auto-map cannot bind it)."
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "required": [
+            "error_detail",
+            "error_message",
+            "is_domain_error",
+            "sor_error_detail"
+          ],
+          "properties": {
+            "error_detail": {
+              "type": "string",
+              "title": "Error Detail"
+            },
+            "error_message": {
+              "type": "string",
+              "title": "Error Message"
+            },
+            "sor_error_code": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sor Error Code",
+              "default": null
+            },
+            "is_domain_error": {
+              "type": "boolean",
+              "title": "Is Domain Error"
+            },
+            "sor_error_detail": {
+              "type": "string",
+              "title": "Sor Error Detail"
+            }
+          }
+        },
+        "error_handler_config": {
+          "max_retries": 0,
+          "error_message": "Something went wrong while running 'Extract Tool Error Information'",
+          "retry_interval": 1000
+        }
+      },
+      "input_map": {
+        "spec": {
+          "maps": [],
+          "name": "",
+          "fallback_strategy": "ask_the_user"
+        }
+      }
+    },
+    "tool_7f7693": {
+      "spec": {
+        "kind": "tool",
+        "name": "tool_7f7693",
+        "tool": "TRI_TSOR_Billing_get_billing_records_by_order_id_ext",
+        "position": {
+          "x": 1060,
+          "y": 160
+        },
+        "description": "Retrieve all billing records linked to a specific order with a structured status envelope. Use when an order ID is known and the agent or workflow needs to review the billing history for that order with explicit domain error signalling (e.g. branching on result.is_error or result.error_code if the order does not exist). Do NOT call if only a customer ID is available \u2014 use a billing-by-customer tool instead. Returns: result \u2014 is_error (boolean), error_code (string, e.g. \"ORDER_NOT_FOUND\"), error_message (string), and billing_records[] (each with billing_record_id, order_id, billing_date, amount, description, status ordered oldest first / newest last by billing_date).",
+        "display_name": "Get Billing Records",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string",
+              "description": "[Required] Order ID in format O-*, e.g. O-DF340K."
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "result": {
+              "type": "object",
+              "properties": {
+                "is_error": {
+                  "type": "boolean"
+                },
+                "error_code": {
+                  "type": "string"
+                },
+                "error_message": {
+                  "type": "string"
+                },
+                "billing_records": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number",
+                        "format": "double"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "order_id": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "billing_date": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "billing_record_id": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "description": "Billing records ordered by billing_date ascending (oldest first, newest last)."
+                }
+              }
+            }
+          }
+        },
+        "error_handler_config": {
+          "on_error": "branch",
+          "max_retries": 2,
+          "error_edge_id": "20e43910-f972-47d8-bb3d-59b07d58a618",
+          "error_message": "Something went wrong while running 'Get Billing Records'",
+          "retry_interval": 1000
+        }
+      },
+      "input_map": {
+        "spec": {
+          "maps": [],
+          "name": "",
+          "fallback_strategy": "ask_the_user"
+        }
+      }
+    },
+    "branch_31494b": {
+      "spec": {
+        "kind": "branch",
+        "name": "branch_31494b",
+        "position": {
+          "x": 990,
+          "y": 1124
+        },
+        "evaluator": {
+          "conditions": [
+            {
+              "default": false,
+              "edge_id": "92fc61a9-bef4-4d96-be3f-d673f31e7125",
+              "metadata": {
+                "conditions": [
+                  {
+                    "value": "2",
+                    "dataType": "integer",
+                    "operator": ">=",
+                    "variableName": "flow[\"Determine number of active billing records\"].output.number_of_active_billing_records"
+                  }
+                ]
+              },
+              "expression": "flow[\"Determine number of active billing records\"].output.number_of_active_billing_records >= 2"
+            },
+            {
+              "default": true,
+              "edge_id": "51f0292e-85e1-4757-875e-8f3006ca1814",
+              "metadata": {}
+            }
+          ]
+        },
+        "display_name": "Has multiple active billing records?",
+        "match_policy": "FIRST_MATCH"
+      }
+    },
+    "branch_7a884a": {
+      "spec": {
+        "kind": "branch",
+        "name": "branch_7a884a",
+        "position": {
+          "x": 835,
+          "y": 1988
+        },
+        "evaluator": {
+          "conditions": [
+            {
+              "default": false,
+              "edge_id": "c4f93175-c69a-4498-bc12-b60e42eacfa5",
+              "metadata": {
+                "conditions": [
+                  {
+                    "value": "False",
+                    "dataType": "boolean",
+                    "operator": "is",
+                    "variableName": "flow.private.is_cancelled"
+                  }
+                ]
+              },
+              "expression": "flow.private.is_cancelled is False"
+            },
+            {
+              "default": true,
+              "edge_id": "fe0cdd95-147c-4df6-8eda-a4d58b538abe",
+              "metadata": {}
+            }
+          ]
+        },
+        "display_name": "Is cancelled?",
+        "match_policy": "FIRST_MATCH"
+      }
+    },
+    "branch_828f3c": {
+      "spec": {
+        "kind": "branch",
+        "name": "branch_828f3c",
+        "position": {
+          "x": 840,
+          "y": 300
+        },
+        "evaluator": {
+          "conditions": [
+            {
+              "default": false,
+              "edge_id": "a9827982-1110-4745-b940-96ca30573333",
+              "metadata": {
+                "conditions": [
+                  {
+                    "value": "True",
+                    "dataType": "boolean",
+                    "operator": "is",
+                    "variableName": "flow[\"Get Billing Records\"].output.result.is_error"
+                  }
+                ]
+              },
+              "expression": "flow[\"Get Billing Records\"].output.result.is_error is True"
+            },
+            {
+              "default": true,
+              "edge_id": "ef991042-6516-4ae7-8d13-797da23fffd8",
+              "metadata": {}
+            }
+          ]
+        },
+        "display_name": "Is Error?",
+        "match_policy": "FIRST_MATCH"
+      }
+    },
+    "branch_c2e085": {
+      "spec": {
+        "kind": "branch",
+        "name": "branch_c2e085",
+        "position": {
+          "x": 470,
+          "y": 2268
+        },
+        "evaluator": {
+          "conditions": [
+            {
+              "default": false,
+              "edge_id": "199845d1-1863-406b-b43c-f0f0e46b0ef2",
+              "metadata": {
+                "conditions": [
+                  {
+                    "value": "True",
+                    "dataType": "boolean",
+                    "operator": "is",
+                    "variableName": "flow.private.is_supervisor_required"
+                  }
+                ]
+              },
+              "expression": "flow.private.is_supervisor_required is True"
+            },
+            {
+              "default": true,
+              "edge_id": "86989ffa-4bf6-4b83-9e33-cbe1329f5a11",
+              "metadata": {}
+            }
+          ]
+        },
+        "display_name": "Supervisor required?",
+        "match_policy": "FIRST_MATCH"
+      }
+    },
+    "script_7b64ca": {
+      "spec": {
+        "fn": "# Lab simplification: route the supervisor activity back to the flow initiator\n# so the same participant can act as supervisor during the lab.\n# In a real deployment, resolve the supervisor's email address instead:\n#   flow.private.approver = system.user.search_by_email(\"supervisor@focuscorp.com\")\ncurrent_email = system.context.get_variable('wxo_email_id')\nflow.private.approver = system.user.search_by_email(current_email)",
+        "kind": "script",
+        "name": "script_7b64ca",
+        "position": {
+          "x": 320,
+          "y": 2408
+        },
+        "display_name": "Set Approver - Supervisor"
+      }
+    },
+    "script_81ade1": {
+      "spec": {
+        "fn": "current_email = system.context.get_variable('wxo_email_id')\nflow.private.approver = system.user.search_by_email(current_email)",
+        "kind": "script",
+        "name": "script_81ade1",
+        "position": {
+          "x": 760,
+          "y": 2680
+        },
+        "display_name": "Set Approver - Specialist"
+      }
+    },
+    "script_f3df4c": {
+      "spec": {
+        "fn": "# The tool's response is wrapped in a \"result\" object that also carries is_error\nresult = flow['Get Billing Records'].output.result\n\n# Fall back to an empty list if no billing records are returned (e.g. empty or missing list)\nbilling_records = result.billing_records or []\n\n# Count the records whose status is \"active\"; an empty list yields 0\nself.output.number_of_active_billing_records = sum(\n    1 for record in billing_records if record.get(\"status\") == \"active\"\n)",
+        "kind": "script",
+        "name": "script_f3df4c",
+        "position": {
+          "x": 990,
+          "y": 984
+        },
+        "display_name": "Determine number of active billing records",
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "number_of_active_billing_records": {
+              "type": "integer",
+              "description": ""
+            }
+          }
+        }
+      }
+    },
+    "decisions_0c1535": {
+      "spec": {
+        "kind": "decisions",
+        "name": "decisions_0c1535",
+        "rules": [
+          {
+            "actions": [
+              {
+                "value": false,
+                "variable": "flow.private.is_supervisor_required",
+                "column_id": "action_121ef7"
+              },
+              {
+                "value": "specialist",
+                "variable": "flow.private.role_label",
+                "column_id": "action_aa3dca"
+              }
+            ],
+            "conditions": [
+              {
+                "value": "== \"Standard\"",
+                "variable": "flow.input.customer_tier",
+                "column_id": "condition_21d6f3"
+              },
+              {
+                "value": "<= 200",
+                "variable": "flow.private.billing_amount",
+                "column_id": "condition_29e382"
+              }
+            ]
+          },
+          {
+            "actions": [
+              {
+                "value": false,
+                "variable": "flow.private.is_supervisor_required",
+                "column_id": "action_121ef7"
+              },
+              {
+                "value": "specialist",
+                "variable": "flow.private.role_label",
+                "column_id": "action_aa3dca"
+              }
+            ],
+            "conditions": [
+              {
+                "value": "== \"Bronze\"",
+                "variable": "flow.input.customer_tier",
+                "column_id": "condition_21d6f3"
+              },
+              {
+                "value": "<= 300",
+                "variable": "flow.private.billing_amount",
+                "column_id": "condition_29e382"
+              }
+            ]
+          },
+          {
+            "actions": [
+              {
+                "value": false,
+                "variable": "flow.private.is_supervisor_required",
+                "column_id": "action_121ef7"
+              },
+              {
+                "value": "specialist",
+                "variable": "flow.private.role_label",
+                "column_id": "action_aa3dca"
+              }
+            ],
+            "conditions": [
+              {
+                "value": "== \"Silver\"",
+                "variable": "flow.input.customer_tier",
+                "column_id": "condition_21d6f3"
+              },
+              {
+                "value": "<= 400",
+                "variable": "flow.private.billing_amount",
+                "column_id": "condition_29e382"
+              }
+            ]
+          },
+          {
+            "actions": [
+              {
+                "value": false,
+                "variable": "flow.private.is_supervisor_required",
+                "column_id": "action_121ef7"
+              },
+              {
+                "value": "specialist",
+                "variable": "flow.private.role_label",
+                "column_id": "action_aa3dca"
+              }
+            ],
+            "conditions": [
+              {
+                "value": "== \"Gold\"",
+                "variable": "flow.input.customer_tier",
+                "column_id": "condition_21d6f3"
+              },
+              {
+                "value": "<= 500",
+                "variable": "flow.private.billing_amount",
+                "column_id": "condition_29e382"
+              }
+            ]
+          },
+          {
+            "actions": [
+              {
+                "value": false,
+                "variable": "flow.private.is_supervisor_required",
+                "column_id": "action_121ef7"
+              },
+              {
+                "value": "specialist",
+                "variable": "flow.private.role_label",
+                "column_id": "action_aa3dca"
+              }
+            ],
+            "conditions": [
+              {
+                "value": "== \"Platinum\"",
+                "variable": "flow.input.customer_tier",
+                "column_id": "condition_21d6f3"
+              },
+              {
+                "value": "<= 1000",
+                "variable": "flow.private.billing_amount",
+                "column_id": "condition_29e382"
+              }
+            ]
+          }
+        ],
+        "position": {
+          "x": 470,
+          "y": 2128
+        },
+        "display_name": "Determine Required Approval Level",
+        "default_actions": {
+          "flow.private.role_label": "supervisor",
+          "flow.private.is_supervisor_required": true
+        },
+        "decisionTableColumns": [
+          {
+            "variable": "flow.input.customer_tier",
+            "column_id": "condition_21d6f3",
+            "display_name": "Tier"
+          },
+          {
+            "variable": "flow.private.billing_amount",
+            "column_id": "condition_29e382",
+            "display_name": "Amount"
+          },
+          {
+            "variable": "flow.private.is_supervisor_required",
+            "column_id": "action_121ef7",
+            "display_name": "Supervisor required"
+          },
+          {
+            "variable": "flow.private.role_label",
+            "column_id": "action_aa3dca",
+            "display_name": "Role label"
+          }
+        ]
+      }
+    },
+    "user_flow_1dbfe3": {
+      "spec": {
+        "kind": "user_flow",
+        "name": "user_flow_1dbfe3",
+        "label": "Specialist Message",
+        "metadata": {
+          "ui:generated_name": true
+        },
+        "position": {
+          "x": 300,
+          "y": 2598
+        },
+        "dimensions": {
+          "width": 286,
+          "height": 294
+        },
+        "initiators": [],
+        "display_name": "Specialist Message",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "wxo-user"
+              }
+            }
+          }
+        },
+        "assignment_policy": "data_map"
+      },
+      "edges": [
+        {
+          "id": "1a8a4e5b-2fa1-4ee2-916b-62817641d324",
+          "end": "user_c301ae",
+          "start": "user_flow_1dbfe3__start__"
+        },
+        {
+          "id": "d0df145a-3c98-49a9-8ef3-555f36e99054",
+          "end": "user_flow_1dbfe3__end__",
+          "start": "user_c301ae"
+        }
+      ],
+      "nodes": {
+        "user_c301ae": {
+          "spec": {
+            "kind": "user",
+            "name": "user_c301ae",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_b91564",
+                "text": "### The disputed amount of ${flow.private.billing_amount} exceeds the direct approval limit for this customer tier.\n\n**Actions:**                    \n1. Let the customer know that this request requires a **supervisor review**.                    \n2. Resolution is expected within **5 business days** when Customer Support will reach out with next steps.                    \n3. Thank the customer for calling Focus Corp and ask if there are any other topics they would like to discuss today.",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_b91564": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 20,
+              "y": 104
+            },
+            "display_name": "Supervisor Hand-Off Instructions"
+          }
+        },
+        "user_flow_1dbfe3__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "user_flow_1dbfe3__end__",
+            "position": {
+              "x": 20,
+              "y": 244
+            }
+          }
+        },
+        "user_flow_1dbfe3__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "user_flow_1dbfe3__start__",
+            "position": {
+              "x": 20,
+              "y": -16
+            }
+          }
+        }
+      },
+      "schemas": {},
+      "input_map": {
+        "spec": {
+          "maps": [
+            {
+              "metadata": {
+                "assignmentType": "variable"
+              },
+              "has_no_value": false,
+              "target_variable": "self.input.assignees",
+              "value_expression": "flow.private.approver"
+            }
+          ],
+          "name": ""
+        }
+      }
+    },
+    "user_flow_255291": {
+      "spec": {
+        "kind": "user_flow",
+        "name": "user_flow_255291",
+        "label": "User activity 1",
+        "metadata": {},
+        "position": {
+          "x": 670,
+          "y": 560
+        },
+        "dimensions": {
+          "width": 286,
+          "height": 294
+        },
+        "initiators": [],
+        "display_name": "Display Error to Specialist",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "wxo-user"
+              }
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "9e6b534e-de9a-405d-85de-48bde5b3759a",
+          "end": "user_09bb40",
+          "start": "user_flow_255291__start__"
+        },
+        {
+          "id": "a32494a5-16ce-4ae9-96c8-e37c6d65cdd4",
+          "end": "user_flow_255291__end__",
+          "start": "user_09bb40"
+        }
+      ],
+      "nodes": {
+        "user_09bb40": {
+          "spec": {
+            "kind": "user",
+            "name": "user_09bb40",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_bb9a03",
+                "text": "## Domain error\n\n**Error code:** {flow[\"Get Billing Records\"].output.result.error_code}        \n**Error message:** {flow[\"Get Billing Records\"].output.result.error_message}",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_bb9a03": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 20,
+              "y": 104
+            },
+            "display_name": "Error ocurred"
+          }
+        },
+        "user_flow_255291__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "user_flow_255291__end__",
+            "position": {
+              "x": 20,
+              "y": 244
+            }
+          }
+        },
+        "user_flow_255291__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "user_flow_255291__start__",
+            "position": {
+              "x": 20,
+              "y": -16
+            }
+          }
+        }
+      },
+      "schemas": {}
+    },
+    "user_flow_622925": {
+      "spec": {
+        "kind": "user_flow",
+        "name": "user_flow_622925",
+        "label": "Specialist to Select Disputed Record",
+        "metadata": {
+          "ui:generated_name": true
+        },
+        "position": {
+          "x": 675,
+          "y": 1314
+        },
+        "dimensions": {
+          "width": 566,
+          "height": 614
+        },
+        "initiators": [],
+        "display_name": "Specialist to Select Disputed Record",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "wxo-user"
+              }
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "a10d8167-a2d2-4ad3-b56b-3f41166cd3c7",
+          "end": "user_b67047",
+          "start": "user_flow_622925__start__"
+        },
+        {
+          "id": "42550636-7076-40b2-934f-225573cf3a31",
+          "end": "script_7040f4",
+          "start": "user_b67047"
+        },
+        {
+          "id": "c7ad956b-c99a-4498-86b7-1c2fa141b879",
+          "end": "user_flow_622925__end__",
+          "start": "script_7040f4"
+        },
+        {
+          "id": "35e7d02f-285c-43a5-ab0e-461801f0ca05",
+          "end": "script_5d8270",
+          "start": "user_b67047"
+        },
+        {
+          "id": "bc97aa10-5e3b-41dd-bb43-691a59a9fe8e",
+          "end": "user_126d63",
+          "start": "script_5d8270"
+        },
+        {
+          "id": "709e5fee-b4d1-406b-a8f1-906b15aed2db",
+          "end": "user_flow_622925__end__",
+          "start": "user_126d63"
+        }
+      ],
+      "nodes": {
+        "user_126d63": {
+          "spec": {
+            "kind": "user",
+            "name": "user_126d63",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_5a8872",
+                "text": "You choose to cancel creating a billing dispute.\n\n**Actions:**                    \n1. Inform the customer that **no billing dispute** was created.                    \n2. Thank the customer for calling Focus Corp and ask if there are any other topics they would like to discuss today.",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_5a8872": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 300,
+              "y": 424
+            },
+            "display_name": "Inform specialist"
+          }
+        },
+        "user_b67047": {
+          "spec": {
+            "form": {
+              "name": "form_bef055",
+              "label": "Select Billing Record to be Disputed",
+              "fields": [
+                {
+                  "kind": "text",
+                  "name": "field_1",
+                  "text": "**Customer reason for dispute:* {flow.input.reason_for_dispute}",
+                  "uiSchema": {
+                    "ui:title": "Message 1",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 1",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "any",
+                  "name": "field_2",
+                  "label": "Billing Records",
+                  "metadata": {
+                    "builderui:columnOrder": [
+                      "billing_date",
+                      "status",
+                      "amount",
+                      "description",
+                      "order_id",
+                      "billing_record_id"
+                    ]
+                  },
+                  "uiSchema": {
+                    "ui:title": "Billing Records",
+                    "ui:widget": "Table",
+                    "ui:options": {
+                      "label": false
+                    },
+                    "ui:placeholder": "Select an option"
+                  },
+                  "direction": "input",
+                  "input_map": {
+                    "spec": {
+                      "maps": [
+                        {
+                          "metadata": {
+                            "assignmentType": "automap"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.default"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.choices",
+                          "value_expression": "flow[\"Get Billing Records\"].output.result.billing_records"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": true,
+                          "target_variable": "self.input.display_text",
+                          "value_expression": ""
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.display_items",
+                          "value_expression": "[\"item.billing_date\",\"item.status\",\"item.amount\",\"item.description\"]"
+                        }
+                      ],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Billing Records",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "choices"
+                    ],
+                    "properties": {
+                      "choices": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "default": {},
+                      "display_text": {
+                        "type": "string"
+                      },
+                      "display_items": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "output_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "text",
+                  "name": "field_3",
+                  "text": "**Actions:**\n1. **Identify and select** the billing record the customer wants to dispute.\n2. Either click **Continue** or **Cancel** to proceed.",
+                  "uiSchema": {
+                    "ui:title": "Message 2",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 2",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                }
+              ],
+              "buttons": [
+                {
+                  "kind": "submit",
+                  "name": "submit",
+                  "edge_id": "42550636-7076-40b2-934f-225573cf3a31",
+                  "visible": true,
+                  "display_name": "Continue"
+                },
+                {
+                  "kind": "cancel",
+                  "name": "cancel",
+                  "edge_id": "35e7d02f-285c-43a5-ab0e-461801f0ca05",
+                  "visible": true,
+                  "display_name": "Cancel"
+                }
+              ],
+              "jsonSchema": {
+                "type": "object",
+                "required": [
+                  "field_2"
+                ],
+                "properties": {
+                  "field_1": {
+                    "type": "string",
+                    "title": "Message 1"
+                  },
+                  "field_2": {
+                    "type": "object",
+                    "title": "Billing Records (Required)",
+                    "properties": {
+                      "amount": {
+                        "type": "string",
+                        "title": "Amount"
+                      },
+                      "status": {
+                        "type": "string",
+                        "title": "Status"
+                      },
+                      "order_id": {
+                        "type": "string",
+                        "title": "Order id"
+                      },
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "billing_date": {
+                        "type": "string",
+                        "title": "Billing date"
+                      },
+                      "billing_record_id": {
+                        "type": "string",
+                        "title": "Billing record id"
+                      }
+                    }
+                  },
+                  "field_3": {
+                    "type": "string",
+                    "title": "Message 2"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "display_name": "Select Billing Record to be Disputed"
+            },
+            "kind": "user",
+            "name": "user_b67047",
+            "fields": [],
+            "owners": [],
+            "metadata": {
+              "ui:generated_name": true
+            },
+            "position": {
+              "x": 160,
+              "y": 104
+            },
+            "display_name": "Select Billing Record to be Disputed"
+          }
+        },
+        "script_5d8270": {
+          "spec": {
+            "fn": "# Mark this path as cancelled\nflow.private.is_cancelled = True",
+            "kind": "script",
+            "name": "script_5d8270",
+            "position": {
+              "x": 300,
+              "y": 284
+            },
+            "display_name": "Set Cancelled"
+          }
+        },
+        "script_7040f4": {
+          "spec": {
+            "fn": "# Mark this path as not cancelled\nflow.private.is_cancelled = False\n\n# Read the row the specialist selected from the billing records table\nselected = flow[\"Specialist to Select Disputed Record\"][\"Select Billing Record to be Disputed\"].output[\"Billing Records\"]\n\n# Store individual fields as flow variables so the Decision node can read them\nflow.private.billing_amount = selected.amount\nflow.private.billing_date = selected.billing_date\nflow.private.billing_description = selected.description\nflow.private.billing_record_id = selected.billing_record_id\nflow.private.billing_status = selected.status",
+            "kind": "script",
+            "name": "script_7040f4",
+            "position": {
+              "x": 20,
+              "y": 424
+            },
+            "display_name": "Set Not Cancelled & Selected Entry Values"
+          }
+        },
+        "user_flow_622925__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "user_flow_622925__end__",
+            "position": {
+              "x": 160,
+              "y": 564
+            }
+          }
+        },
+        "user_flow_622925__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "user_flow_622925__start__",
+            "position": {
+              "x": 160,
+              "y": -16
+            }
+          }
+        }
+      },
+      "schemas": {}
+    },
+    "user_flow_9cabde": {
+      "spec": {
+        "kind": "user_flow",
+        "name": "user_flow_9cabde",
+        "label": "User activity 1",
+        "metadata": {},
+        "position": {
+          "x": 1270,
+          "y": 490
+        },
+        "dimensions": {
+          "width": 566,
+          "height": 434
+        },
+        "initiators": [],
+        "display_name": "Display Error Information",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "wxo-user"
+              }
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "fd181e6f-1894-4090-9c49-d2a9eb40de9d",
+          "end": "branch_d4eab6",
+          "start": "user_flow_9cabde__start__"
+        },
+        {
+          "id": "7bcb369d-20c6-4bf1-98a2-d7282eea7938",
+          "end": "user_aa58c6",
+          "start": "branch_d4eab6",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Domain"
+        },
+        {
+          "id": "89e20215-2ea4-4a16-ae38-d42215948eaa",
+          "end": "user_e6a58a",
+          "start": "branch_d4eab6",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Infrastructure"
+        },
+        {
+          "id": "a471d05f-a7a9-485d-b4e0-9d4941ab5513",
+          "end": "user_flow_9cabde__end__",
+          "start": "user_e6a58a"
+        },
+        {
+          "id": "de9df4e2-2d7c-4f2e-ae45-b607b78d7253",
+          "end": "user_flow_9cabde__end__",
+          "start": "user_aa58c6"
+        }
+      ],
+      "nodes": {
+        "user_aa58c6": {
+          "spec": {
+            "kind": "user",
+            "name": "user_aa58c6",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_c5a3c7",
+                "text": "## Domain Error           \n**General error message:** {flow[\"Extract Tool Error Information\"].output.error_message}          \n**SOR domain error code:** {flow[\"Extract Tool Error Information\"].output.sor_error_code}          \n**SOR error details:** {flow[\"Extract Tool Error Information\"].output.sor_error_detail}          \n**General error details:** {flow[\"Extract Tool Error Information\"].output.error_detail}",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_c5a3c7": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 300,
+              "y": 244
+            },
+            "display_name": "Domain Error"
+          }
+        },
+        "user_e6a58a": {
+          "spec": {
+            "kind": "user",
+            "name": "user_e6a58a",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_e4511e",
+                "text": "## Infrastructure Error\n\n**General error message:** {flow[\"Extract Tool Error Information\"].output.error_message}          \n**SOR error details:** {flow[\"Extract Tool Error Information\"].output.sor_error_detail}            \n**General error details:** {flow[\"Extract Tool Error Information\"].output.error_detail}          \n",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_e4511e": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 20,
+              "y": 244
+            },
+            "display_name": "Infrastructure Error"
+          }
+        },
+        "branch_d4eab6": {
+          "spec": {
+            "kind": "branch",
+            "name": "branch_d4eab6",
+            "position": {
+              "x": 160,
+              "y": 104
+            },
+            "evaluator": {
+              "conditions": [
+                {
+                  "default": false,
+                  "edge_id": "7bcb369d-20c6-4bf1-98a2-d7282eea7938",
+                  "metadata": {
+                    "conditions": [
+                      {
+                        "value": "True",
+                        "dataType": "boolean",
+                        "operator": "is",
+                        "variableName": "flow[\"Extract Tool Error Information\"].output.is_domain_error"
+                      }
+                    ]
+                  },
+                  "expression": "flow[\"Extract Tool Error Information\"].output.is_domain_error is True"
+                },
+                {
+                  "default": true,
+                  "edge_id": "89e20215-2ea4-4a16-ae38-d42215948eaa",
+                  "metadata": {}
+                }
+              ]
+            },
+            "display_name": "Failure type?",
+            "match_policy": "FIRST_MATCH"
+          }
+        },
+        "user_flow_9cabde__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "user_flow_9cabde__end__",
+            "position": {
+              "x": 160,
+              "y": 384
+            }
+          }
+        },
+        "user_flow_9cabde__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "user_flow_9cabde__start__",
+            "position": {
+              "x": 160,
+              "y": -16
+            }
+          }
+        }
+      },
+      "schemas": {}
+    },
+    "user_flow_e2b98b": {
+      "spec": {
+        "kind": "user_flow",
+        "name": "user_flow_e2b98b",
+        "label": "Inform Specialist Dispute Not Possible",
+        "metadata": {
+          "ui:generated_name": true
+        },
+        "position": {
+          "x": 1485,
+          "y": 3792
+        },
+        "dimensions": {
+          "width": 286,
+          "height": 334
+        },
+        "initiators": [],
+        "display_name": "Inform Specialist Dispute Not Possible",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "wxo-user"
+              }
+            }
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "f92aa59b-0c42-4ebe-b3a9-9295cba07c47",
+          "end": "user_147be4",
+          "start": "user_flow_e2b98b__start__"
+        },
+        {
+          "id": "effb5b58-37e3-411b-98ba-0d40c4492542",
+          "end": "user_flow_e2b98b__end__",
+          "start": "user_147be4"
+        }
+      ],
+      "nodes": {
+        "user_147be4": {
+          "spec": {
+            "form": {
+              "name": "form_eec69f",
+              "label": "Inform Specialist Dispute Not Possible",
+              "fields": [
+                {
+                  "kind": "array",
+                  "name": "field_1",
+                  "label": "Billing Records",
+                  "metadata": {},
+                  "uiSchema": {
+                    "ui:title": "Billing Records",
+                    "ui:widget": "Table",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.choices",
+                          "value_expression": "flow[\"Get Billing Records\"].output.result.billing_records"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.display_items",
+                          "value_expression": "[\"item.amount\",\"item.status\",\"item.order_id\",\"item.description\",\"item.billing_date\",\"item.billing_record_id\"]"
+                        }
+                      ],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Billing Records",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "choices"
+                    ],
+                    "properties": {
+                      "choices": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "display_items": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "text",
+                  "name": "field_2",
+                  "text": "At least two active billing records are required to create a billing dispute.\n\n**Actions:**          \n1. Inform the customer that a **dispute is not possible** as at least two active billing records are required.          \n2. Thank the customer for calling Focus Corp and ask if there are any other topics they would like to discuss today.",
+                  "uiSchema": {
+                    "ui:title": "Message 1",
+                    "ui:widget": "DataWidget",
+                    "ui:options": {
+                      "label": false
+                    }
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Message 1",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                }
+              ],
+              "buttons": [
+                {
+                  "kind": "submit",
+                  "name": "submit",
+                  "edge_id": "effb5b58-37e3-411b-98ba-0d40c4492542",
+                  "visible": true,
+                  "display_name": "Complete"
+                },
+                {
+                  "kind": "cancel",
+                  "name": "cancel",
+                  "visible": false,
+                  "display_name": "Cancel"
+                }
+              ],
+              "jsonSchema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "field_1": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Billing Records",
+                    "properties": {}
+                  },
+                  "field_2": {
+                    "type": "string",
+                    "title": "Message 1"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "display_name": "Inform Specialist Dispute Not Possible"
+            },
+            "kind": "user",
+            "name": "user_147be4",
+            "fields": [],
+            "owners": [],
+            "metadata": {
+              "ui:generated_name": true
+            },
+            "position": {
+              "x": 20,
+              "y": 104
+            },
+            "display_name": "Inform Specialist Dispute Not Possible"
+          }
+        },
+        "user_flow_e2b98b__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "user_flow_e2b98b__end__",
+            "position": {
+              "x": 20,
+              "y": 284
+            }
+          }
+        },
+        "user_flow_e2b98b__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "user_flow_e2b98b__start__",
+            "position": {
+              "x": 20,
+              "y": -16
+            }
+          }
+        }
+      },
+      "schemas": {}
+    },
+    "user_flow_f23318": {
+      "spec": {
+        "kind": "user_flow",
+        "name": "user_flow_f23318",
+        "label": "Handler Review",
+        "metadata": {
+          "ui:generated_name": true
+        },
+        "position": {
+          "x": 20,
+          "y": 3002
+        },
+        "dimensions": {
+          "width": 1146,
+          "height": 1914
+        },
+        "initiators": [],
+        "display_name": "Handler Review",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "assignees": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "wxo-user"
+              }
+            }
+          }
+        },
+        "assignment_policy": "data_map"
+      },
+      "edges": [
+        {
+          "id": "ed2aa422-8a6b-43d1-b46f-e830ca2e9763",
+          "end": "branch_cc42db",
+          "start": "user_flow_f23318__start__"
+        },
+        {
+          "id": "cacf6fe4-eb98-402a-88b8-9965e2dbf1bf",
+          "end": "user_680556",
+          "start": "branch_cc42db",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Yes"
+        },
+        {
+          "id": "025ec026-e50f-4ed6-abbe-a0f103ea1d25",
+          "end": "96fe6d29-c98e-4d7a-921a-afbaf7801608",
+          "start": "branch_cc42db",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "No"
+        },
+        {
+          "id": "e0919372-408f-4d33-95c7-864fe214c817",
+          "end": "user_7470fd",
+          "start": "96fe6d29-c98e-4d7a-921a-afbaf7801608"
+        },
+        {
+          "id": "04a7cc88-d9f2-4539-876b-b6b253759e38",
+          "end": "user_7470fd",
+          "start": "user_680556"
+        },
+        {
+          "id": "fcd85f0d-96a2-4c41-8a9f-f2a07dad639a",
+          "end": "script_7aabb9",
+          "start": "user_7470fd"
+        },
+        {
+          "id": "aeb42347-d599-4e7e-817f-c3e19432f05b",
+          "end": "user_edb6ac",
+          "start": "agent_f4e9ee"
+        },
+        {
+          "id": "11466724-74ec-44f9-af9c-912a89d9fbfb",
+          "end": "user_7470fd",
+          "start": "user_edb6ac"
+        },
+        {
+          "id": "e08b90f0-57ea-4df2-989f-9e6ffff36b58",
+          "end": "script_b66cdf",
+          "start": "user_7470fd"
+        },
+        {
+          "id": "0f622f47-80fa-4e93-942a-dde22cf1bc6c",
+          "end": "branch_0bb076",
+          "start": "user_54fe04"
+        },
+        {
+          "id": "c0d64086-00bb-480c-9693-2eea1779eb4a",
+          "end": "script_058cb1",
+          "start": "branch_0bb076",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Yes"
+        },
+        {
+          "id": "ce25a74a-d698-47ba-95b3-d85282c707f4",
+          "end": "script_30f4de",
+          "start": "branch_0bb076",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "No"
+        },
+        {
+          "id": "45359016-6094-4685-aa4a-f079a4028e22",
+          "end": "tool_f36046",
+          "start": "script_30f4de"
+        },
+        {
+          "id": "9086bf6f-ee44-4ba6-bc38-66fd3d1215f2",
+          "end": "tool_f36046",
+          "start": "script_058cb1"
+        },
+        {
+          "id": "f541b67f-a681-4465-ac63-eac3b6c0509d",
+          "end": "agent_f4e9ee",
+          "start": "script_7aabb9"
+        },
+        {
+          "id": "2f03cf80-41f3-48ed-bc9a-0fa3945ad0b6",
+          "end": "user_54fe04",
+          "start": "script_b66cdf"
+        },
+        {
+          "id": "76d847d3-bf62-414d-87b5-a6fe614b033d",
+          "end": "user_e9cd64",
+          "start": "prompt_54cae4"
+        },
+        {
+          "id": "a2c5c157-0bb4-4008-8720-de71599d8de1",
+          "end": "user_flow_f23318__end__",
+          "start": "user_e9cd64"
+        },
+        {
+          "id": "f503247b-f062-43c9-b4ac-3fa49b728770",
+          "end": "branch_9d24cf",
+          "start": "tool_f36046"
+        },
+        {
+          "id": "40bddef5-e35d-46b8-90ce-c3f1a294ec1b",
+          "end": "user_0ba139",
+          "start": "branch_9d24cf",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Yes"
+        },
+        {
+          "id": "878d1cf0-1301-4400-8556-08a68f744229",
+          "end": "prompt_54cae4",
+          "start": "branch_9d24cf",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "No"
+        },
+        {
+          "id": "0756f646-e0fe-40b7-8c5e-29c00a3843f1",
+          "end": "tool_fbd26b",
+          "start": "tool_f36046"
+        },
+        {
+          "id": "96cf77b4-ae00-4ffd-b7e4-cae981e34614",
+          "end": "branch_952f4e",
+          "start": "tool_fbd26b"
+        },
+        {
+          "id": "31b210e4-7bcf-4d7b-ba8d-3e8e93503776",
+          "end": "prompt_54cae4",
+          "start": "branch_952f4e",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "Yes"
+        },
+        {
+          "id": "535ce1c5-d7c5-4cbb-a4a1-c5d1a2641602",
+          "end": "tool_f36046",
+          "start": "branch_952f4e",
+          "metadata": {
+            "user_renamed": true
+          },
+          "display_name": "No"
+        }
+      ],
+      "nodes": {
+        "tool_f36046": {
+          "spec": {
+            "kind": "tool",
+            "name": "tool_f36046",
+            "tool": "TRI_TSOR_Billing_update_billing_record_status_description",
+            "position": {
+              "x": 675,
+              "y": 1164
+            },
+            "description": "Update the status and human-readable description of a billing record to record the outcome of a billing dispute. Use when a billing dispute has been resolved or escalated and the record must be annotated with a new status and explanation. Do NOT call before supervisor approval is confirmed \u2014 this is a write operation; only the workflow should invoke it after the HITL gate has passed. Returns: billing_record_update_status \u2014 on success: billing_record (updated record); on domain failure (HTTP 200): is_error (boolean), error_code and error_message.",
+            "display_name": "Update billing record",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "in": "body",
+                  "type": "string",
+                  "description": "[Required] New status value. Valid values: \"active\", \"paid\", \"overdue\", \"cancelled\", \"disputed\", \"refunded\", \"resolved-rejected\", \"resolved-cancelled\"."
+                },
+                "description": {
+                  "in": "body",
+                  "type": "string",
+                  "description": "[Required] Human-readable description of the billing action taken, e.g. \"Dispute opened \u2014 duplicate charge for order O-DF340K\"."
+                },
+                "billing_record_id": {
+                  "in": "body",
+                  "type": "string",
+                  "description": "[Required] Billing record ID to update, in format B-*, e.g. B-TDDU12."
+                }
+              }
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "billing_record_update_status": {
+                  "type": "object",
+                  "properties": {
+                    "is_error": {
+                      "type": "boolean"
+                    },
+                    "error_code": {
+                      "type": "string"
+                    },
+                    "error_message": {
+                      "type": "string"
+                    },
+                    "billing_record": {
+                      "type": "object",
+                      "properties": {
+                        "amount": {
+                          "type": "number",
+                          "format": "double"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "order_id": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "billing_date": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "billing_record_id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "error_handler_config": {
+              "on_error": "branch",
+              "max_retries": 0,
+              "error_edge_id": "0756f646-e0fe-40b7-8c5e-29c00a3843f1",
+              "error_message": "Something went wrong while running 'Update billing record'",
+              "retry_interval": 1000
+            }
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.status",
+                  "value_expression": "flow.private.update_status"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.description",
+                  "value_expression": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output.Reason"
+                },
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.billing_record_id",
+                  "value_expression": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Billing Records\"].billing_record_id"
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "tool_fbd26b": {
+          "spec": {
+            "kind": "tool",
+            "name": "tool_fbd26b",
+            "tool": "TRI_TSOR_Billing_get_billing_record_by_id",
+            "position": {
+              "x": 880,
+              "y": 1336
+            },
+            "description": "Retrieve a single billing record by its billing record ID. Use when a specific billing record ID (format B-*) is known and the full record details are needed. Do NOT call if only an order ID is available \u2014 use get_billing_records_by_order_id_ext instead. Returns: billing_record with billing_record_id, order_id, billing_date, amount, description, status.",
+            "display_name": "Check Billing Record Status",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "billing_record_id": {
+                  "in": "body",
+                  "type": "string",
+                  "description": "[Required] Billing record ID in format B-*, e.g. B-QP23SD."
+                }
+              }
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "billing_record": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "order_id": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "billing_date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "billing_record_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "error_handler_config": {
+              "max_retries": 0,
+              "error_message": "Something went wrong while running 'Check Billing Record Status'",
+              "retry_interval": 1000
+            }
+          },
+          "input_map": {
+            "spec": {
+              "maps": [
+                {
+                  "metadata": {
+                    "assignmentType": "variable"
+                  },
+                  "has_no_value": false,
+                  "target_variable": "self.input.billing_record_id",
+                  "value_expression": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Billing Records\"].billing_record_id"
+                }
+              ],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "user_0ba139": {
+          "spec": {
+            "kind": "user",
+            "name": "user_0ba139",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_2fa227",
+                "text": "## Domain Write Error    \n**Domain error:** {flow[\"Handler Review\"][\"Update billing record\"].output.billing_record_update_status.error_code}    \n**Error message:** {flow[\"Handler Review\"][\"Update billing record\"].output.billing_record_update_status.error_message}",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_2fa227": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 485,
+              "y": 1584
+            },
+            "display_name": "Error ocurred - Write"
+          }
+        },
+        "user_54fe04": {
+          "spec": {
+            "form": {
+              "name": "form_536913",
+              "label": "Billing Dispute Decision",
+              "fields": [
+                {
+                  "kind": "any",
+                  "name": "field_1",
+                  "label": "Billing Records",
+                  "metadata": {
+                    "builderui:columnOrder": [
+                      "billing_date",
+                      "status",
+                      "amount",
+                      "description",
+                      "order_id",
+                      "billing_record_id"
+                    ]
+                  },
+                  "uiSchema": {
+                    "ui:title": "Billing Records",
+                    "ui:widget": "Table",
+                    "ui:options": {
+                      "label": false
+                    },
+                    "ui:placeholder": "Select an option"
+                  },
+                  "direction": "input",
+                  "input_map": {
+                    "spec": {
+                      "maps": [
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.choices",
+                          "value_expression": "flow[\"Get Billing Records\"].output.result.billing_records"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": true,
+                          "target_variable": "self.input.display_text",
+                          "value_expression": ""
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "automap"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.default"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.display_items",
+                          "value_expression": "[\"item.billing_date\",\"item.status\",\"item.amount\",\"item.description\"]"
+                        }
+                      ],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Billing Records",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "choices"
+                    ],
+                    "properties": {
+                      "choices": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "default": {},
+                      "display_text": {
+                        "type": "string"
+                      },
+                      "display_items": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "output_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "any",
+                  "name": "field_2",
+                  "label": "Dispute verdict",
+                  "uiSchema": {
+                    "ui:title": "Dispute verdict",
+                    "ui:widget": "ComboboxWidget",
+                    "ui:placeholder": "Select an option"
+                  },
+                  "direction": "input",
+                  "input_map": {
+                    "spec": {
+                      "maps": [
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.choices",
+                          "value_expression": "flow.private.handling_choices"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": true,
+                          "target_variable": "self.input.display_text",
+                          "value_expression": ""
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": true,
+                          "target_variable": "self.input.display_items",
+                          "value_expression": ""
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.default",
+                          "value_expression": "flow.private.default_handling_choice"
+                        }
+                      ],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Dispute verdict",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "choices"
+                    ],
+                    "properties": {
+                      "choices": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "default": {},
+                      "display_text": {
+                        "type": "string"
+                      },
+                      "display_items": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "output_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "text",
+                  "name": "field_3",
+                  "label": "Reason",
+                  "uiSchema": {
+                    "ui:title": "Reason",
+                    "ui:widget": "TextWidget",
+                    "ui:placeholder": "Enter the reason why this billing dispute is approved or rejected."
+                  },
+                  "direction": "input",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Reason",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {},
+                    "additionalProperties": false
+                  },
+                  "output_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                }
+              ],
+              "buttons": [
+                {
+                  "kind": "submit",
+                  "name": "submit",
+                  "edge_id": "0f622f47-80fa-4e93-942a-dde22cf1bc6c",
+                  "visible": true,
+                  "display_name": "Complete"
+                },
+                {
+                  "kind": "cancel",
+                  "name": "cancel",
+                  "visible": false,
+                  "display_name": "Cancel"
+                }
+              ],
+              "jsonSchema": {
+                "type": "object",
+                "required": [
+                  "field_1",
+                  "field_2",
+                  "field_3"
+                ],
+                "properties": {
+                  "field_1": {
+                    "type": "object",
+                    "title": "Billing Records (Required)",
+                    "properties": {
+                      "amount": {
+                        "type": "string",
+                        "title": "Amount"
+                      },
+                      "status": {
+                        "type": "string",
+                        "title": "Status"
+                      },
+                      "order_id": {
+                        "type": "string",
+                        "title": "Order id"
+                      },
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "billing_date": {
+                        "type": "string",
+                        "title": "Billing date"
+                      },
+                      "billing_record_id": {
+                        "type": "string",
+                        "title": "Billing record id"
+                      }
+                    }
+                  },
+                  "field_2": {
+                    "title": "Dispute verdict (Required)"
+                  },
+                  "field_3": {
+                    "type": "string",
+                    "title": "Reason (Required)"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "display_name": "Billing Dispute Decision"
+            },
+            "kind": "user",
+            "name": "user_54fe04",
+            "fields": [],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 675,
+              "y": 704
+            },
+            "display_name": "Billing Dispute Decision"
+          }
+        },
+        "user_680556": {
+          "spec": {
+            "kind": "user",
+            "name": "user_680556",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_e718d3",
+                "text": "# You are now acting in the supervisor role.\n\n| Dispute Information |   |                  \n| ---- | ---- |                  \n| **Customer:** | {flow.input.customer_name} ({flow.input.customer_tier})|                  \n| **Order:** |{flow.input.order_id} |                  \n| **Disputed record:** |{flow.private.billing_record_id}/ **Amount:** ${flow.private.billing_amount} / **Comment:** {flow.private.billing_description} |                  \n| **Reason stated:** |{flow.input.reason_for_dispute} |\n\n**Actions:**                  \n1. **Review** the billing records.                  \n2. **Gather** any additional information you need.                  \n3. **Proceed** to making a decision.",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_e718d3": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 730,
+              "y": 244
+            },
+            "display_name": "--- SUPERVISOR ROLE ---"
+          }
+        },
+        "user_7470fd": {
+          "spec": {
+            "form": {
+              "name": "form_4143e0",
+              "label": "Information Retrieval",
+              "fields": [
+                {
+                  "kind": "array",
+                  "name": "field_1",
+                  "label": "Customer Billing Records",
+                  "metadata": {
+                    "builderui:columnOrder": [
+                      "billing_date",
+                      "status",
+                      "amount",
+                      "description",
+                      "order_id",
+                      "billing_record_id"
+                    ]
+                  },
+                  "uiSchema": {
+                    "ui:title": "Customer Billing Records",
+                    "ui:widget": "Table",
+                    "ui:options": {
+                      "label": false
+                    },
+                    "ui:placeholder": "Provide a prompt to retrieve more information"
+                  },
+                  "direction": "output",
+                  "input_map": {
+                    "spec": {
+                      "maps": [
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.choices",
+                          "value_expression": "flow[\"Get Billing Records\"].output.result.billing_records"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "automap"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.default"
+                        },
+                        {
+                          "metadata": {
+                            "assignmentType": "variable"
+                          },
+                          "has_no_value": false,
+                          "target_variable": "self.input.display_items",
+                          "value_expression": "[\"item.billing_date\",\"item.status\",\"item.amount\",\"item.description\"]"
+                        }
+                      ],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Customer Billing Records",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [
+                      "choices"
+                    ],
+                    "properties": {
+                      "choices": {
+                        "type": "array",
+                        "items": {}
+                      },
+                      "display_items": {
+                        "type": "array",
+                        "items": {}
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                },
+                {
+                  "kind": "text",
+                  "name": "field_2",
+                  "label": "Request information",
+                  "uiSchema": {
+                    "ui:title": "Request information",
+                    "ui:widget": "TextWidget",
+                    "ui:placeholder": "Provide a prompt to retrieve more information"
+                  },
+                  "direction": "input",
+                  "input_map": {
+                    "spec": {
+                      "maps": [],
+                      "name": ""
+                    }
+                  },
+                  "display_name": "Request information",
+                  "input_schema": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {},
+                    "additionalProperties": false
+                  },
+                  "output_schema": {
+                    "type": "object",
+                    "required": [
+                      "value"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "uiSchemaParkingLot": {}
+                }
+              ],
+              "buttons": [
+                {
+                  "kind": "submit",
+                  "name": "submit",
+                  "edge_id": "fcd85f0d-96a2-4c41-8a9f-f2a07dad639a",
+                  "visible": true,
+                  "display_name": "Get Information"
+                },
+                {
+                  "kind": "cancel",
+                  "name": "cancel",
+                  "edge_id": "e08b90f0-57ea-4df2-989f-9e6ffff36b58",
+                  "visible": true,
+                  "display_name": "Make Decision"
+                }
+              ],
+              "jsonSchema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "field_1": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Customer Billing Records",
+                    "properties": {
+                      "amount": {
+                        "type": "string",
+                        "title": "Amount"
+                      },
+                      "status": {
+                        "type": "string",
+                        "title": "Status"
+                      },
+                      "order_id": {
+                        "type": "string",
+                        "title": "Order id"
+                      },
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "billing_date": {
+                        "type": "string",
+                        "title": "Billing date"
+                      },
+                      "billing_record_id": {
+                        "type": "string",
+                        "title": "Billing record id"
+                      }
+                    }
+                  },
+                  "field_2": {
+                    "type": "string",
+                    "title": "Request information"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "display_name": "Information Retrieval"
+            },
+            "kind": "user",
+            "name": "user_7470fd",
+            "fields": [],
+            "owners": [],
+            "metadata": {
+              "ui:generated_name": true
+            },
+            "position": {
+              "x": 450,
+              "y": 384
+            },
+            "display_name": "Information Retrieval"
+          }
+        },
+        "user_e9cd64": {
+          "spec": {
+            "kind": "user",
+            "name": "user_e9cd64",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_96c7df",
+                "text": "# Billing dispute for order {flow.input.order_id} completed\n\n| Dispute outcome |   |                                                                                                            \n| ---- | ---- |                                                                                                            \n| **Updated billing record:** | {flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Billing Records\"].billing_record_id}|                                                                                                          \n| **Verdict:**|{flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Dispute verdict\"]}|                                                                                    \n| **New status:**|{flow.private.update_status}|                                                                                    \n|**Reason:**|{flow[\"Handler Review\"][\"Billing Dispute Decision\"].output.Reason}|\n\nThe customer was informed about the result via email.\n\n**Audit Log record created in CRM:**\n\n{flow[\"Handler Review\"][\"Generate closing log entry\"].output.value}\n\n\n# You are now acting again in the specialist role.",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_96c7df": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 805,
+              "y": 1724
+            },
+            "display_name": "--- BILLING DISPUTE RESOLVED ---"
+          }
+        },
+        "user_edb6ac": {
+          "spec": {
+            "kind": "user",
+            "name": "user_edb6ac",
+            "fields": [
+              {
+                "kind": "text",
+                "name": "text_output_cc2867",
+                "text": "{flow[\"Handler Review\"][\"Call Billing Evidence Agent\"].output.value}",
+                "uiSchema": {
+                  "ui:widget": "DataWidget",
+                  "ui:options": {
+                    "label": false
+                  }
+                },
+                "direction": "output",
+                "jsonSchema": {
+                  "type": "object",
+                  "required": [],
+                  "properties": {
+                    "text_output_cc2867": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "input_schema": {
+                  "type": "object",
+                  "required": [
+                    "value"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "spec_version": "2.0",
+                "uiSchemaParkingLot": {}
+              }
+            ],
+            "owners": [],
+            "metadata": {},
+            "position": {
+              "x": 375,
+              "y": 884
+            },
+            "display_name": "Display Additional information"
+          }
+        },
+        "agent_f4e9ee": {
+          "spec": {
+            "kind": "agent",
+            "name": "agent_f4e9ee",
+            "agent": "TRI_billing_evidence_agent:bf254008-74ed-425f-8fe8-20420110e520",
+            "message": "Order ID: {flow.input.order_id}, Customer ID: {flow.input.customer_id}. Request:{flow[\"Handler Review\"][\"Information Retrieval\"].output[\"Request information\"]}",
+            "position": {
+              "x": 375,
+              "y": 724
+            },
+            "test_data": [
+              {
+                "value": "",
+                "source": "flow.input.order_id"
+              },
+              {
+                "value": "",
+                "source": "flow.input.customer_id"
+              },
+              {
+                "value": "",
+                "source": "flow[\"Handler Review\"][\"Information Retrieval\"].output[\"Request information\"]"
+              }
+            ],
+            "description": "Call this agent when a supervisor or specialist reviewing a billing dispute needs\nadditional information before approving or rejecting a cancellation request.\n\nThree capabilities:\n\n(1) Shipping records lookup: provide order_id [Required] (O-* format, e.g.\n    O-DF340K) \u2014 returns all shipping records for that order:\n    shipping_record_id, order_id, billing_record_id, shipping_date, status\n\n(2) Customer profile lookup: provide customer_id [Required] (C-* format, e.g.\n    C-3DBZFE) \u2014 returns: firstname, lastname, status\n    (Platinum/Gold/Silver/Bronze/Standard)\n\n(3) Fraud risk lookup: provide customer_id [Required] (C-* format, e.g. C-3DBZFE),\n    claim amount to assess e.g. 250.00 or -1 when not available, [Required].\n    returns fraud risk: customer_id, risk_level, risk_score, prior_disputes_count,\n    account_tenure_months, risk_flags[], risk_summary",
+            "display_name": "Call Billing Evidence Agent",
+            "input_schema": {
+              "type": "object",
+              "required": [],
+              "properties": {}
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "Agent response"
+                }
+              }
+            },
+            "error_handler_config": {
+              "max_retries": 0,
+              "error_message": "Something went wrong while running 'Call Billing Evidence Agent'",
+              "retry_interval": 1000
+            },
+            "thread_control_policy": "REUSE_AND_CORRELATE"
+          },
+          "input_map": {
+            "spec": {
+              "maps": [],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "branch_0bb076": {
+          "spec": {
+            "kind": "branch",
+            "name": "branch_0bb076",
+            "position": {
+              "x": 675,
+              "y": 884
+            },
+            "evaluator": {
+              "conditions": [
+                {
+                  "default": false,
+                  "edge_id": "c0d64086-00bb-480c-9693-2eea1779eb4a",
+                  "metadata": {
+                    "conditions": [
+                      {
+                        "value": "Approve Cancellation",
+                        "dataType": "string",
+                        "operator": "==",
+                        "variableName": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Dispute verdict\"]"
+                      }
+                    ]
+                  },
+                  "expression": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Dispute verdict\"] == \"Approve Cancellation\""
+                },
+                {
+                  "default": true,
+                  "edge_id": "ce25a74a-d698-47ba-95b3-d85282c707f4",
+                  "metadata": {}
+                }
+              ]
+            },
+            "display_name": "Cancel Charge?",
+            "match_policy": "FIRST_MATCH"
+          }
+        },
+        "branch_952f4e": {
+          "spec": {
+            "kind": "branch",
+            "name": "branch_952f4e",
+            "position": {
+              "x": 805,
+              "y": 1444
+            },
+            "evaluator": {
+              "conditions": [
+                {
+                  "default": false,
+                  "edge_id": "31b210e4-7bcf-4d7b-ba8d-3e8e93503776",
+                  "metadata": {
+                    "conditions": []
+                  },
+                  "expression": "flow[\"Handler Review\"][\"Check Billing Record Status\"].output.billing_record.status == flow.private.update_status and flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Billing Records\"].description == flow[\"Handler Review\"][\"Billing Dispute Decision\"].output.Reason"
+                },
+                {
+                  "default": true,
+                  "edge_id": "535ce1c5-d7c5-4cbb-a4a1-c5d1a2641602",
+                  "metadata": {}
+                }
+              ]
+            },
+            "display_name": "Is Record Updated?",
+            "match_policy": "FIRST_MATCH"
+          }
+        },
+        "branch_9d24cf": {
+          "spec": {
+            "kind": "branch",
+            "name": "branch_9d24cf",
+            "position": {
+              "x": 505,
+              "y": 1444
+            },
+            "evaluator": {
+              "conditions": [
+                {
+                  "default": false,
+                  "edge_id": "40bddef5-e35d-46b8-90ce-c3f1a294ec1b",
+                  "metadata": {
+                    "conditions": [
+                      {
+                        "value": "True",
+                        "dataType": "boolean",
+                        "operator": "is",
+                        "variableName": "flow[\"Handler Review\"][\"Update billing record\"].output.billing_record_update_status.is_error"
+                      }
+                    ]
+                  },
+                  "expression": "flow[\"Handler Review\"][\"Update billing record\"].output.billing_record_update_status.is_error is True"
+                },
+                {
+                  "default": true,
+                  "edge_id": "878d1cf0-1301-4400-8556-08a68f744229",
+                  "metadata": {}
+                }
+              ]
+            },
+            "display_name": "Is Write Error?",
+            "match_policy": "FIRST_MATCH"
+          }
+        },
+        "branch_cc42db": {
+          "spec": {
+            "kind": "branch",
+            "name": "branch_cc42db",
+            "position": {
+              "x": 450,
+              "y": 104
+            },
+            "evaluator": {
+              "conditions": [
+                {
+                  "default": false,
+                  "edge_id": "cacf6fe4-eb98-402a-88b8-9965e2dbf1bf",
+                  "metadata": {
+                    "conditions": [
+                      {
+                        "index": 0,
+                        "value": "True",
+                        "dataType": "boolean",
+                        "operator": "is",
+                        "variableName": "flow.private.is_supervisor_required"
+                      }
+                    ]
+                  },
+                  "expression": "flow.private.is_supervisor_required is True"
+                },
+                {
+                  "default": true,
+                  "edge_id": "025ec026-e50f-4ed6-abbe-a0f103ea1d25",
+                  "metadata": {}
+                }
+              ]
+            },
+            "display_name": "Is Supervisor?",
+            "match_policy": "FIRST_MATCH"
+          }
+        },
+        "prompt_54cae4": {
+          "spec": {
+            "llm": "groq/openai/gpt-oss-120b",
+            "kind": "prompt",
+            "name": "prompt_54cae4",
+            "metadata": {
+              "creativity_slider_position": "5",
+              "creativity_slider_manual_override": false
+            },
+            "position": {
+              "x": 805,
+              "y": 1584
+            },
+            "test_data": [
+              {
+                "value": "",
+                "source": "flow.input.order_id"
+              },
+              {
+                "value": "",
+                "source": "flow.private.billing_record_id"
+              },
+              {
+                "value": "",
+                "source": "flow.input.reason_for_dispute"
+              },
+              {
+                "value": "",
+                "source": "flow[\"Handler Review\"][\"Flatten prompts\"].output.flattened_prompts"
+              },
+              {
+                "value": "",
+                "source": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Dispute verdict\"]"
+              },
+              {
+                "value": "",
+                "source": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output.Reason"
+              },
+              {
+                "value": "",
+                "source": "flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Billing Records\"].billing_record_id"
+              }
+            ],
+            "description": "",
+            "user_prompt": "Summarize below information an archival log entry.\n\nInclude:\n- order id this relates to\n- billing record id this relates to\n- customer reason for dispute\n- queries for additional information executed if any\n- supervisor decision\n- reason for decision\n- billing record id the supervisor updated\n\nHighlight the key information in bold. Keep the summary concise and factual. Do not infer information that is not explicitly present.\n\nUse this format:\n\n**Outcome:** <final result>\n\n**Summary:**\n<concise summary>\n\n\nInput data:\nOrder id: {flow.input.order_id}\nCustomer disputed billing record id: {flow.private.billing_record_id}\nCustomer dispute reason: {flow.input.reason_for_dispute}\nQueries: {flow[\"Handler Review\"][\"Flatten prompts\"].output.flattened_prompts}\nSupervisor decision/final result: {flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Dispute verdict\"]}\nSupervisor reason: {flow[\"Handler Review\"][\"Billing Dispute Decision\"].output.Reason}\nSupervisor billing record id: {flow[\"Handler Review\"][\"Billing Dispute Decision\"].output[\"Billing Records\"].billing_record_id}",
+            "display_name": "Generate closing log entry",
+            "input_schema": {
+              "type": "object",
+              "required": [],
+              "properties": {}
+            },
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "system_prompt": "You are a log archivist. Your role is to convert the information into a concise, factual summary suitable for a permanent log entry.\n\nUse a neutral, objective, and professional tone. Describe only information present in the supplied data. Do not speculate, assign blame, add opinions, or invent missing details.\n\nWrite in the past tense. Preserve important identifiers, decisions, and outcomes. If relevant information is unavailable, state \u201cNot provided.\u201d The log entry should provide each fact as a full sentence on a new line.\nReturn only the requested log entry.",
+            "llm_parameters": {
+              "top_k": 30,
+              "top_p": 0.7,
+              "temperature": 0.4,
+              "max_new_tokens": 200,
+              "min_new_tokens": 50,
+              "stop_sequences": [
+                "Human",
+                "AI"
+              ]
+            },
+            "prompt_examples": [],
+            "error_handler_config": {
+              "max_retries": 0,
+              "error_message": "Something went wrong while running 'Generate closing log entry'",
+              "retry_interval": 1000
+            },
+            "include_agent_context": false
+          },
+          "input_map": {
+            "spec": {
+              "maps": [],
+              "name": "",
+              "fallback_strategy": "ask_the_user"
+            }
+          }
+        },
+        "script_058cb1": {
+          "spec": {
+            "fn": "# Set the status value for the shared Update billing record tool call\nflow.private.update_status = \"resolved-cancelled\"",
+            "kind": "script",
+            "name": "script_058cb1",
+            "position": {
+              "x": 880,
+              "y": 1024
+            },
+            "display_name": "Update status - Cancelled"
+          }
+        },
+        "script_30f4de": {
+          "spec": {
+            "fn": "# Set the status value for the shared Update billing record tool call\nflow.private.update_status = \"resolved-rejected\"",
+            "kind": "script",
+            "name": "script_30f4de",
+            "position": {
+              "x": 600,
+              "y": 1024
+            },
+            "display_name": "Update Status - Rejected"
+          }
+        },
+        "script_7aabb9": {
+          "spec": {
+            "fn": "# Initialise the prompts list on the first iteration if it does not exist yet\nif flow.private.prompts is None:\n    flow.private.prompts = []\n\n# Append the handler's current query to the list before the agent call runs\nflow.private.prompts.append(flow[\"Handler Review\"][\"Information Retrieval\"].output[\"Request information\"])",
+            "kind": "script",
+            "name": "script_7aabb9",
+            "position": {
+              "x": 375,
+              "y": 564
+            },
+            "display_name": "Record Prompt"
+          }
+        },
+        "script_b66cdf": {
+          "spec": {
+            "fn": "# Join all handler queries into a single semicolon-separated string for the audit log\nself.output.flattened_prompts = \"; \".join(flow.private.prompts)",
+            "kind": "script",
+            "name": "script_b66cdf",
+            "position": {
+              "x": 675,
+              "y": 564
+            },
+            "display_name": "Flatten prompts",
+            "output_schema": {
+              "type": "object",
+              "properties": {
+                "flattened_prompts": {
+                  "type": "string",
+                  "description": ""
+                }
+              }
+            }
+          }
+        },
+        "user_flow_f23318__end__": {
+          "spec": {
+            "kind": "end",
+            "name": "user_flow_f23318__end__",
+            "position": {
+              "x": 450,
+              "y": 1864
+            }
+          }
+        },
+        "user_flow_f23318__start__": {
+          "spec": {
+            "kind": "start",
+            "name": "user_flow_f23318__start__",
+            "position": {
+              "x": 450,
+              "y": -16
+            }
+          }
+        },
+        "96fe6d29-c98e-4d7a-921a-afbaf7801608": {
+          "spec": {
+            "kind": "placeholder",
+            "name": "96fe6d29-c98e-4d7a-921a-afbaf7801608",
+            "position": {
+              "x": 450,
+              "y": 244
+            },
+            "display_name": "",
+            "placeholder_kind": "ghost"
+          }
+        }
+      },
+      "schemas": {},
+      "input_map": {
+        "spec": {
+          "maps": [
+            {
+              "metadata": {
+                "assignmentType": "variable"
+              },
+              "has_no_value": false,
+              "target_variable": "self.input.assignees",
+              "value_expression": "flow.private.approver"
+            }
+          ],
+          "name": ""
+        }
+      }
+    },
+    "8359770b-959c-4c7d-9e0f-f2e7c5365657": {
+      "spec": {
+        "kind": "placeholder",
+        "name": "8359770b-959c-4c7d-9e0f-f2e7c5365657",
+        "position": {
+          "x": 1200,
+          "y": 3894
+        },
+        "display_name": "",
+        "placeholder_kind": "ghost"
+      }
+    },
+    "b3c58062-f5a3-4cc0-b6b7-844f5d27e0e1": {
+      "spec": {
+        "kind": "placeholder",
+        "name": "b3c58062-f5a3-4cc0-b6b7-844f5d27e0e1",
+        "position": {
+          "x": 990,
+          "y": 642
+        },
+        "display_name": "",
+        "placeholder_kind": "ghost"
+      }
+    }
+  },
+  "schemas": {},
+  "metadata": {
+    "llm_model": "groq/openai/gpt-oss-120b",
+    "source_kind": "ui",
+    "is_under_specified": true,
+    "is_system_generated_description": true
+  },
+  "output_map": {
+    "spec": {
+      "maps": [],
+      "name": "",
+      "fallback_strategy": "ask_the_user"
+    }
+  }
+}

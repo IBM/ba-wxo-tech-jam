@@ -1,0 +1,88 @@
+Technical Troubleshooting Guide
+
+Product Category: Headphones
+
+Device Won't Turn On
+
+Product: Wireless Headphones Pro
+
+Symptoms:
+- Device does not power on
+- No LED indicators
+- No response to power button
+
+Troubleshooting Steps:
+
+Step 1: Check Power Source
+- Try different outlet
+- Verify outlet is working with another device
+- Check for tripped circuit breaker
+- Expected outcome: Device should show charging indicator
+
+Step 2: Inspect Charging Cable
+- Look for visible damage to cable
+- Try different USB cable if available
+- Check for debris in charging port
+- Clean charging port gently with dry cloth
+- Expected outcome: Proper connection established
+
+Step 3: Perform Hard Reset
+- Press and hold power button for 10 seconds
+- Release and wait 5 seconds
+- Press power button normally to turn on
+- Expected outcome: Device powers on
+
+Step 4: Check LED Indicators
+- Red light: Charging in progress
+- Green light: Fully charged
+- No light: Possible hardware issue
+- Flashing red: Battery critically low
+
+Step 5: Battery Deep Discharge Recovery
+- Leave device on charger for 2 hours minimum
+- Do not attempt to turn on during charging
+- Try turning on after 2 hours
+- Expected outcome: Battery recovers and device powers on
+
+
+Bluetooth Connection Issues
+
+Product: Wireless Headphones Pro
+
+Symptoms:
+- Cannot find device in Bluetooth list
+- Connection drops frequently
+- Audio quality issues
+- Pairing fails
+
+Troubleshooting Steps:
+
+Step 1: Basic Connection
+- Turn on Bluetooth on phone/device
+- Put headphones in pairing mode (hold power 5 seconds)
+- Look for device in available devices list
+- Select headphones to pair
+- Expected outcome: Successful pairing
+
+Step 2: Connection Drops
+- Move closer to device (within 30 feet)
+- Remove obstacles between devices
+- Turn off other Bluetooth devices nearby
+- Restart both devices
+- Expected outcome: Stable connection
+
+Step 3: Can't Find Headphones
+- Ensure headphones are charged
+- Reset headphones (hold power + volume up for 10 seconds)
+- Clear Bluetooth cache on phone
+- Forget device and re-pair
+- Expected outcome: Device appears in list
+
+Step 4: Audio Quality Issues
+- Check for interference from WiFi routers
+- Update device firmware
+- Adjust audio codec settings
+- Clean headphone speakers
+
+- Expected outcome: Clear audio
+

@@ -1,0 +1,16 @@
+test_id: TC-LAB-1.1-E3-001
+exercise: 3
+phase: checkpoint_after_openapi_connection
+description: Verify OpenAPI order tool returns grounded order data
+artifact_to_import: lab-1-1_TRI_order_agent_complete.yaml
+test_prompt: "What orders has customer C-3DBZFE placed in the last 7 days?"
+validation:
+  must_contain:
+    - order
+    - customer
+    - date
+  must_not_contain:
+    - "I don't know"
+    - "I cannot access"
+    - "I'm unable to"
+  response_type: grounded_data

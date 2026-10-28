@@ -1,0 +1,58 @@
+# TC-L3-005 — Lab 3 Extension A: warranty card document type
+# Lab: Lab 3 — Agentic Workflow: Document Processing (Warranty Claim)
+# Customer: C-48239 (Alex Rivera, Standard) — warranty_card_realistic.pdf attached in BAW CRM (CM-48239X).
+# Covers: AC-L3-1
+#
+# Expected workflow path:
+#   ua_show_customer [HITL] → upload_timing=immediate → script_send_email → ua_wait_callback [HITL]
+#   → upload_callback=confirmed → fetch_baw_pdf → classify_document (warranty_card)
+#   → branch_1 (warranty_card arm) → extract_document_fields (warranty card schema)
+#   → ua_extracted_review [HITL] → ...continues to check_warranty...
+#
+# Key assertion: classify_document returns "warranty_card"; extracted fields include serial_no.
+# Status: STUB — pending Extension A implementation (branch_1 after classify_document).
+
+id: TC-L3-005_warranty-card-document-type
+description: "Lab 3 Extension A: classify_document returns warranty_card; branch_1 routes to warranty card schema; serial_no extracted as mandatory field (AC-L3-1)"
+type: future
+agent: TRI_orchestrator
+
+known_issues:
+  - "Extension A (branch_1 after classify_document) must be implemented before this case can run."
+  - "ua_extracted_review form_data fields differ between receipt and warranty card schemas — confirm field names when activated."
+
+input: "Customer has a headset they bought from a reseller — it stopped working and they want warranty. Customer ID is C-48239."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      "Customer Details": "C-48239"
+    form_data:
+      "Upload Timing": "immediate"
+
+  - node: ua_wait_callback
+    poll_timeout_s: 60
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      "Customer Upload Status": "confirmed"
+
+  # ua_extracted_review: warranty card schema — serial_no must appear in extracted fields
+  - node: ua_extracted_review
+    poll_timeout_s: 120
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data_contains:
+      "Extracted Fields": "serial"
+    form_data: {}

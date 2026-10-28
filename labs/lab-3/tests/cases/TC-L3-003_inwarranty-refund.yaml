@@ -1,0 +1,77 @@
+# TC-L3-003 — Lab 3 Extension C: in-warranty path, select Refund
+# Use case: UC-04 — Warranty claim: headset purchased from a reseller
+# Lab spec: labs/lab-3/specs/LAB-03_warranty-claim-workflow.md § Extension C
+# Covers: AC-L3-4
+#
+# Same HITL chain as TC-L3-001 up to ua_inwarranty_options, then specialist
+# selects "Refund - original payment method"; workflow routes through
+# process_refund and converges at iw_deliver_form → __end__.
+#
+# Note: process_refund enforces a 30-day purchase policy. If the purchase date
+# in the fixture is > 30 days ago, the LLM node may reject the refund and offer
+# alternatives in the confirmation message — the test still passes because the
+# workflow path (through process_refund to iw_deliver_form) is what is asserted.
+#
+# ⚠️ SOR dependency: same as TC-L3-001 — C-48239 must have an in-warranty PDF.
+
+id: TC-L3-003_inwarranty-refund
+description: "Lab 3 Ext B: in-warranty path — specialist selects Refund; routes through process_refund to iw_deliver_form"
+type: dev
+agent: TRI_orchestrator
+precondition_case: TC-UC-00-001-lab3_customer-lookup-for-lab3
+
+known_issues:
+  - "C-48239 warranty card PDF (CM-48239X) must contain an in-warranty purchase date. If not set up, case routes to ua_close_oow instead of ua_inwarranty_options."
+  - "tool_called: TRI_warranty_claim_workflow not assertable — workflow invocation is inside Warranty Agent turn."
+  - "process_refund enforces a 30-day window — if fixture purchase date is > 30 days ago, the LLM may reject the refund in the confirmation message. The HITL path (to iw_deliver_form) is still exercised correctly."
+
+input: "Customer Alex Rivera has a headset they bought from a reseller — it stopped working and they want warranty. Customer ID is C-48239."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      customer_summary: "C-48239"
+    form_data:
+      upload_timing: "immediate"
+    expected_next_form_title: "Wait for customer callback"
+
+  - node: ua_wait_callback
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      upload_callback: "confirmed"
+    poll_timeout_s: 180
+    expected_next_form_title: "Review extracted document fields"
+
+  - node: ua_extracted_review
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data: {}
+    poll_timeout_s: 120
+    expected_next_form_title: "Present in-warranty options"
+
+  - node: ua_inwarranty_options
+    expected_form_title: "Present in-warranty options"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      warranty_status_msg: "PRODUCT IS IN WARRANTY"
+    # Select Refund - original payment method.
+    form_data:
+      resolution_choice: "refund"
+    expected_next_form_title: "Deliver final message"
+
+  - node: iw_deliver_form
+    expected_form_title: "Deliver final message"
+    expected_submit_label: "Close Case"
+    form_data: {}

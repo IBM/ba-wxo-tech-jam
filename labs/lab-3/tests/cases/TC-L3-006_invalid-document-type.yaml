@@ -1,0 +1,49 @@
+# TC-L3-006 — Lab 3 Extension A: invalid document type
+# Lab: Lab 3 — Agentic Workflow: Document Processing (Warranty Claim)
+# Covers: AC-L3-2
+#
+# Expected workflow path:
+#   ua_show_customer [HITL] → upload_timing=immediate → ua_wait_callback [HITL]
+#   → upload_callback=confirmed → fetch_baw_pdf → classify_document (other/unrecognised)
+#   → branch_invalid_doc (invalid arm) → prompt_invalid_doc → ua_close_invalid [HITL] → __end__
+#
+# Key assertion: workflow terminates at ua_close_invalid without calling any SOR tool.
+# Status: STUB — customer fixture with invalid doc TBD with Olaf.
+
+id: TC-L3-006_invalid-document-type
+description: "Lab 3 Extension A: classify_document returns unrecognised type; routes to ua_close_invalid and terminates without any SOR tool call (AC-L3-2)"
+type: future
+agent: TRI_orchestrator
+
+known_issues:
+  - "SOR fixture for invalid document customer not yet created. Customer ID TBD — agree with Olaf."
+  - "ua_close_invalid may be a present-to-user node (auto-advance) rather than a button form — confirm node type."
+
+input: "Customer has a headset they bought from a reseller — they have a document to upload. Please start the process."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data:
+      "Upload Timing": "immediate"
+
+  - node: ua_wait_callback
+    poll_timeout_s: 60
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      "Customer Upload Status": "confirmed"
+
+  - node: ua_close_invalid
+    poll_timeout_s: 120
+    form_data: {}

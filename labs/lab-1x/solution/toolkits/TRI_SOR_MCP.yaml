@@ -1,0 +1,22 @@
+kind: mcp
+name: TRI_SOR_MCP
+description: 'MCP toolkit exposing the Trinity System of Record (IBM BAW / CP4BA) to worker agents. Provides tools via the ibm-baw-mcp-server. All SOR-backed Trinity agents and tools connect through this toolkit. Tool naming: TSOR_{ServiceName}_{operationId}.'
+connections:
+- TRI_cp4ba_keyvalue_team
+command: uvx --from https://github.com/ibmbpm/ibm-baw-mcp-server/archive/refs/heads/main.zip
+  ibm-baw-mcp-server
+tools:
+- TSOR_CRM_get_customer_by_id
+- TSOR_Catalog_get_catalog_items_by_category_sub_category_and_price_ran
+- TSOR_CRM_get_customer_provided_proof_of_warranty_by_customer_id
+- TSOR_Orders_get_orders_by_customer_id
+# Tools required by TRI_billing_agent (Lab 2)
+- TSOR_Shipping_get_shipping_records_by_order_id
+# Tools required by TRI_warranty_claim_workflow (Lab 3)
+- TSOR_Catalog_check_warranty_for_catalog_item_by_purchase_date
+- TSOR_Catalog_search_catalog_items_by_name
+- TSOR_Orders_generate_discount_code
+- TSOR_CRM_get_customer_payment_info_by_customer_id
+- TSOR_CRM_evaluate_fraud_risk
+- TSOR_Warranty_get_pending_warranty_requests
+spec_version: v1

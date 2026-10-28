@@ -1,0 +1,60 @@
+# TC-L3-008 — Lab 3 Extension B: catalog manual selection (confidence < 100)
+# Lab: Lab 3 — Agentic Workflow: Document Processing (Warranty Claim)
+# Covers: AC-L3-6, AC-L3-7
+#
+# Expected workflow path:
+#   ... → ua_extracted_review [HITL]
+#   → lookup_catalog_item (first result confidence < 100)
+#   → ua_select_catalog_item [HITL, selectable table]
+#   → specialist selects a row → check_warranty → ... → ua_close_oow [HITL] → __end__
+#
+# Status: STUB — pending Extension B implementation and low-confidence fixture.
+
+id: TC-L3-008_catalog-manual-select
+description: "Lab 3 Extension B: catalog first result confidence<100; ua_select_catalog_item shown; specialist selects row; catalog_item_id passed to check_warranty (AC-L3-6, AC-L3-7)"
+type: future
+agent: TRI_orchestrator
+precondition_case: TC-UC-00-001-uc04_customer-lookup-for-uc04
+
+known_issues:
+  - "Extension B must be implemented before this case can run."
+  - "A low-confidence product name fixture is needed — confirm with Olaf."
+  - "ua_select_catalog_item form_data field name must be confirmed from deployed workflow."
+
+input: "Customer has a headset they bought from a reseller — it stopped working and they want warranty."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data:
+      "Upload Timing": "immediate"
+
+  - node: ua_wait_callback
+    poll_timeout_s: 60
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      "Customer Upload Status": "confirmed"
+
+  - node: ua_extracted_review
+    poll_timeout_s: 120
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data: {}
+
+  - node: ua_select_catalog_item
+    poll_timeout_s: 60
+    expected_form_title: "Select catalog item"
+    expected_submit_label: "Submit"
+    form_data:
+      catalog_item_id: "CI-HEADSET-PLACEHOLDER"

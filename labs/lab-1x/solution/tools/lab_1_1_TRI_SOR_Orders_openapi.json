@@ -1,0 +1,285 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Orders",
+    "description": "Provides access to the orders and order items",
+    "version": "tipSnapshot"
+  },
+  "servers": [
+    {
+      "url": "https://cpd-ibm-cp4ba.swat-dev-roks-vpc-02-464887bc828751e1b00625ca9211fbca-0000.eu-de.containers.appdomain.cloud/bas/automationservices/rest/TSOR/Orders"
+    }
+  ],
+  "security": [
+    { "basic_auth": [] }
+  ],
+  "paths": {
+    "/get_order_by_id": {
+      "post": {
+        "summary": "TRI_TSOR_Orders_get_order_by_id",
+        "description": "Retrieve the full details of a specific order by its order ID. Use when an order ID (format O-*) is available and the agent needs the complete order record including all line items. Do NOT call if only a customer ID is available — use a get_orders_by_customer_id tool to list orders first, then call this for the specific order. Returns: order_id, customer_id, order_date, total, items[] (order_item_id, catalog_item_id, name, category, sub_category, price, quantity, under_warranty).",
+        "operationId": "TRI_TSOR_Orders_get_order_by_id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_order_by_id_input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get_order_by_id_output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request contains invalid parameters, or they are missing."
+          },
+          "404": {
+            "description": "The requested resource does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/get_orders_by_customer_id_and_item_category_last_xdays": {
+      "post": {
+        "summary": "TRI_TSOR_Orders_get_orders_by_customer_id_and_item_category_last_xdays",
+        "description": "Retrieve all orders for a customer that contain at least one item of a given category, within a relative time window. Use when the request specifies both a product category (e.g. \"laptop\", \"headset\") and a relative time window (e.g. \"last 30 days\", \"past 4 weeks\"). Do NOT call if no category filter is needed — use a category-less orders tool instead; do NOT call if an explicit start and end date are given — use get_orders_by_customer_id_and_timeframe instead. Returns: orders[] — each with order_id, customer_id, order_date, total, items[] (order_item_id, catalog_item_id, name, category, sub_category, price, quantity, under_warranty).",
+        "operationId": "TRI_TSOR_Orders_get_orders_by_customer_id_and_item_category_last_xdays",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/get_orders_by_customer_id_and_item_category_last_xdays_input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/get_orders_by_customer_id_and_item_category_last_xdays_output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request contains invalid parameters, or they are missing."
+          },
+          "404": {
+            "description": "The requested resource does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
+    "/update_order": {
+      "post": {
+        "summary": "TRI_TSOR_Orders_update_order",
+        "description": "Replace one line item in an existing order with a different catalog item. Use when a customer has confirmed a replacement product and the order ID, the item to replace, and the new catalog item ID are all known. Do NOT call until the customer has explicitly confirmed the specific replacement — never call speculatively or before the catalog search result has been presented and accepted. Returns: order — updated order with the replacement reflected in items[].",
+        "operationId": "TRI_TSOR_Orders_update_order",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_order_input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/update_order_output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request contains invalid parameters, or they are missing."
+          },
+          "404": {
+            "description": "The requested resource does not exist."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "get_order_by_id_input": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "[Required] Order ID in format O-*, e.g. O-DF340K."
+          }
+        },
+        "description": "Input schema for get_order_by_id",
+        "x-ibm-parameter-wrapper": true
+      },
+      "get_order_by_id_output": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/order"
+          }
+        },
+        "description": "Response schema for get_order_by_id",
+        "x-ibm-parameter-wrapper": true
+      },
+      "get_orders_by_customer_id_and_item_category_last_xdays_input": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string",
+            "description": "[Required] Customer ID in format C-*, e.g. C-3DBZFE."
+          },
+          "item_category": {
+            "type": "string",
+            "description": "[Required] Product category to filter by, e.g. \"laptop\", \"headset\", \"mouse\"."
+          },
+          "number_of_days": {
+            "type": "integer",
+            "format": "int32",
+            "description": "[Required] Number of days back from today, e.g. 28 for \"last 4 weeks\" or 30 for \"last month\"."
+          }
+        },
+        "description": "Input schema for get_orders_by_customer_id_and_item_category_last_xdays",
+        "x-ibm-parameter-wrapper": true
+      },
+      "get_orders_by_customer_id_and_item_category_last_xdays_output": {
+        "type": "object",
+        "properties": {
+          "orders": {
+            "type": "array",
+            "description": "{ orders: order[] }",
+            "items": {
+              "$ref": "#/components/schemas/order"
+            }
+          }
+        },
+        "description": "Response schema for get_orders_by_customer_id_and_item_category_last_xdays",
+        "x-ibm-parameter-wrapper": true
+      },
+      "update_order_input": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "[Required] Order ID of the order to modify, in format O-*, e.g. O-DF340K."
+          },
+          "order_item_id": {
+            "type": "string",
+            "description": "[Required] Order item ID of the line item to replace, in format OI-*, e.g. OI-TDDU12."
+          },
+          "catalog_item_id": {
+            "type": "string",
+            "description": "[Required] Catalog item ID of the replacement product selected by the customer, in format CI-*, e.g. CI-D412F4."
+          }
+        },
+        "description": "Input schema for update_order",
+        "x-ibm-parameter-wrapper": true
+      },
+      "update_order_output": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/order"
+          }
+        },
+        "description": "Response schema for update_order",
+        "x-ibm-parameter-wrapper": true
+      },
+      "order": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string"
+          },
+          "customer_id": {
+            "type": "string"
+          },
+          "order_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "total": {
+            "type": "number",
+            "format": "double"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/order_item"
+            }
+          }
+        }
+      },
+      "order_item": {
+        "type": "object",
+        "properties": {
+          "order_item_id": {
+            "type": "string"
+          },
+          "catalog_item_id": {
+            "type": "string"
+          },
+          "order_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "sub_category": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "under_warranty": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basic_auth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

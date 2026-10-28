@@ -1,0 +1,85 @@
+# TC-L3-001 — Lab 3 Extension C: in-warranty path, select Replace (same model)
+# Use case: UC-04 — Warranty claim: headset purchased from a reseller
+# Lab spec: labs/lab-3/specs/LAB-03_warranty-claim-workflow.md § Extension C
+# Covers: AC-L3-3, AC-L3-4
+#
+# Customer C-48239 (Alex Rivera, Standard) has a warranty card PDF in the CRM
+# (CM-48239X) with an in-warranty purchase date. The workflow runs the full HITL
+# chain; branch_warranty routes to ua_inwarranty_options (in_warranty outcome);
+# specialist selects "Replace - same model"; workflow routes through
+# process_replacement and converges at iw_deliver_form → __end__.
+#
+# HITL chain:
+#   ua_show_customer (immediate) → ua_wait_callback (confirmed)
+#   → ua_extracted_review → ua_inwarranty_options (replace)
+#   → iw_deliver_form (Close Case) → workflow ends
+#
+# Precondition: TC-UC-00-001-lab3 establishes C-48239 in context.
+#
+# ⚠️ SOR dependency: C-48239 must have a warranty card PDF (CM-48239X) with a
+# purchase date within the last 12 months attached in the CRM. Confirm with Olaf
+# before running — see Lab 3 spec § SOR test data.
+
+id: TC-L3-001_inwarranty-replace
+description: "Lab 3 Ext B: in-warranty path — specialist selects Replace (same model); routes through process_replacement to iw_deliver_form"
+type: dev
+agent: TRI_orchestrator
+precondition_case: TC-UC-00-001-lab3_customer-lookup-for-lab3
+
+known_issues:
+  - "C-48239 warranty card PDF (CM-48239X) must contain an in-warranty purchase date. If the SOR fixture has not been set up by Olaf, this case will route to ua_close_oow (OOW path) instead of ua_inwarranty_options."
+  - "tool_called: TRI_warranty_claim_workflow not assertable — workflow invocation is inside Warranty Agent turn, not visible in orchestrator step_history."
+
+input: "Customer Alex Rivera has a headset they bought from a reseller — it stopped working and they want warranty. Customer ID is C-48239."
+
+assertions:
+  - contains_any:
+      - "flow has started"
+      - "dedicated to the flow"
+      - "flow will resume"
+
+step_assertions:
+  - agent_called: "Trinity Warranty Agent"
+
+hitl_steps:
+  - node: ua_show_customer
+    expected_form_title: "Review customer & choose upload timing"
+    expected_submit_label: "Submit"
+    form_data_contains:
+      customer_summary: "C-48239"
+    form_data:
+      upload_timing: "immediate"
+    expected_next_form_title: "Wait for customer callback"
+
+  - node: ua_wait_callback
+    expected_form_title: "Wait for customer callback"
+    expected_submit_label: "Submit"
+    form_data:
+      upload_callback: "confirmed"
+    poll_timeout_s: 180
+    expected_next_form_title: "Review extracted document fields"
+
+  - node: ua_extracted_review
+    expected_form_title: "Review extracted document fields"
+    expected_submit_label: "Confirm & Proceed to Warranty Check"
+    form_data: {}
+    # After submit: catalog lookup → warranty check → decision table (in_warranty)
+    # → branch_warranty → ua_inwarranty_options. Allow 2 minutes.
+    poll_timeout_s: 120
+    expected_next_form_title: "Present in-warranty options"
+
+  - node: ua_inwarranty_options
+    expected_form_title: "Present in-warranty options"
+    expected_submit_label: "Submit"
+    # Verify in-warranty status message is present.
+    form_data_contains:
+      warranty_status_msg: "PRODUCT IS IN WARRANTY"
+    # Select Replace - same model.
+    form_data:
+      resolution_choice: "replace"
+    expected_next_form_title: "Deliver final message"
+
+  - node: iw_deliver_form
+    expected_form_title: "Deliver final message"
+    expected_submit_label: "Close Case"
+    form_data: {}   # output-only — echo back as-is

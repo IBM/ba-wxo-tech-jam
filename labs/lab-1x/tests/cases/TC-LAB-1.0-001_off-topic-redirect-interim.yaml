@@ -1,0 +1,30 @@
+# TC-LAB-1.0-001 — Off-topic redirect during the interim Exercise 2 state
+# Lab: Lab 1.0 — Building Your First Agent, Exercise 2, Steps 5-6
+#
+# IMPORTANT — this test targets an INTERIM state, not the Lab 1.0 checkpoint:
+# after Step 5 (inline instruction added) and before Step 7 (line removed) of
+# "Lab Guide - Lab 1.0 - first-agent.md" Exercise 2, `TRI_order_agent`'s instructions
+# temporarily include the extra line:
+#   "Do not answer questions unrelated to Focus Corp customer support."
+# The checkpoint artifact `labs/lab-1x/solution/agents/TRI_order_agent.yaml`
+# does NOT include this line (Step 7 removes it so the agent matches the
+# Trinity anchor going into Exercise 3) — running this test against that
+# checkpoint file will fail the redirect assertion by design.
+#
+# This is why the case lives separately rather than as part of the Lab 1.0
+# checkpoint's regression coverage: specs/lab-design.md's open design
+# question #6 ("should lab regression coverage include interim/mid-lab
+# checkpoints, or only final per-lab artifacts?") is unresolved. Until it is
+# resolved, treat this file as a documented, ready-to-wire case rather than
+# part of the default Lab 1.0 checkpoint suite.
+
+id: TC-LAB-1.0-001_off-topic-redirect-interim
+description: "Lab 1.0 Exercise 2 (interim, post-Step 5/pre-Step 7): off-topic question is redirected by the inline instruction"
+type: dev
+agent: TRI_order_agent
+
+input: "What will the weather be like in London tomorrow?"
+
+assertions:
+  - not_contains: "London"
+  - contains_any: ["Focus Corp", "customer support", "order", "catalog"]
