@@ -52,7 +52,7 @@ CRED_USER_TYPE="CP4BA"
 DEFAULT_KEYGEN_URL="https://github.com/IBM/ba-wxo-tech-jam/blob/main/lab-guides/Generate%20Your%20wxO%20API%20Key.md"
 WXO_KEYGEN_URL=""   # wxoKeyGenUrl from labs/event.env; DEFAULT_KEYGEN_URL when missing
 EMAIL=""
-LOCATION="APAC"
+LOCATION="Americas"
 WORKSPACE_DIR="./wxo-labs"
 ENV_NAME="trinity-lab"
 # Environment variables are only a fallback (below event.env), so stash them and start empty.
