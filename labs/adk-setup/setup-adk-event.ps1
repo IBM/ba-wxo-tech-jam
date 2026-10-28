@@ -79,7 +79,7 @@ param(
     [Alias("e")]
     [string]$Email,
     [Alias("l")]
-    [string]$Location     = "APAC",
+    [string]$Location     = "Americas",
     [string]$WorkspaceDir = ".\wxo-labs",
     [string]$EnvName      = "trinity-lab",
     [Alias("s")]
