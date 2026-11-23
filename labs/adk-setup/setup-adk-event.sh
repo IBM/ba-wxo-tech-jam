@@ -24,7 +24,12 @@
 #                           Management lookup completely: no e-mail address and no --location are needed. Both values
 #                           are written to sorUsername / sorPassword in labs/event.env. Cannot be combined with -e.
 #       --sor-password <pw>    Your SOR password. Must be used together with --sor-username.
-#   -l, --location <name>   Jam location used for the lookup            (default: APAC)
+#   -l, --location <name>   Jam location used for the Jam User Management lookup (default: Americas).
+#                           When -l is NOT given and a SOR URL is known (-s, sorURL in labs/event.env or SOR_URL), the
+#                           lightweight Trinity SOR is used instead: the e-mail address becomes sorUsername and the token
+#                           returned by POST <sor-url>/portal/api/register becomes sorPassword (format TRI_ + 16 letters/
+#                           digits; certificate errors are ignored). An existing sorPassword in labs/event.env is never
+#                           overwritten in this mode, and any failure stops the script (no fallback to the Jam look-up).
 #   -d, --dir <path>        Lab workspace directory holding the .venv   (default: ./wxo-labs)
 #   -n, --env-name <name>   ADK environment name                        (default: trinity-lab)
 #   -s, --sor-url <url>     SOR base URL               (labs/event.env → env SOR_URL → prompted); saved to sorURL in labs/event.env
@@ -59,6 +64,7 @@ EMAIL=""
 SOR_USERNAME_ARG=""
 SOR_PASSWORD_ARG=""
 LOCATION="Americas"
+LOCATION_GIVEN=0
 WORKSPACE_DIR="./wxo-labs"
 ENV_NAME="trinity-lab"
 # Environment variables are only a fallback (below event.env), so stash them and start empty.
@@ -267,6 +273,25 @@ fetch_sor_credentials() {
   show_keygen_hint "$user"
 }
 
+# fetch_light_sor_credentials -> lightweight Trinity SOR: register the e-mail address at $SOR_URL/portal/api/register
+# and store the returned token as sorPassword (the e-mail address itself is the sorUsername). Any failure stops the
+# script. Certificate errors (self-signed certificates) are ignored for this call only (curl -k).
+fetch_light_sor_credentials() {
+  local url="${SOR_URL%/}/portal/api/register" body resp token
+  info "Registering $EMAIL at the lightweight SOR ($url)"
+  body="$(printf '%s' "$EMAIL" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')"
+  resp="$(curl -fsS -k -m 30 -X POST -H 'Content-Type: application/json' \
+      -d "{\"email\":\"$body\"}" "$url" | tr -d '\r')" \
+    || fail "Could not register $EMAIL at the lightweight SOR (check network/VPN, sorURL and the e-mail address)."
+  token="$(printf '%s' "$resp" | sed -n 's/.*"token"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n1)"
+  [[ "$token" =~ ^TRI_[A-Za-z0-9]{16}$ ]] \
+    || fail "The lightweight SOR returned no valid token for $EMAIL (expected TRI_ followed by 16 letters or digits)."
+  set_env_value sorUsername "$EMAIL" "$EVENT_ENV_FILE"
+  set_env_value sorPassword "$token" "$EVENT_ENV_FILE"
+  ok "Saved sorUsername=$EMAIL and sorPassword=******** to $EVENT_ENV_FILE"
+  show_keygen_hint "$EMAIL"
+}
+
 # save_api_key -> keep the API key in event.env (only when it differs from what is stored) so that
 # --activate can refresh the token later without asking for it again
 save_api_key() {
@@ -326,7 +351,7 @@ while [[ $# -gt 0 ]]; do
     -e|--email)    EMAIL="${2:?missing value for $1}"; shift 2 ;;
     --sor-username) SOR_USERNAME_ARG="${2:?missing value for $1}"; shift 2 ;;
     --sor-password) SOR_PASSWORD_ARG="${2:?missing value for $1}"; shift 2 ;;
-    -l|--location) LOCATION="${2:?missing value for $1}"; shift 2 ;;
+    -l|--location) LOCATION="${2:?missing value for $1}"; LOCATION_GIVEN=1; shift 2 ;;
     -d|--dir)      WORKSPACE_DIR="${2:?missing value for $1}"; shift 2 ;;
     -n|--env-name) ENV_NAME="${2:?missing value for $1}"; shift 2 ;;
     -s|--sor-url)  SOR_URL="${2:?missing value for $1}"; shift 2 ;;
@@ -412,24 +437,43 @@ fi
 # The e-mail is only needed to look up sorUsername/sorPassword: with -e the credentials are fetched again;
 # without -e they are used from event.env when both are non-blank, otherwise the e-mail is asked for.
 # The address is checked and looked up right away, so an unregistered address stops the script before anything else is asked.
+# Three ways to get the SOR credentials, first match wins:
+#   1. --sor-username/--sor-password: stored as supplied (overwrites the file values).
+#   2. No explicit -l and a SOR URL is known: lightweight Trinity SOR. An existing sorPassword is never
+#      overwritten; otherwise the e-mail address (asked for when missing) is registered and the token becomes sorPassword.
+#   3. Otherwise (-l given, or no SOR URL): the Jam User Management look-up (to be retired later).
 if [[ -n "$SOR_USERNAME_ARG" ]]; then
   # --sor-username/--sor-password given: no look-up, store the values as supplied
   set_env_value sorUsername "$SOR_USERNAME_ARG" "$EVENT_ENV_FILE"
   set_env_value sorPassword "$SOR_PASSWORD_ARG" "$EVENT_ENV_FILE"
   ok "Saved sorUsername=$SOR_USERNAME_ARG and sorPassword=******** to $EVENT_ENV_FILE"
   show_keygen_hint "$SOR_USERNAME_ARG"
-elif [[ -n "$EMAIL" ]]; then
-  :   # -e given: sorUsername/sorPassword are fetched and overwrite the file values
-elif [[ $HAVE_SOR_USER -eq 1 && $HAVE_SOR_PASS -eq 1 ]]; then
-  info "Will use sorUsername and sorPassword from $EVENT_ENV_FILE"
+elif [[ $LOCATION_GIVEN -eq 0 && -n "$SOR_URL" ]]; then
+  if [[ $HAVE_SOR_PASS -eq 1 ]]; then
+    info "Will use sorUsername and sorPassword from $EVENT_ENV_FILE (an existing sorPassword is never overwritten)"
+  else
+    if [[ -z "$EMAIL" ]]; then
+      info "sorPassword is not set in $EVENT_ENV_FILE - it will be retrieved from the lightweight SOR using your e-mail address."
+      read -r -p "Event e-mail address (used as sorUsername): " EMAIL
+      [[ -n "$EMAIL" ]] || fail "An e-mail address is required: sorPassword is not set in $EVENT_ENV_FILE. Pass -e or enter it when asked."
+    fi
+    check_email
+    fetch_light_sor_credentials
+  fi
 else
-  info "sorUsername and sorPassword are not set in $EVENT_ENV_FILE - they will be looked up from your e-mail address."
-  read -r -p "Event e-mail address (used to look up sorUsername/sorPassword): " EMAIL
-  [[ -n "$EMAIL" ]] || fail "An e-mail address is required: sorUsername/sorPassword are not set in $EVENT_ENV_FILE. Pass -e or enter it when asked."
-fi
-if [[ -n "$EMAIL" ]]; then
-  check_email
-  fetch_sor_credentials
+  if [[ -n "$EMAIL" ]]; then
+    :   # -e given: sorUsername/sorPassword are fetched and overwrite the file values
+  elif [[ $HAVE_SOR_USER -eq 1 && $HAVE_SOR_PASS -eq 1 ]]; then
+    info "Will use sorUsername and sorPassword from $EVENT_ENV_FILE"
+  else
+    info "sorUsername and sorPassword are not set in $EVENT_ENV_FILE - they will be looked up from your e-mail address."
+    read -r -p "Event e-mail address (used to look up sorUsername/sorPassword): " EMAIL
+    [[ -n "$EMAIL" ]] || fail "An e-mail address is required: sorUsername/sorPassword are not set in $EVENT_ENV_FILE. Pass -e or enter it when asked."
+  fi
+  if [[ -n "$EMAIL" ]]; then
+    check_email
+    fetch_sor_credentials
+  fi
 fi
 if [[ -z "$SOR_URL" ]]; then
   read -r -p "SOR base URL (sorURL; Enter to skip): " SOR_URL

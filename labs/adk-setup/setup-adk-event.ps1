@@ -34,7 +34,12 @@
     Your SOR password. Must be used together with -SorUsername (see there).
 
 .PARAMETER Location
-    Jam location used for the credential lookup. Default: APAC
+    Jam location used for the Jam User Management credential lookup. Default: APAC
+    When -Location is NOT given and a SOR URL is known (-SorUrl, sorURL in labs/event.env or SOR_URL),
+    the lightweight Trinity SOR is used instead: the e-mail address becomes sorUsername and the token
+    returned by POST {SorUrl}/portal/api/register becomes sorPassword (format TRI_ + 16 letters/digits;
+    certificate errors are ignored). An existing sorPassword in labs/event.env is never overwritten in
+    this mode, and any failure stops the script (no fallback to the Jam look-up).
 
 .PARAMETER WorkspaceDir
     Lab workspace directory holding the .venv. Default: .\wxo-labs
@@ -316,6 +321,47 @@ function Get-SorCredentials {
     Show-KeyGenHint $u.Groups[1].Value
 }
 
+# Lightweight Trinity SOR: register the e-mail address at {SorUrl}/portal/api/register and store the
+# returned token as sorPassword (the e-mail address itself is the sorUsername). Any failure stops the script.
+# Certificate errors (self-signed certificates) are ignored for this call only.
+function Get-LightSorCredentials {
+    $registerUrl = "$($SorUrl.TrimEnd('/'))/portal/api/register"
+    Info "Registering $Email at the lightweight SOR ($registerUrl)"
+    $json = ConvertTo-Json @{ email = $Email } -Compress
+    $isCore = $PSVersionTable.PSVersion.Major -ge 6
+    if (-not $isCore) {
+        if (-not ("SorTrustAllCerts" -as [type])) {
+            Add-Type -TypeDefinition @"
+using System.Net;
+public static class SorTrustAllCerts {
+    public static void Enable()  { ServicePointManager.ServerCertificateValidationCallback = delegate { return true; }; }
+    public static void Disable() { ServicePointManager.ServerCertificateValidationCallback = null; }
+}
+"@
+        }
+        [SorTrustAllCerts]::Enable()
+    }
+    try {
+        $req = @{ Uri = $registerUrl; Method = "Post"; Body = $json; ContentType = "application/json"; TimeoutSec = 30 }
+        if ($isCore) { $req.SkipCertificateCheck = $true } else { $req.UseBasicParsing = $true }
+        $resp = Invoke-RestMethod @req
+    } catch {
+        $status = ""
+        if ($_.Exception.Response) { $status = " (HTTP $([int]$_.Exception.Response.StatusCode))" }
+        Fail "Could not register $Email at the lightweight SOR$status (check network/VPN, sorURL and the e-mail address): $($_.Exception.Message)"
+    } finally {
+        if (-not $isCore) { [SorTrustAllCerts]::Disable() }
+    }
+    $token = "$($resp.token)"
+    if ($token -notmatch '^TRI_[A-Za-z0-9]{16}$') {
+        Fail "The lightweight SOR returned no valid token for $Email (expected TRI_ followed by 16 letters or digits)."
+    }
+    Set-EnvValue $_EventEnvPath "sorUsername" $Email
+    Set-EnvValue $_EventEnvPath "sorPassword" $token
+    Ok "Saved sorUsername=$Email and sorPassword=******** to $_EventEnvPath"
+    Show-KeyGenHint $Email
+}
+
 # Keep the API key in event.env (only when it differs from what is stored) so that -Activate can
 # refresh the token later without asking for it again.
 function Save-ApiKey([string]$PlainKey) {
@@ -417,24 +463,44 @@ if ($Reset) {
 # The e-mail is only needed to look up sorUsername/sorPassword: with -Email the credentials are fetched again;
 # without it they are used from event.env when both are non-blank, otherwise the e-mail is asked for.
 # The address is checked and looked up right away, so an unregistered address stops the script before anything else is asked.
+# Three ways to get the SOR credentials, first match wins:
+#   1. -SorUsername/-SorPassword: stored as supplied (overwrites the file values).
+#   2. No explicit -Location and a SOR URL is known: lightweight Trinity SOR. An existing sorPassword is never
+#      overwritten; otherwise the e-mail address (asked for when missing) is registered and the token becomes sorPassword.
+#   3. Otherwise (-Location given, or no SOR URL): the Jam User Management look-up (to be retired later).
+$_UseLightSor = (-not $PSBoundParameters.ContainsKey('Location')) -and [bool]$SorUrl
 if ($SorUsername) {
     # -SorUsername/-SorPassword given: no look-up, store the values as supplied
     Set-EnvValue $_EventEnvPath "sorUsername" $SorUsername
     Set-EnvValue $_EventEnvPath "sorPassword" $SorPassword
     Ok "Saved sorUsername=$SorUsername and sorPassword=******** to $_EventEnvPath"
     Show-KeyGenHint $SorUsername
-} elseif ($Email) {
-    # -Email given: sorUsername/sorPassword are fetched and overwrite the file values
-} elseif ($_HaveSorUser -and $_HaveSorPass) {
-    Info "Will use sorUsername and sorPassword from $_EventEnvPath"
+} elseif ($_UseLightSor) {
+    if ($_HaveSorPass) {
+        Info "Will use sorUsername and sorPassword from $_EventEnvPath (an existing sorPassword is never overwritten)"
+    } else {
+        if (-not $Email) {
+            Info "sorPassword is not set in $_EventEnvPath - it will be retrieved from the lightweight SOR using your e-mail address."
+            $Email = Read-Host "Event e-mail address (used as sorUsername)"
+            if (-not $Email) { Fail "An e-mail address is required: sorPassword is not set in $_EventEnvPath. Pass -Email or enter it when asked." }
+        }
+        Confirm-EmailAddress
+        Get-LightSorCredentials
+    }
 } else {
-    Info "sorUsername and sorPassword are not set in $_EventEnvPath - they will be looked up from your e-mail address."
-    $Email = Read-Host "Event e-mail address (used to look up sorUsername/sorPassword)"
-    if (-not $Email) { Fail "An e-mail address is required: sorUsername/sorPassword are not set in $_EventEnvPath. Pass -Email or enter it when asked." }
-}
-if ($Email) {
-    Confirm-EmailAddress
-    Get-SorCredentials
+    if ($Email) {
+        # -Email given: sorUsername/sorPassword are fetched and overwrite the file values
+    } elseif ($_HaveSorUser -and $_HaveSorPass) {
+        Info "Will use sorUsername and sorPassword from $_EventEnvPath"
+    } else {
+        Info "sorUsername and sorPassword are not set in $_EventEnvPath - they will be looked up from your e-mail address."
+        $Email = Read-Host "Event e-mail address (used to look up sorUsername/sorPassword)"
+        if (-not $Email) { Fail "An e-mail address is required: sorUsername/sorPassword are not set in $_EventEnvPath. Pass -Email or enter it when asked." }
+    }
+    if ($Email) {
+        Confirm-EmailAddress
+        Get-SorCredentials
+    }
 }
 if (-not $SorUrl) { $SorUrl = Read-Host "SOR base URL (sorURL; Enter to skip)" }
 Resolve-ApiKey
