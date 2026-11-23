@@ -24,6 +24,15 @@
     replaced. An address that is not registered in SOR stops the script. The script also stops
     when labs/event.env does not exist (start it from the right workspace).
 
+.PARAMETER SorUsername
+    Your SOR user name (the value for sorUsername in labs/event.env). Must be used together with
+    -SorPassword. Skips the Jam User Management lookup completely: no e-mail address and no
+    -Location are needed. Both values are written to sorUsername / sorPassword in labs/event.env.
+    Cannot be combined with -Email.
+
+.PARAMETER SorPassword
+    Your SOR password. Must be used together with -SorUsername (see there).
+
 .PARAMETER Location
     Jam location used for the credential lookup. Default: APAC
 
@@ -68,6 +77,9 @@
     .\labs\adk-setup\setup-adk-event.ps1 -Email jane.doe@ibm.com -Location Americas
 
 .EXAMPLE
+    .\labs\adk-setup\setup-adk-event.ps1 -SorUsername jane.doe@ibm.com -SorPassword 'secret'
+
+.EXAMPLE
     .\labs\adk-setup\setup-adk-event.ps1 -Url https://api.example.com/instances/abc -EnvName trinity-lab
 
 .NOTES
@@ -78,6 +90,8 @@
 param(
     [Alias("e")]
     [string]$Email,
+    [string]$SorUsername,
+    [string]$SorPassword,
     [Alias("l")]
     [string]$Location     = "Americas",
     [string]$WorkspaceDir = ".\wxo-labs",
@@ -132,6 +146,8 @@ if (Test-Path $_EventEnvPath) {
 }
 
 if ($Activate -and $Reset) { Write-Host "[FAIL] -Activate and -Reset cannot be combined." -ForegroundColor Red; exit 1 }
+if ([bool]$SorUsername -ne [bool]$SorPassword) { Write-Host "[FAIL] -SorUsername and -SorPassword must be supplied together." -ForegroundColor Red; exit 1 }
+if ($SorUsername -and $Email) { Write-Host "[FAIL] -SorUsername/-SorPassword and -Email cannot be combined." -ForegroundColor Red; exit 1 }
 
 # Environment-variable fallback: only for values neither the parameters nor event.env provided.
 if (-not $SorUrl) { $SorUrl = $env:SOR_URL }
@@ -401,7 +417,13 @@ if ($Reset) {
 # The e-mail is only needed to look up sorUsername/sorPassword: with -Email the credentials are fetched again;
 # without it they are used from event.env when both are non-blank, otherwise the e-mail is asked for.
 # The address is checked and looked up right away, so an unregistered address stops the script before anything else is asked.
-if ($Email) {
+if ($SorUsername) {
+    # -SorUsername/-SorPassword given: no look-up, store the values as supplied
+    Set-EnvValue $_EventEnvPath "sorUsername" $SorUsername
+    Set-EnvValue $_EventEnvPath "sorPassword" $SorPassword
+    Ok "Saved sorUsername=$SorUsername and sorPassword=******** to $_EventEnvPath"
+    Show-KeyGenHint $SorUsername
+} elseif ($Email) {
     # -Email given: sorUsername/sorPassword are fetched and overwrite the file values
 } elseif ($_HaveSorUser -and $_HaveSorPass) {
     Info "Will use sorUsername and sorPassword from $_EventEnvPath"

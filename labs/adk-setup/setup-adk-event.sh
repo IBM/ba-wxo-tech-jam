@@ -20,6 +20,10 @@
 #                           (a message says so); otherwise the e-mail address is asked for. An address that does not look
 #                           valid has to be confirmed or replaced. An address that is not registered in SOR stops the script.
 #                           The script also stops when labs/event.env does not exist (start it from the right workspace).
+#       --sor-username <name>  Your SOR user name. Must be used together with --sor-password. Skips the Jam User
+#                           Management lookup completely: no e-mail address and no --location are needed. Both values
+#                           are written to sorUsername / sorPassword in labs/event.env. Cannot be combined with -e.
+#       --sor-password <pw>    Your SOR password. Must be used together with --sor-username.
 #   -l, --location <name>   Jam location used for the lookup            (default: APAC)
 #   -d, --dir <path>        Lab workspace directory holding the .venv   (default: ./wxo-labs)
 #   -n, --env-name <name>   ADK environment name                        (default: trinity-lab)
@@ -52,6 +56,8 @@ CRED_USER_TYPE="CP4BA"
 DEFAULT_KEYGEN_URL="https://github.com/IBM/ba-wxo-tech-jam/blob/main/lab-guides/Generate%20Your%20wxO%20API%20Key.md"
 WXO_KEYGEN_URL=""   # wxoKeyGenUrl from labs/event.env; DEFAULT_KEYGEN_URL when missing
 EMAIL=""
+SOR_USERNAME_ARG=""
+SOR_PASSWORD_ARG=""
 LOCATION="Americas"
 WORKSPACE_DIR="./wxo-labs"
 ENV_NAME="trinity-lab"
@@ -318,6 +324,8 @@ unset _EVENT_ENV _line _k _v
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -e|--email)    EMAIL="${2:?missing value for $1}"; shift 2 ;;
+    --sor-username) SOR_USERNAME_ARG="${2:?missing value for $1}"; shift 2 ;;
+    --sor-password) SOR_PASSWORD_ARG="${2:?missing value for $1}"; shift 2 ;;
     -l|--location) LOCATION="${2:?missing value for $1}"; shift 2 ;;
     -d|--dir)      WORKSPACE_DIR="${2:?missing value for $1}"; shift 2 ;;
     -n|--env-name) ENV_NAME="${2:?missing value for $1}"; shift 2 ;;
@@ -333,6 +341,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 [[ $ACTIVATE -eq 0 || $RESET -eq 0 ]] || fail "--activate and --reset cannot be combined."
+[[ -n "$SOR_USERNAME_ARG" && -n "$SOR_PASSWORD_ARG" || -z "$SOR_USERNAME_ARG" && -z "$SOR_PASSWORD_ARG" ]] \
+  || fail "--sor-username and --sor-password must be supplied together."
+[[ -z "$SOR_USERNAME_ARG" || -z "$EMAIL" ]] || fail "--sor-username/--sor-password and -e cannot be combined."
 
 [[ -f "$EVENT_ENV_FILE" ]] \
   || fail "labs/event.env was not found (looked for $EVENT_ENV_FILE). The script must be started from the right workspace: run it from the Tech Jam repository, e.g. ./labs/adk-setup/setup-adk-event.sh."
@@ -401,7 +412,13 @@ fi
 # The e-mail is only needed to look up sorUsername/sorPassword: with -e the credentials are fetched again;
 # without -e they are used from event.env when both are non-blank, otherwise the e-mail is asked for.
 # The address is checked and looked up right away, so an unregistered address stops the script before anything else is asked.
-if [[ -n "$EMAIL" ]]; then
+if [[ -n "$SOR_USERNAME_ARG" ]]; then
+  # --sor-username/--sor-password given: no look-up, store the values as supplied
+  set_env_value sorUsername "$SOR_USERNAME_ARG" "$EVENT_ENV_FILE"
+  set_env_value sorPassword "$SOR_PASSWORD_ARG" "$EVENT_ENV_FILE"
+  ok "Saved sorUsername=$SOR_USERNAME_ARG and sorPassword=******** to $EVENT_ENV_FILE"
+  show_keygen_hint "$SOR_USERNAME_ARG"
+elif [[ -n "$EMAIL" ]]; then
   :   # -e given: sorUsername/sorPassword are fetched and overwrite the file values
 elif [[ $HAVE_SOR_USER -eq 1 && $HAVE_SOR_PASS -eq 1 ]]; then
   info "Will use sorUsername and sorPassword from $EVENT_ENV_FILE"
