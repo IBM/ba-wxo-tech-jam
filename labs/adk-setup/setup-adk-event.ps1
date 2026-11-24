@@ -339,7 +339,8 @@ function Get-SorCredentials {
 # username / token as sorUsername / sorPassword (the e-mail address itself is not stored). Any failure stops
 # the script. Certificate errors (self-signed certificates) are ignored for this call only.
 function Get-LightSorCredentials {
-    $registerUrl = "$($SorUrl.TrimEnd('/'))/portal/api/register"
+    # sorURL may or may not end in /bas (the BAW base path); the portal API lives at the host root.
+    $registerUrl = "$(($SorUrl.TrimEnd('/') -replace '/bas$', ''))/portal/api/register"
     Info "Registering $Email at the lightweight SOR ($registerUrl)"
     $json = ConvertTo-Json @{ email = $Email } -Compress
     $isCore = $PSVersionTable.PSVersion.Major -ge 6

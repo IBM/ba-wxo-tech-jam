@@ -289,7 +289,9 @@ fetch_sor_credentials() {
 # and store the returned username / token as sorUsername / sorPassword (the e-mail address itself is not stored).
 # Any failure stops the script. Certificate errors (self-signed certificates) are ignored for this call only (curl -k).
 fetch_light_sor_credentials() {
-  local url="${SOR_URL%/}/portal/api/register" body resp user token
+  # sorURL may or may not end in /bas (the BAW base path); the portal API lives at the host root.
+  local base="${SOR_URL%/}"; base="${base%/bas}"
+  local url="$base/portal/api/register" body resp user token
   info "Registering $EMAIL at the lightweight SOR ($url)"
   body="$(printf '%s' "$EMAIL" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')"
   resp="$(curl -fsS -k -m 30 -X POST -H 'Content-Type: application/json' \
