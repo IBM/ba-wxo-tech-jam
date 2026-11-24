@@ -6,6 +6,40 @@ exist) and then imports both Lab 1.3 collaborator agents and everything they
 depend on: shared connections, the MCP toolkit, OpenAPI and Python tools,
 and the two agents themselves. The lab guide's own manual UI sanity checks
 are not scripted — follow the lab guide for those.
+
+Prerequisite: an active ADK environment pointing at the event wxO tenant
+(`orchestrate env activate trinity-lab`). The script stops if it is not
+authenticated.
+
+Default: values come from labs/event.env
+────────────────────────────────────────
+The SOR user ID, password and base URL are read from labs/event.env
+(sorUsername, sorPassword, sorURL), so no arguments are needed once that file
+is filled in (the ADK setup script does this for you). The file is located
+relative to this script, so you can run it from any directory.
+
+  python3 labs/lab-1x/solution/scripts/prepare_lab_1_3.py
+
+The script stops with a message when sorUsername, sorPassword or sorURL is
+blank in labs/event.env and not supplied as an argument.
+
+Advanced: override the values on the command line
+─────────────────────────────────────────────────
+Every value read from labs/event.env can be overridden with a command-line
+argument. An argument always takes precedence over the file; the file is not
+modified.
+
+  --sor-user-id    Your SOR user ID. Default: sorUsername from labs/event.env.
+                   Also used as the namespace when --namespace is omitted.
+  --sor-password   Your SOR password. Default: sorPassword from labs/event.env.
+  --sor-base-url   The SOR base URL; the /bas suffix is added if missing.
+                   Default: sorURL from labs/event.env.
+  --namespace      Namespace override, independent of --sor-user-id.
+  --output         Prepared-artifacts directory. Default:
+                   labs/lab-1x/solution/lab-1-prepared (reused as-is if it
+                   already exists).
+
+Example: python3 labs/lab-1x/solution/scripts/prepare_lab_1_3.py --namespace usr042
 """
 
 from __future__ import annotations

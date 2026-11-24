@@ -21,29 +21,40 @@ Usage
      Run this script from the repository root, or from any directory — the
      script resolves all paths relative to its own location automatically.
 
-  Invocation
-  ──────────
+  Default: values come from labs/event.env
+  ─────────────────────────────────────────
+  The SOR user ID, password and base URL are read from labs/event.env
+  (sorUsername, sorPassword, sorURL), so no arguments are needed once that
+  file is filled in (the ADK setup script does this for you). The file is
+  located relative to this script, so you can run it from any directory.
+
   From the repository root (Mac/Linux):
-    python3 labs/lab-3/solution/scripts/prepare_lab_3.py \\
-        --sor-base-url <YOUR-SOR-BASE-URL> \\
-        --sor-user-id  <YOUR-SOR-USER-ID> \\
-        --sor-password <YOUR-SOR-PASSWORD>
+    python3 labs/lab-3/solution/scripts/prepare_lab_3.py
 
   From the repository root (Windows):
-    python labs\\lab-3\\solution\\scripts\\prepare_lab_3.py ^
-        --sor-base-url <YOUR-SOR-BASE-URL> ^
-        --sor-user-id  <YOUR-SOR-USER-ID> ^
-        --sor-password <YOUR-SOR-PASSWORD>
+    python labs\\lab-3\\solution\\scripts\\prepare_lab_3.py
 
-  Arguments
-  ─────────
-  --sor-base-url   Required. The SOR REST base URL, e.g.
+  Re-run to refresh credentials after a token expiry (safe — skips imports):
+    python3 labs/lab-3/solution/scripts/prepare_lab_3.py
+
+  The script stops with a message when sorUsername, sorPassword or sorURL is
+  blank in labs/event.env and not supplied as an argument.
+
+  Advanced: override the values on the command line
+  ─────────────────────────────────────────────────
+  Every value read from labs/event.env can be overridden with a command-line
+  argument. An argument always takes precedence over the file; the file is
+  not modified.
+
+  --sor-base-url   Optional. The SOR REST base URL, e.g.
                    https://cp4ba.example.test/bas
+                   Default: sorURL from labs/event.env.
                    The script appends /bas automatically if omitted.
-  --sor-user-id    Required. Your SOR user ID (event GitHub labs page, section 2),
-                   e.g. usr001. Also used as the wxO namespace prefix when
-                   --namespace is not supplied.
-  --sor-password   Required. Your SOR password (event GitHub labs page, section 2).
+  --sor-user-id    Optional. Your SOR user ID, e.g. usr001. Also used as the
+                   wxO namespace prefix when --namespace is not supplied.
+                   Default: sorUsername from labs/event.env.
+  --sor-password   Optional. Your SOR password.
+                   Default: sorPassword from labs/event.env.
   --namespace      Optional. Override the wxO namespace prefix independently
                    of --sor-user-id, e.g. --namespace usr042. Defaults to the
                    value of --sor-user-id.
@@ -51,26 +62,16 @@ Usage
                    written before import. Defaults to
                    labs/lab-3/solution/lab-3-prepared/ inside the repo.
 
-  Examples
-  ────────
-  Typical first run (namespace = SOR user ID):
+  Examples (advanced)
+  ───────────────────
+  Pass all SOR values explicitly instead of using labs/event.env:
     python3 labs/lab-3/solution/scripts/prepare_lab_3.py \\
         --sor-base-url https://cp4ba.example.test/bas \\
         --sor-user-id  usr001 \\
         --sor-password s3cr3t
 
-  Override namespace separately from SOR user ID:
-    python3 labs/lab-3/solution/scripts/prepare_lab_3.py \\
-        --sor-base-url https://cp4ba.example.test/bas \\
-        --sor-user-id  usr001 \\
-        --sor-password s3cr3t \\
-        --namespace    usr099
-
-  Re-run to refresh credentials after a token expiry (safe — skips imports):
-    python3 labs/lab-3/solution/scripts/prepare_lab_3.py \\
-        --sor-base-url https://cp4ba.example.test/bas \\
-        --sor-user-id  usr001 \\
-        --sor-password s3cr3t
+  Override only the namespace (everything else from labs/event.env):
+    python3 labs/lab-3/solution/scripts/prepare_lab_3.py --namespace usr099
 
   Output
   ──────

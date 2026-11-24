@@ -1,5 +1,36 @@
 #!/usr/bin/env python3
-"""Create namespace-safe Lab 1.1 import files without editing source artifacts."""
+"""Create namespace-safe Lab 1.1 import files without editing source artifacts.
+
+Only writes files into the prepared-artifacts folder; it does not call the
+orchestrate CLI and does not need the SOR password.
+
+Default: values come from labs/event.env
+────────────────────────────────────────
+The SOR user ID and base URL are read from labs/event.env (sorUsername,
+sorURL), so no arguments are needed once that file is filled in (the ADK setup
+script does this for you). The file is located relative to this script, so you
+can run it from any directory.
+
+  python3 labs/lab-1x/solution/scripts/prepare_lab_1_1.py
+
+The script stops with a message when sorUsername (or --namespace) or sorURL is
+blank in labs/event.env and not supplied as an argument.
+
+Advanced: override the values on the command line
+─────────────────────────────────────────────────
+Every value read from labs/event.env can be overridden with a command-line
+argument. An argument always takes precedence over the file; the file is not
+modified.
+
+  --sor-user-id   Your SOR user ID. Default: sorUsername from labs/event.env.
+                  Also used as the namespace when --namespace is omitted.
+  --sor-base-url  The SOR base URL; the /bas suffix is added if missing.
+                  Default: sorURL from labs/event.env.
+  --namespace     Namespace override, independent of --sor-user-id.
+  --output        Output directory. Default: labs/lab-1x/solution/lab-1-prepared.
+
+Example: python3 labs/lab-1x/solution/scripts/prepare_lab_1_1.py --namespace usr042
+"""
 
 from __future__ import annotations
 
