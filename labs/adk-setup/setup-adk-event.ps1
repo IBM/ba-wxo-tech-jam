@@ -34,6 +34,12 @@
 .PARAMETER SorPassword
     Your SOR password. Must be used together with -SorUsername (see there).
 
+.PARAMETER SkipSorValidation
+    Skips the format check of -SorUsername and -SorPassword in lightweight SOR mode, so values that do
+    not look like usr000/usr0000 and TRI_ + 16 letters/digits are stored as supplied. Only valid together
+    with -SorUsername/-SorPassword. It never affects the values returned by the lightweight SOR
+    register endpoint, which are always validated.
+
 .PARAMETER Location
     Jam location used for the Jam User Management credential lookup. Default: APAC
     When -Location is NOT given and a SOR URL is known (-SorUrl, sorURL in labs/event.env or SOR_URL),
@@ -100,6 +106,7 @@ param(
     [string]$Email,
     [string]$SorUsername,
     [string]$SorPassword,
+    [switch]$SkipSorValidation,
     [Alias("l")]
     [string]$Location     = "Americas",
     [string]$WorkspaceDir = ".\wxo-labs",
@@ -159,6 +166,7 @@ if (Test-Path $_EventEnvPath) {
 if ($Activate -and $Reset) { Write-Host "[FAIL] -Activate and -Reset cannot be combined." -ForegroundColor Red; exit 1 }
 if ([bool]$SorUsername -ne [bool]$SorPassword) { Write-Host "[FAIL] -SorUsername and -SorPassword must be supplied together." -ForegroundColor Red; exit 1 }
 if ($SorUsername -and $Email) { Write-Host "[FAIL] -SorUsername/-SorPassword and -Email cannot be combined." -ForegroundColor Red; exit 1 }
+if ($SkipSorValidation -and -not $SorUsername) { Write-Host "[FAIL] -SkipSorValidation only applies together with -SorUsername and -SorPassword." -ForegroundColor Red; exit 1 }
 
 # Environment-variable fallback: only for values neither the parameters nor event.env provided.
 if (-not $SorUrl) { $SorUrl = $env:SOR_URL }
@@ -482,7 +490,9 @@ if ($Reset) {
 $_UseLightSor = (-not $PSBoundParameters.ContainsKey('Location')) -and [bool]$SorUrl
 if ($SorUsername) {
     # -SorUsername/-SorPassword given: no look-up, store the values as supplied
-    if ($_UseLightSor) {
+    if ($SkipSorValidation) {
+        Warn "-SkipSorValidation: the format of -SorUsername and -SorPassword is not checked."
+    } elseif ($_UseLightSor) {
         if ($SorUsername -cnotmatch $SorUserPattern) { Fail "-SorUsername '$SorUsername' is not a valid SOR user ID (expected usr followed by 3 or 4 digits, e.g. usr0007)." }
         if ($SorPassword -cnotmatch $SorTokenPattern) { Fail "-SorPassword is not a valid lightweight SOR password (expected TRI_ followed by 16 letters or digits)." }
     }

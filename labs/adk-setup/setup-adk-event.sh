@@ -26,6 +26,10 @@
 #                           In lightweight SOR mode (see -l) the user ID must look like usr000 or usr0000 and the
 #                           password like TRI_ + 16 letters/digits, otherwise the script stops before writing anything.
 #       --sor-password <pw>    Your SOR password. Must be used together with --sor-username.
+#       --skip-sor-validation  Skips the format check of --sor-username and --sor-password in lightweight SOR mode, so
+#                           values that do not look like usr000/usr0000 and TRI_ + 16 letters/digits are stored as
+#                           supplied. Only valid together with --sor-username/--sor-password. It never affects the values
+#                           returned by the lightweight SOR register endpoint, which are always validated.
 #   -l, --location <name>   Jam location used for the Jam User Management lookup (default: Americas).
 #                           When -l is NOT given and a SOR URL is known (-s, sorURL in labs/event.env or SOR_URL), the
 #                           lightweight Trinity SOR is used instead: the e-mail address is sent to
@@ -70,6 +74,7 @@ WXO_KEYGEN_URL=""   # wxoKeyGenUrl from labs/event.env; DEFAULT_KEYGEN_URL when 
 EMAIL=""
 SOR_USERNAME_ARG=""
 SOR_PASSWORD_ARG=""
+SKIP_SOR_VALIDATION=0
 LOCATION="Americas"
 LOCATION_GIVEN=0
 WORKSPACE_DIR="./wxo-labs"
@@ -361,6 +366,7 @@ while [[ $# -gt 0 ]]; do
     -e|--email)    EMAIL="${2:?missing value for $1}"; shift 2 ;;
     --sor-username) SOR_USERNAME_ARG="${2:?missing value for $1}"; shift 2 ;;
     --sor-password) SOR_PASSWORD_ARG="${2:?missing value for $1}"; shift 2 ;;
+    --skip-sor-validation) SKIP_SOR_VALIDATION=1; shift ;;
     -l|--location) LOCATION="${2:?missing value for $1}"; LOCATION_GIVEN=1; shift 2 ;;
     -d|--dir)      WORKSPACE_DIR="${2:?missing value for $1}"; shift 2 ;;
     -n|--env-name) ENV_NAME="${2:?missing value for $1}"; shift 2 ;;
@@ -379,6 +385,8 @@ done
 [[ -n "$SOR_USERNAME_ARG" && -n "$SOR_PASSWORD_ARG" || -z "$SOR_USERNAME_ARG" && -z "$SOR_PASSWORD_ARG" ]] \
   || fail "--sor-username and --sor-password must be supplied together."
 [[ -z "$SOR_USERNAME_ARG" || -z "$EMAIL" ]] || fail "--sor-username/--sor-password and -e cannot be combined."
+[[ $SKIP_SOR_VALIDATION -eq 0 || -n "$SOR_USERNAME_ARG" ]] \
+  || fail "--skip-sor-validation only applies together with --sor-username and --sor-password."
 
 [[ -f "$EVENT_ENV_FILE" ]] \
   || fail "labs/event.env was not found (looked for $EVENT_ENV_FILE). The script must be started from the right workspace: run it from the Tech Jam repository, e.g. ./labs/adk-setup/setup-adk-event.sh."
@@ -455,7 +463,9 @@ fi
 #   3. Otherwise (-l given, or no SOR URL): the Jam User Management look-up (to be retired later).
 if [[ -n "$SOR_USERNAME_ARG" ]]; then
   # --sor-username/--sor-password given: no look-up, store the values as supplied
-  if [[ $LOCATION_GIVEN -eq 0 && -n "$SOR_URL" ]]; then
+  if [[ $SKIP_SOR_VALIDATION -eq 1 ]]; then
+    warn "--skip-sor-validation: the format of --sor-username and --sor-password is not checked."
+  elif [[ $LOCATION_GIVEN -eq 0 && -n "$SOR_URL" ]]; then
     [[ "$SOR_USERNAME_ARG" =~ $SOR_USER_PATTERN ]] \
       || fail "--sor-username '$SOR_USERNAME_ARG' is not a valid SOR user ID (expected usr followed by 3 or 4 digits, e.g. usr0007)."
     [[ "$SOR_PASSWORD_ARG" =~ $SOR_TOKEN_PATTERN ]] \
