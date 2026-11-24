@@ -25,10 +25,11 @@
     when labs/event.env does not exist (start it from the right workspace).
 
 .PARAMETER SorUsername
-    Your SOR user name (the value for sorUsername in labs/event.env). Must be used together with
-    -SorPassword. Skips the Jam User Management lookup completely: no e-mail address and no
-    -Location are needed. Both values are written to sorUsername / sorPassword in labs/event.env.
-    Cannot be combined with -Email.
+    Your SOR user ID, e.g. usr0007 (the value for sorUsername in labs/event.env). Must be used together
+    with -SorPassword. Skips the credential lookup completely: no e-mail address and no -Location are
+    needed. Both values are written to sorUsername / sorPassword in labs/event.env. Cannot be combined
+    with -Email. In lightweight SOR mode (see -Location) the user ID must look like usr000 or usr0000
+    and the password like TRI_ + 16 letters/digits, otherwise the script stops before writing anything.
 
 .PARAMETER SorPassword
     Your SOR password. Must be used together with -SorUsername (see there).
@@ -36,10 +37,12 @@
 .PARAMETER Location
     Jam location used for the Jam User Management credential lookup. Default: APAC
     When -Location is NOT given and a SOR URL is known (-SorUrl, sorURL in labs/event.env or SOR_URL),
-    the lightweight Trinity SOR is used instead: the e-mail address becomes sorUsername and the token
-    returned by POST {SorUrl}/portal/api/register becomes sorPassword (format TRI_ + 16 letters/digits;
-    certificate errors are ignored). An existing sorPassword in labs/event.env is never overwritten in
-    this mode, and any failure stops the script (no fallback to the Jam look-up).
+    the lightweight Trinity SOR is used instead: the e-mail address is sent to
+    POST {SorUrl}/portal/api/register and the "username" (usr000 or usr0000) and "token" (TRI_ + 16
+    letters/digits) of the response become sorUsername and sorPassword. The e-mail address is not stored.
+    Certificate errors are ignored for this call. An existing sorPassword in labs/event.env is never
+    overwritten in this mode (a sorPassword without a sorUsername stops the script), and any failure
+    stops the script (no fallback to the Jam look-up).
 
 .PARAMETER WorkspaceDir
     Lab workspace directory holding the .venv. Default: .\wxo-labs
@@ -82,7 +85,7 @@
     .\labs\adk-setup\setup-adk-event.ps1 -Email jane.doe@ibm.com -Location Americas
 
 .EXAMPLE
-    .\labs\adk-setup\setup-adk-event.ps1 -SorUsername jane.doe@ibm.com -SorPassword 'secret'
+    .\labs\adk-setup\setup-adk-event.ps1 -SorUsername usr0007 -SorPassword 'TRI_8F4K9P2X1M5Q7Z3W'
 
 .EXAMPLE
     .\labs\adk-setup\setup-adk-event.ps1 -Url https://api.example.com/instances/abc -EnvName trinity-lab
@@ -130,6 +133,9 @@ $_UrlFromFile = ""
 $_ApiKeyFromFile = ""
 $_HaveSorUser = $false
 $DefaultKeyGenUrl = "https://github.com/IBM/ba-wxo-tech-jam/blob/main/lab-guides/Generate%20Your%20wxO%20API%20Key.md"
+# Lightweight SOR formats: user ID usr000 (old) / usr0000 (new), token TRI_ + 16 letters/digits.
+$SorUserPattern  = '^usr[0-9]{3,4}$'
+$SorTokenPattern = '^TRI_[A-Za-z0-9]{16}$'
 $_KeyGenUrl = ""   # wxoKeyGenUrl from labs/event.env; $DefaultKeyGenUrl when missing
 $_HaveSorPass = $false
 if (Test-Path $_EventEnvPath) {
@@ -321,9 +327,9 @@ function Get-SorCredentials {
     Show-KeyGenHint $u.Groups[1].Value
 }
 
-# Lightweight Trinity SOR: register the e-mail address at {SorUrl}/portal/api/register and store the
-# returned token as sorPassword (the e-mail address itself is the sorUsername). Any failure stops the script.
-# Certificate errors (self-signed certificates) are ignored for this call only.
+# Lightweight Trinity SOR: register the e-mail address at {SorUrl}/portal/api/register and store the returned
+# username / token as sorUsername / sorPassword (the e-mail address itself is not stored). Any failure stops
+# the script. Certificate errors (self-signed certificates) are ignored for this call only.
 function Get-LightSorCredentials {
     $registerUrl = "$($SorUrl.TrimEnd('/'))/portal/api/register"
     Info "Registering $Email at the lightweight SOR ($registerUrl)"
@@ -352,14 +358,18 @@ public static class SorTrustAllCerts {
     } finally {
         if (-not $isCore) { [SorTrustAllCerts]::Disable() }
     }
+    $user  = "$($resp.username)"
     $token = "$($resp.token)"
-    if ($token -notmatch '^TRI_[A-Za-z0-9]{16}$') {
+    if ($user -cnotmatch $SorUserPattern) {
+        Fail "The lightweight SOR returned no valid user name for $Email (expected usr followed by 3 or 4 digits)."
+    }
+    if ($token -cnotmatch $SorTokenPattern) {
         Fail "The lightweight SOR returned no valid token for $Email (expected TRI_ followed by 16 letters or digits)."
     }
-    Set-EnvValue $_EventEnvPath "sorUsername" $Email
+    Set-EnvValue $_EventEnvPath "sorUsername" $user
     Set-EnvValue $_EventEnvPath "sorPassword" $token
-    Ok "Saved sorUsername=$Email and sorPassword=******** to $_EventEnvPath"
-    Show-KeyGenHint $Email
+    Ok "Saved sorUsername=$user and sorPassword=******** to $_EventEnvPath"
+    Show-KeyGenHint $user
 }
 
 # Keep the API key in event.env (only when it differs from what is stored) so that -Activate can
@@ -464,24 +474,32 @@ if ($Reset) {
 # without it they are used from event.env when both are non-blank, otherwise the e-mail is asked for.
 # The address is checked and looked up right away, so an unregistered address stops the script before anything else is asked.
 # Three ways to get the SOR credentials, first match wins:
-#   1. -SorUsername/-SorPassword: stored as supplied (overwrites the file values).
+#   1. -SorUsername/-SorPassword: stored as supplied (overwrites the file values); in lightweight mode the formats are checked first.
 #   2. No explicit -Location and a SOR URL is known: lightweight Trinity SOR. An existing sorPassword is never
-#      overwritten; otherwise the e-mail address (asked for when missing) is registered and the token becomes sorPassword.
+#      overwritten; otherwise the e-mail address (asked for when missing) is registered and the returned
+#      username / token become sorUsername / sorPassword.
 #   3. Otherwise (-Location given, or no SOR URL): the Jam User Management look-up (to be retired later).
 $_UseLightSor = (-not $PSBoundParameters.ContainsKey('Location')) -and [bool]$SorUrl
 if ($SorUsername) {
     # -SorUsername/-SorPassword given: no look-up, store the values as supplied
+    if ($_UseLightSor) {
+        if ($SorUsername -cnotmatch $SorUserPattern) { Fail "-SorUsername '$SorUsername' is not a valid SOR user ID (expected usr followed by 3 or 4 digits, e.g. usr0007)." }
+        if ($SorPassword -cnotmatch $SorTokenPattern) { Fail "-SorPassword is not a valid lightweight SOR password (expected TRI_ followed by 16 letters or digits)." }
+    }
     Set-EnvValue $_EventEnvPath "sorUsername" $SorUsername
     Set-EnvValue $_EventEnvPath "sorPassword" $SorPassword
     Ok "Saved sorUsername=$SorUsername and sorPassword=******** to $_EventEnvPath"
     Show-KeyGenHint $SorUsername
 } elseif ($_UseLightSor) {
     if ($_HaveSorPass) {
+        if (-not $_HaveSorUser) {
+            Fail "sorPassword is set in $_EventEnvPath but sorUsername is empty, and an existing sorPassword is never overwritten. Run the script with -Reset to clear both, or pass -SorUsername and -SorPassword."
+        }
         Info "Will use sorUsername and sorPassword from $_EventEnvPath (an existing sorPassword is never overwritten)"
     } else {
         if (-not $Email) {
-            Info "sorPassword is not set in $_EventEnvPath - it will be retrieved from the lightweight SOR using your e-mail address."
-            $Email = Read-Host "Event e-mail address (used as sorUsername)"
+            Info "sorPassword is not set in $_EventEnvPath - sorUsername and sorPassword will be retrieved from the lightweight SOR using your e-mail address."
+            $Email = Read-Host "Event e-mail address (used to retrieve your SOR user ID and password)"
             if (-not $Email) { Fail "An e-mail address is required: sorPassword is not set in $_EventEnvPath. Pass -Email or enter it when asked." }
         }
         Confirm-EmailAddress
